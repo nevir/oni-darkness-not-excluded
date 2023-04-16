@@ -21,8 +21,6 @@
     <Reference Include="$(GameLibsDir)/0Harmony.dll" />
     <Reference Include="$(GameLibsDir)/Assembly-CSharp.dll" />
     <Reference Include="$(GameLibsDir)/Assembly-CSharp-firstpass.dll" />
-    <Reference Include="$(GameLibsDir)/Assembly-CSharp-firstpass.dll" />
-    <Reference Include="$(GameLibsDir)/UnityEngine.dll" />
     <Reference Include="$(GameLibsDir)/UnityEngine.CoreModule.dll" />
   </ItemGroup>
 
