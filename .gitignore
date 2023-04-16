@@ -1,0 +1,7 @@
+# OS-Specific Junk
+.DS_Store
+
+# Build Artifacts
+/bin/
+/bundle/
+/obj/

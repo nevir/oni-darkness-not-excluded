@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <RootNamespace>DarknessNotExcluded</RootNamespace>
+    <AssemblyName>DarknessNotExcluded</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OS)' == 'Unix'">
+    <GameLibsDir>$(HOME)/Library/Application Support/Steam/steamapps/common/OxygenNotIncluded/OxygenNotIncluded.app/Contents/Resources/Data/Managed</GameLibsDir>
+    <LocalModsDir>$(HOME)/Library/Application Support/unity.Klei.Oxygen Not Included/mods/Local</LocalModsDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BundleDir>$(MSBuildProjectDirectory)/bundle</BundleDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+
+    <Reference Include="$(GameLibsDir)/0Harmony.dll" />
+    <Reference Include="$(GameLibsDir)/Assembly-CSharp.dll" />
+    <Reference Include="$(GameLibsDir)/Assembly-CSharp-firstpass.dll" />
+    <Reference Include="$(GameLibsDir)/Assembly-CSharp-firstpass.dll" />
+    <Reference Include="$(GameLibsDir)/UnityEngine.dll" />
+    <Reference Include="$(GameLibsDir)/UnityEngine.CoreModule.dll" />
+  </ItemGroup>
+
+  <Target Name="Bundle" AfterTargets="Build">
+    <RemoveDir Directories="$(BundleDir)" />
+    <Copy SourceFiles="$(OutDir)/$(AssemblyName).dll" DestinationFolder="$(BundleDir)" />
+    <Copy SourceFiles="mod.yaml;mod_info.yaml" DestinationFolder="$(BundleDir)" />
+  </Target>
+
+  <Target Name="Install" AfterTargets="Bundle">
+    <ItemGroup>
+      <Bundle Include="$(BundleDir)\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Bundle)" DestinationFolder="$(LocalModsDir)/$(AssemblyName)/" />
+  </Target>
+
+</Project>
