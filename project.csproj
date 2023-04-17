@@ -4,7 +4,7 @@
     <BaseName>DarknessNotExcluded</BaseName>
     <TargetFramework>net471</TargetFramework>
     <RootNamespace>$(BaseName)</RootNamespace>
-    <AssemblyName>$(BaseName)</AssemblyName>
+    <AssemblyName>$(BaseName).mod</AssemblyName>
     <NoWarn>CS0649</NoWarn>
   </PropertyGroup>
 
@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="ilmerge" Version="3.0.41" />
-    <PackageReference Include="ILRepack" Version="2.0.18" />
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
     <PackageReference Include="PLib" Version="4.12.0" />
 
     <Reference Include="System" />
@@ -31,9 +31,22 @@
     <Reference Include="$(GameLibsDir)/UnityEngine.CoreModule.dll" />
   </ItemGroup>
 
-  <Target Name="Bundle" AfterTargets="Build">
+  <Target Name="Merge" AfterTargets="Build">
+    <ItemGroup>
+      <InputAssemblies Include="$(OutputPath)$(AssemblyName).dll" />
+      <InputAssemblies Include="$(OutputPath)PLib.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <LibraryPath Include="$(GameLibsDir)" />
+    </ItemGroup>
+
+    <ILRepack Parallel="true" Internalize="true" LibraryPath="@(LibraryPath)" InputAssemblies="@(InputAssemblies)" TargetKind="Dll" OutputFile="$(OutDir)$(BaseName).dll" />
+  </Target>
+
+  <Target Name="Bundle" AfterTargets="Merge">
     <RemoveDir Directories="$(BundleDir)" />
-    <Copy SourceFiles="$(OutDir)$(BaseName).dll;$(OutDir)PLib.dll" DestinationFolder="$(BundleDir)" />
+    <Copy SourceFiles="$(OutDir)$(BaseName).dll" DestinationFolder="$(BundleDir)" />
     <Copy SourceFiles="mod.yaml;mod_info.yaml" DestinationFolder="$(BundleDir)" />
   </Target>
 
@@ -41,6 +54,8 @@
     <ItemGroup>
       <Bundle Include="$(BundleDir)\**\*" />
     </ItemGroup>
+
+    <RemoveDir Directories="$(LocalModsDir)/$(BaseName)/" />
     <Copy SourceFiles="@(Bundle)" DestinationFolder="$(LocalModsDir)/$(BaseName)/" />
   </Target>
 
