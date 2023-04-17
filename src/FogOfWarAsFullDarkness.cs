@@ -21,10 +21,10 @@ namespace DarknessNotIncluded
 
       var minFogLevel = Config.minimumFogLevel;
       var gameCycle = GameClock.Instance.GetTimeInCycles();
-      if (gameCycle < Config.handicapExpirationCycle)
+      if (gameCycle < Config.gracePeriodCycles)
       {
-        float scaledFogLevel = 1.0f - gameCycle / Config.handicapExpirationCycle;
-        minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)Config.handicapFogLevel));
+        float scaledFogLevel = 1.0f - gameCycle / Config.gracePeriodCycles;
+        minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)Config.initialFogLevel));
       }
       var fogRange = 255 - minFogLevel;
 
