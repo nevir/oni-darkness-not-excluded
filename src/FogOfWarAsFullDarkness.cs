@@ -9,6 +9,7 @@ namespace DarknessNotIncluded
   {
     static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)
     {
+      var config = Config.Instance;
       var visible = Grid.Visible;
       var lightIntensity = Grid.LightIntensity;
 
@@ -19,12 +20,12 @@ namespace DarknessNotIncluded
         gridYOffset = activeWorld.WorldSize.Y + activeWorld.WorldOffset.Y - 1;
       }
 
-      var minFogLevel = Config.Instance.minimumFogLevel;
+      var minFogLevel = config.minimumFogLevel;
       var gameCycle = GameClock.Instance.GetTimeInCycles();
-      if (gameCycle < Config.Instance.gracePeriodCycles)
+      if (gameCycle < config.gracePeriodCycles)
       {
-        float scaledFogLevel = 1.0f - gameCycle / Config.Instance.gracePeriodCycles;
-        minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)Config.Instance.initialFogLevel));
+        float scaledFogLevel = 1.0f - gameCycle / config.gracePeriodCycles;
+        minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)config.initialFogLevel));
       }
       var fogRange = 255 - minFogLevel;
 
@@ -60,14 +61,14 @@ namespace DarknessNotIncluded
             }
           }
 
-          int fog = minFogLevel + (Math.Min(lux, Config.Instance.fullyVisibleLuxThreshold) * fogRange) / Config.Instance.fullyVisibleLuxThreshold;
-          // byte fog = lux == 0 ? (byte)0 : (byte)255;
+          int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
 
           region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
 
           // Hides tooltips
           // TODO: Figure out how to preserve original visibility changes.
           // TODO: Seems to Just Work? …except when returning to old locations.
+          // TODO: Just hook tooltip display?
           // if (fog == 0 && visible[cell] != 0)
           // {
           //   visible[cell] = 0;
