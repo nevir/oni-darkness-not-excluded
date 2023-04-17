@@ -4,6 +4,7 @@
     <TargetFramework>net471</TargetFramework>
     <RootNamespace>DarknessNotExcluded</RootNamespace>
     <AssemblyName>DarknessNotExcluded</AssemblyName>
+    <NoWarn>CS0649</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)' == 'Unix'">

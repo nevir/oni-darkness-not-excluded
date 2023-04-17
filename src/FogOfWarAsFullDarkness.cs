@@ -26,7 +26,6 @@ namespace DarknessNotIncluded
         float scaledFogLevel = 1.0f - gameCycle / Config.handicapExpirationCycle;
         minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)Config.handicapFogLevel));
       }
-
       var fogRange = 255 - minFogLevel;
 
       for (int y = y0; y <= y1; ++y)
@@ -68,11 +67,11 @@ namespace DarknessNotIncluded
 
           // Hides tooltips
           // TODO: Figure out how to preserve original visibility changes.
-          // TODO: Seems to Just Work?
-          if (fog == 0 && visible[cell] != 0)
-          {
-            visible[cell] = 0;
-          }
+          // TODO: Seems to Just Work? …except when returning to old locations.
+          // if (fog == 0 && visible[cell] != 0)
+          // {
+          //   visible[cell] = 0;
+          // }
         }
       }
 
@@ -87,13 +86,13 @@ namespace DarknessNotIncluded
       var neighboringCells = new List<int>();
 
       if (Grid.IsValidCell(Grid.CellAbove(cell))) neighboringCells.Add(Grid.CellAbove(cell));
-      if (Grid.IsValidCell(Grid.CellUpRight(cell))) neighboringCells.Add(Grid.CellUpRight(cell));
+      // if (Grid.IsValidCell(Grid.CellUpRight(cell))) neighboringCells.Add(Grid.CellUpRight(cell));
       if (Grid.IsValidCell(Grid.CellRight(cell))) neighboringCells.Add(Grid.CellRight(cell));
-      if (Grid.IsValidCell(Grid.CellDownRight(cell))) neighboringCells.Add(Grid.CellDownRight(cell));
+      // if (Grid.IsValidCell(Grid.CellDownRight(cell))) neighboringCells.Add(Grid.CellDownRight(cell));
       if (Grid.IsValidCell(Grid.CellBelow(cell))) neighboringCells.Add(Grid.CellBelow(cell));
-      if (Grid.IsValidCell(Grid.CellDownLeft(cell))) neighboringCells.Add(Grid.CellDownLeft(cell));
+      // if (Grid.IsValidCell(Grid.CellDownLeft(cell))) neighboringCells.Add(Grid.CellDownLeft(cell));
       if (Grid.IsValidCell(Grid.CellLeft(cell))) neighboringCells.Add(Grid.CellLeft(cell));
-      if (Grid.IsValidCell(Grid.CellUpLeft(cell))) neighboringCells.Add(Grid.CellUpLeft(cell));
+      // if (Grid.IsValidCell(Grid.CellUpLeft(cell))) neighboringCells.Add(Grid.CellUpLeft(cell));
 
       return neighboringCells;
     }
