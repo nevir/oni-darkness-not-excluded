@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <BaseName>DarknessNotExcluded</BaseName>
     <TargetFramework>net471</TargetFramework>
-    <RootNamespace>DarknessNotExcluded</RootNamespace>
-    <AssemblyName>DarknessNotExcluded</AssemblyName>
+    <RootNamespace>$(BaseName)</RootNamespace>
+    <AssemblyName>$(BaseName)</AssemblyName>
     <NoWarn>CS0649</NoWarn>
   </PropertyGroup>
 
@@ -17,17 +18,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ilmerge" Version="3.0.41" />
+    <PackageReference Include="ILRepack" Version="2.0.18" />
+    <PackageReference Include="PLib" Version="4.12.0" />
+
     <Reference Include="System" />
 
     <Reference Include="$(GameLibsDir)/0Harmony.dll" />
-    <Reference Include="$(GameLibsDir)/Assembly-CSharp.dll" />
     <Reference Include="$(GameLibsDir)/Assembly-CSharp-firstpass.dll" />
+    <Reference Include="$(GameLibsDir)/Assembly-CSharp.dll" />
+    <Reference Include="$(GameLibsDir)/Newtonsoft.Json.dll" />
     <Reference Include="$(GameLibsDir)/UnityEngine.CoreModule.dll" />
   </ItemGroup>
 
   <Target Name="Bundle" AfterTargets="Build">
     <RemoveDir Directories="$(BundleDir)" />
-    <Copy SourceFiles="$(OutDir)/$(AssemblyName).dll" DestinationFolder="$(BundleDir)" />
+    <Copy SourceFiles="$(OutDir)$(BaseName).dll;$(OutDir)PLib.dll" DestinationFolder="$(BundleDir)" />
     <Copy SourceFiles="mod.yaml;mod_info.yaml" DestinationFolder="$(BundleDir)" />
   </Target>
 
@@ -35,7 +41,7 @@
     <ItemGroup>
       <Bundle Include="$(BundleDir)\**\*" />
     </ItemGroup>
-    <Copy SourceFiles="@(Bundle)" DestinationFolder="$(LocalModsDir)/$(AssemblyName)/" />
+    <Copy SourceFiles="@(Bundle)" DestinationFolder="$(LocalModsDir)/$(BaseName)/" />
   </Target>
 
 </Project>
