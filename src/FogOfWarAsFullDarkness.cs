@@ -19,12 +19,12 @@ namespace DarknessNotIncluded
         gridYOffset = activeWorld.WorldSize.Y + activeWorld.WorldOffset.Y - 1;
       }
 
-      var minFogLevel = Config.minimumFogLevel;
+      var minFogLevel = Config.Instance.minimumFogLevel;
       var gameCycle = GameClock.Instance.GetTimeInCycles();
-      if (gameCycle < Config.gracePeriodCycles)
+      if (gameCycle < Config.Instance.gracePeriodCycles)
       {
-        float scaledFogLevel = 1.0f - gameCycle / Config.gracePeriodCycles;
-        minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)Config.initialFogLevel));
+        float scaledFogLevel = 1.0f - gameCycle / Config.Instance.gracePeriodCycles;
+        minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)Config.Instance.initialFogLevel));
       }
       var fogRange = 255 - minFogLevel;
 
@@ -60,7 +60,7 @@ namespace DarknessNotIncluded
             }
           }
 
-          int fog = minFogLevel + (Math.Min(lux, Config.fullyVisibleLuxThreshold) * fogRange) / Config.fullyVisibleLuxThreshold;
+          int fog = minFogLevel + (Math.Min(lux, Config.Instance.fullyVisibleLuxThreshold) * fogRange) / Config.Instance.fullyVisibleLuxThreshold;
           // byte fog = lux == 0 ? (byte)0 : (byte)255;
 
           region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));

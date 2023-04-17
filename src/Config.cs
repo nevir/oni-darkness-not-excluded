@@ -1,12 +1,26 @@
+using Newtonsoft.Json;
+
 namespace DarknessNotIncluded
 {
-  static class Config
+  [JsonObject(MemberSerialization.OptOut)]
+  class Config
   {
-    public static int minimumFogLevel = 0;
-    public static int fullyVisibleLuxThreshold = 500;
-    public static float gracePeriodCycles = 0.2f;
-    public static int initialFogLevel = 200;
+    public float gracePeriodCycles { get; set; }
 
-    // public static 
+    public int initialFogLevel { get; set; }
+
+    public int minimumFogLevel { get; set; }
+
+    public int fullyVisibleLuxThreshold { get; set; }
+
+    public Config()
+    {
+      initialFogLevel = 200;
+      minimumFogLevel = 0;
+      gracePeriodCycles = 0.2f;
+      fullyVisibleLuxThreshold = 1800;
+    }
+
+    public static Config Instance = new Config();
   }
 }
