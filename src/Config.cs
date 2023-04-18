@@ -56,18 +56,18 @@ namespace DarknessNotIncluded
     [JsonIgnore]
     public Color miningHatTier1Color { get; set; }
 
-    // Tier 2 Mining Hat (2—Superhard Digging)
+    // Tier 2 Mining Hat (Superhard Digging)
 
-    [Option("Enabled", "Whether tier 2 mining hats should emit light.", "Tier 2 Mining Hat (2—Superhard Digging)")]
+    [Option("Enabled", "Whether tier 2 mining hats should emit light.", "Tier 2 Mining Hat (Superhard Digging)")]
     public bool miningHatTier2Enabled { get; set; }
 
-    [Option("Lux", "How much light should be emitted from a tier 2 mining hat?", "Tier 2 Mining Hat (2—Superhard Digging)")]
+    [Option("Lux", "How much light should be emitted from a tier 2 mining hat?", "Tier 2 Mining Hat (Superhard Digging)")]
     public int miningHatTier2Lux { get; set; }
 
-    [Option("Radius", "How far should light be emitted from a tier 2 mining hat?", "Tier 2 Mining Hat (2—Superhard Digging)")]
+    [Option("Radius", "How far should light be emitted from a tier 2 mining hat?", "Tier 2 Mining Hat (Superhard Digging)")]
     public int miningHatTier2Radius { get; set; }
 
-    // [Option("Color", "What color should a tier 2 mining hat emit?", "Tier 2 Mining Hat (2—Superhard Digging)")]
+    // [Option("Color", "What color should a tier 2 mining hat emit?", "Tier 2 Mining Hat (Superhard Digging)")]
     [JsonIgnore]
     public Color miningHatTier2Color { get; set; }
 
@@ -101,6 +101,36 @@ namespace DarknessNotIncluded
     [JsonIgnore]
     public Color miningHatTier4Color { get; set; }
 
+    // Science Hats
+
+    [Option("Enabled", "Whether science hats should emit light.", "Science Hats")]
+    public bool scienceHatEnabled { get; set; }
+
+    [Option("Lux", "How much light should be emitted from a science hat?", "Science Hats")]
+    public int scienceHatLux { get; set; }
+
+    [Option("Radius", "How far should light be emitted from a science hat?", "Science Hats")]
+    public int scienceHatRadius { get; set; }
+
+    // [Option("Color", "What color should a science hat emit?", "Science Hats")]
+    [JsonIgnore]
+    public Color scienceHatColor { get; set; }
+
+    // Rocketry Hats
+
+    [Option("Enabled", "Whether rocketry hats should emit light.", "Rocketry Hats")]
+    public bool rocketryHatEnabled { get; set; }
+
+    [Option("Lux", "How much light should be emitted from a rocketry hat?", "Rocketry Hats")]
+    public int rocketryHatLux { get; set; }
+
+    [Option("Radius", "How far should light be emitted from a rocketry hat?", "Rocketry Hats")]
+    public int rocketryHatRadius { get; set; }
+
+    // [Option("Color", "What color should a rocketry hat emit?", "Rocketry Hats")]
+    [JsonIgnore]
+    public Color rocketryHatColor { get; set; }
+
     public Config()
     {
       // Darkness
@@ -121,7 +151,7 @@ namespace DarknessNotIncluded
       miningHatTier1Radius = 3;
       miningHatTier1Color = TUNING.LIGHT2D.LIGHT_YELLOW;
 
-      // Tier 2 Mining Hat (2—Superhard Digging)
+      // Tier 2 Mining Hat (Superhard Digging)
       miningHatTier2Enabled = true;
       miningHatTier2Lux = 800;
       miningHatTier2Radius = 4;
@@ -129,15 +159,27 @@ namespace DarknessNotIncluded
 
       // Tier 3 Mining Hat (Super-Duperhard Digging)
       miningHatTier3Enabled = true;
-      miningHatTier3Lux = 1400;
+      miningHatTier3Lux = 1200;
       miningHatTier3Radius = 5;
       miningHatTier3Color = Color.white;
 
       // Tier 4 Mining Hat (Hazmat Digging)
       miningHatTier4Enabled = true;
-      miningHatTier4Lux = 1800;
+      miningHatTier4Lux = 1600;
       miningHatTier4Radius = 6;
       miningHatTier4Color = Color.white;
+
+      // Science Hats
+      scienceHatEnabled = true;
+      scienceHatLux = 400;
+      scienceHatRadius = 3;
+      scienceHatColor = Color.white;
+
+      // Rocketry Hats
+      rocketryHatEnabled = true;
+      rocketryHatLux = 600;
+      rocketryHatRadius = 4;
+      rocketryHatColor = Color.white;
     }
 
     [HarmonyPatch(typeof(Game)), HarmonyPatch("OnPrefabInit")]
