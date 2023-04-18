@@ -28,7 +28,10 @@
     <Reference Include="$(GameLibsDir)/Assembly-CSharp-firstpass.dll" />
     <Reference Include="$(GameLibsDir)/Assembly-CSharp.dll" />
     <Reference Include="$(GameLibsDir)/Newtonsoft.Json.dll" />
+    <Reference Include="$(GameLibsDir)/Unity.TextMeshPro.dll" />
     <Reference Include="$(GameLibsDir)/UnityEngine.CoreModule.dll" />
+    <Reference Include="$(GameLibsDir)/UnityEngine.TextRenderingModule.dll" />
+    <Reference Include="$(GameLibsDir)/UnityEngine.UI.dll" />
   </ItemGroup>
 
   <Target Name="Merge" AfterTargets="Build">
