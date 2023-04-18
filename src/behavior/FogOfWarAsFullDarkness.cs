@@ -59,6 +59,9 @@ namespace DarknessNotIncluded
             {
               lux = Math.Max(lux, lightIntensity[neighbor]);
             }
+
+            // And reduce for clean falloff.
+            lux /= 2;
           }
 
           int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
