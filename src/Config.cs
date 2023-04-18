@@ -26,6 +26,11 @@ namespace DarknessNotIncluded
     [Option("Lux threshold", "At what lux should a tile be fully visible?", "Darkness")]
     public int fullyVisibleLuxThreshold { get; set; }
 
+    // Dupe Empathy
+
+    [Option("Disable hat lights in lit areas", "Whether dupes should turn their hat lights off when entering an area with at least the same level of brightness as their hat.", "Dupe Empathy")]
+    public bool disableDupeLightsInLitAreas { get; set; }
+
     // Dupe Base Glow
 
     [Option("Enabled", "Whether light should be emitted around dupes, even when no other light sources are present.", "Dupe Base Glow")]
@@ -138,6 +143,9 @@ namespace DarknessNotIncluded
       minimumFogLevel = 0;
       gracePeriodCycles = 0.15f;
       fullyVisibleLuxThreshold = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
+
+      // Dupe Empathy
+      disableDupeLightsInLitAreas = true;
 
       // Dupe Base Glow
       dupeIntrinsicLightEnabled = true;

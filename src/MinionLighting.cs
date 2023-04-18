@@ -1,9 +1,90 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace DarknessNotIncluded
 {
+  [HarmonyPatch(typeof(Game)), HarmonyPatch("OnPrefabInit")]
+  public static class MinionLightingConfig
+  {
+    public struct MinionLightConfig
+    {
+      public MinionLightConfig(bool enabled, int lux, int range, Color color)
+      {
+        this.enabled = enabled;
+        this.lux = lux;
+        this.range = range;
+        this.color = color;
+      }
+
+      public bool enabled { get; }
+      public int lux { get; }
+      public int range { get; }
+      public Color color { get; }
+    }
+
+    public struct MinionLightsConfig
+    {
+      public MinionLightsConfig(MinionLightConfig head, MinionLightConfig body)
+      {
+        this.head = head;
+        this.body = body;
+      }
+
+      public MinionLightConfig head { get; }
+      public MinionLightConfig body { get; }
+    }
+
+    public static Dictionary<MinionLights.MinionLightType, MinionLightsConfig> lightConfigsByType;
+
+    static void Prefix()
+    {
+      var config = Config.Instance;
+
+      var nonLight = new MinionLightConfig(false, 0, 0, Color.clear);
+
+      MinionLightingConfig.lightConfigsByType = new Dictionary<MinionLights.MinionLightType, MinionLightsConfig> {
+        { MinionLights.MinionLightType.None, new MinionLightsConfig(
+          nonLight,
+          nonLight
+        ) },
+        { MinionLights.MinionLightType.Intrinsic, new MinionLightsConfig(
+          new MinionLightConfig(config.dupeIntrinsicLightEnabled, config.dupeIntrinsicLightLux / 2, config.dupeIntrinsicLightRadius, config.dupeIntrinsicLightColor),
+          new MinionLightConfig(config.dupeIntrinsicLightEnabled, config.dupeIntrinsicLightLux / 2, config.dupeIntrinsicLightRadius, config.dupeIntrinsicLightColor)
+        ) },
+        { MinionLights.MinionLightType.Mining1, new MinionLightsConfig(
+          new MinionLightConfig(config.miningHatTier1Enabled, config.miningHatTier1Lux, config.miningHatTier1Radius, config.miningHatTier1Color),
+          nonLight
+        ) },
+        { MinionLights.MinionLightType.Mining2, new MinionLightsConfig(
+          new MinionLightConfig(config.miningHatTier2Enabled, config.miningHatTier2Lux, config.miningHatTier2Radius, config.miningHatTier2Color),
+          nonLight
+        ) },
+        { MinionLights.MinionLightType.Mining3, new MinionLightsConfig(
+          new MinionLightConfig(config.miningHatTier3Enabled, config.miningHatTier3Lux, config.miningHatTier3Radius, config.miningHatTier3Color),
+          nonLight
+        ) },
+        { MinionLights.MinionLightType.Mining4, new MinionLightsConfig(
+          new MinionLightConfig(config.miningHatTier4Enabled, config.miningHatTier4Lux, config.miningHatTier4Radius, config.miningHatTier4Color),
+          nonLight
+        ) },
+        { MinionLights.MinionLightType.MiningUnknown, new MinionLightsConfig(
+          new MinionLightConfig(config.miningHatTier4Enabled, config.miningHatTier4Lux, config.miningHatTier4Radius, config.miningHatTier4Color),
+          nonLight
+        ) },
+        { MinionLights.MinionLightType.Science, new MinionLightsConfig(
+          new MinionLightConfig(config.scienceHatEnabled, config.scienceHatLux, config.scienceHatRadius, config.scienceHatColor),
+          nonLight
+        ) },
+        { MinionLights.MinionLightType.Rocketry, new MinionLightsConfig(
+          new MinionLightConfig(config.rocketryHatEnabled, config.rocketryHatLux, config.rocketryHatRadius, config.rocketryHatColor),
+          nonLight
+        ) },
+      };
+    }
+  }
+
   [HarmonyPatch(typeof(MinionConfig)), HarmonyPatch("CreatePrefab")]
   static class MinionLighting
   {
@@ -13,9 +94,9 @@ namespace DarknessNotIncluded
     }
   }
 
-  class MinionLights : KMonoBehaviour, ISim33ms
+  public class MinionLights : KMonoBehaviour, ISim33ms
   {
-    enum MinionLightType
+    public enum MinionLightType
     {
       None,
       Intrinsic,
@@ -49,100 +130,56 @@ namespace DarknessNotIncluded
       BodyLight.shape = LightShape.Circle;
       BodyLight.Offset = new Vector2(0f, 1.0f);
 
-      SetLightType(GetCurrentLightType());
+      UpdateLights();
     }
 
     protected override void OnSpawn()
     {
       base.OnSpawn();
 
-      SetLightType(GetCurrentLightType());
+      UpdateLights();
     }
 
     public void Sim33ms(float dt)
     {
-      SetLightType(GetCurrentLightType());
+      UpdateLights();
     }
 
-    private void SetLightType(MinionLightType lightType)
+    private void UpdateLights()
     {
+      var config = Config.Instance;
+      var lightType = GetCurrentLightType();
+      var initialProperties = MinionLightingConfig.lightConfigsByType[lightType];
+
+      if (config.disableDupeLightsInLitAreas && lightType != MinionLightType.None)
+      {
+        var headCell = Grid.CellAbove(Grid.PosToCell(_minionIdentity.gameObject));
+        var dupeLux = (HeadLight.enabled ? HeadLight.Lux : 0) + (BodyLight.enabled ? BodyLight.Lux : 0);
+        var baseCellLux = Grid.LightIntensity[headCell] - dupeLux;
+        var targetLux = (initialProperties.head.enabled ? initialProperties.head.lux : 0) + (initialProperties.body.enabled ? initialProperties.body.lux : 0);
+        // Keep intrinsic lights on even if next to another dupe
+        if (lightType == MinionLightType.Intrinsic) targetLux *= 2;
+
+        if (baseCellLux >= targetLux)
+        {
+          lightType = MinionLightType.None;
+        }
+      }
+
       if (lightType == currentLightType) return;
       currentLightType = lightType;
 
-      UpdateLights(lightType);
-    }
+      var properties = MinionLightingConfig.lightConfigsByType[lightType];
 
-    private void UpdateLights(MinionLightType lightType)
-    {
-      var config = Config.Instance;
+      HeadLight.enabled = properties.head.enabled;
+      HeadLight.Lux = properties.head.lux;
+      HeadLight.Range = properties.head.range;
+      HeadLight.Color = properties.head.color;
 
-      switch (lightType)
-      {
-        case MinionLightType.None:
-          HeadLight.enabled = false;
-          BodyLight.enabled = false;
-          break;
-
-        case MinionLightType.Intrinsic:
-          HeadLight.enabled = true;
-          HeadLight.Lux = config.dupeIntrinsicLightLux / 2;
-          HeadLight.Range = config.dupeIntrinsicLightRadius;
-          HeadLight.Color = config.dupeIntrinsicLightColor;
-          BodyLight.enabled = true;
-          BodyLight.Lux = config.dupeIntrinsicLightLux / 2;
-          BodyLight.Range = config.dupeIntrinsicLightRadius;
-          BodyLight.Color = config.dupeIntrinsicLightColor;
-          break;
-
-        case MinionLightType.Mining1:
-          HeadLight.enabled = true;
-          HeadLight.Lux = config.miningHatTier1Lux;
-          HeadLight.Range = config.miningHatTier1Radius;
-          HeadLight.Color = config.miningHatTier1Color;
-          BodyLight.enabled = false;
-          break;
-
-        case MinionLightType.Mining2:
-          HeadLight.enabled = true;
-          HeadLight.Lux = config.miningHatTier2Lux;
-          HeadLight.Range = config.miningHatTier2Radius;
-          HeadLight.Color = config.miningHatTier2Color;
-          BodyLight.enabled = false;
-          break;
-
-        case MinionLightType.Mining3:
-          HeadLight.enabled = true;
-          HeadLight.Lux = config.miningHatTier3Lux;
-          HeadLight.Range = config.miningHatTier3Radius;
-          HeadLight.Color = config.miningHatTier3Color;
-          BodyLight.enabled = false;
-          break;
-
-        case MinionLightType.Mining4:
-        case MinionLightType.MiningUnknown:
-          HeadLight.enabled = true;
-          HeadLight.Lux = config.miningHatTier4Lux;
-          HeadLight.Range = config.miningHatTier4Radius;
-          HeadLight.Color = config.miningHatTier4Color;
-          BodyLight.enabled = false;
-          break;
-
-        case MinionLightType.Science:
-          HeadLight.enabled = true;
-          HeadLight.Lux = config.scienceHatLux;
-          HeadLight.Range = config.scienceHatRadius;
-          HeadLight.Color = config.scienceHatColor;
-          BodyLight.enabled = false;
-          break;
-
-        case MinionLightType.Rocketry:
-          HeadLight.enabled = true;
-          HeadLight.Lux = config.rocketryHatLux;
-          HeadLight.Range = config.rocketryHatRadius;
-          HeadLight.Color = config.rocketryHatColor;
-          BodyLight.enabled = false;
-          break;
-      }
+      BodyLight.enabled = properties.body.enabled;
+      BodyLight.Lux = properties.body.lux;
+      BodyLight.Range = properties.body.range;
+      BodyLight.Color = properties.body.color;
     }
 
     private MinionLightType GetCurrentLightType()
