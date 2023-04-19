@@ -8,9 +8,10 @@
     <NoWarn>CS0649</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(OS)' == 'Unix'">
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
     <GameLibsDir>$(HOME)/Library/Application Support/Steam/steamapps/common/OxygenNotIncluded/OxygenNotIncluded.app/Contents/Resources/Data/Managed</GameLibsDir>
     <LocalModsDir>$(HOME)/Library/Application Support/unity.Klei.Oxygen Not Included/mods/Local</LocalModsDir>
+    <ILRepack>mono $(ILRepack)</ILRepack>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -44,7 +45,7 @@
       <LibraryPath Include="$(GameLibsDir)" />
     </ItemGroup>
 
-    <Exec Command="mono $(ILRepack) /internalize /lib:'$(GameLibsDir)' /out:'$(OutDir)'$(BaseName).dll '$(OutDir)'$(AssemblyName).dll '$(OutDir)'PLib.dll" />
+    <Exec Command="$(ILRepack) /internalize /lib:'$(GameLibsDir)' /out:'$(OutDir)'$(BaseName).dll '$(OutDir)'$(AssemblyName).dll '$(OutDir)'PLib.dll" />
   </Target>
 
   <Target Name="Bundle" AfterTargets="Merge">
