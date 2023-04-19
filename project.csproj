@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="ilmerge" Version="3.0.41" />
-    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+    <PackageReference Include="ILRepack" Version="2.0.18" />
     <PackageReference Include="PLib" Version="4.12.0" />
 
     <Reference Include="System" />
@@ -36,15 +36,15 @@
 
   <Target Name="Merge" AfterTargets="Build">
     <ItemGroup>
-      <InputAssemblies Include="$(OutputPath)$(AssemblyName).dll" />
-      <InputAssemblies Include="$(OutputPath)PLib.dll" />
+      <InputAssemblies Include="$(OutDir)$(AssemblyName).dll" />
+      <InputAssemblies Include="$(OutDir)PLib.dll" />
     </ItemGroup>
 
     <ItemGroup>
       <LibraryPath Include="$(GameLibsDir)" />
     </ItemGroup>
 
-    <ILRepack Parallel="true" Internalize="true" LibraryPath="@(LibraryPath)" InputAssemblies="@(InputAssemblies)" TargetKind="Dll" OutputFile="$(OutDir)$(BaseName).dll" />
+    <Exec Command="mono $(ILRepack) /internalize /lib:'$(GameLibsDir)' /out:'$(OutDir)'$(BaseName).dll '$(OutDir)'$(AssemblyName).dll '$(OutDir)'PLib.dll" />
   </Target>
 
   <Target Name="Bundle" AfterTargets="Merge">
