@@ -94,11 +94,13 @@ namespace DarknessNotIncluded
         HeadLight.Lux = lightConfig.lux / 2;
         HeadLight.Range = lightConfig.range;
         HeadLight.Color = lightConfig.color;
+        HeadLight.FullRefresh();
 
         BodyLight.enabled = lightConfig.enabled;
         BodyLight.Lux = lightConfig.lux / 2;
         BodyLight.Range = lightConfig.range;
         BodyLight.Color = lightConfig.color;
+        BodyLight.FullRefresh();
       }
 
       private MinionLightType GetActiveLightType()
