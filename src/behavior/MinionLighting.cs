@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System;
 using UnityEngine;
 
 namespace DarknessNotIncluded
@@ -69,7 +70,7 @@ namespace DarknessNotIncluded
         {
           var headCell = Grid.CellAbove(Grid.PosToCell(minion.gameObject));
           var dupeLux = (HeadLight.enabled ? HeadLight.Lux : 0) + (BodyLight.enabled ? BodyLight.Lux : 0);
-          var baseCellLux = Grid.LightIntensity[headCell] - dupeLux;
+          var baseCellLux = Math.Max(0, Grid.LightIntensity[headCell] - dupeLux);
           var targetLux = lightType.Config().lux;
           // Keep intrinsic lights on even if next to another dupe
           if (lightType == MinionLightType.Intrinsic) targetLux *= 2;
