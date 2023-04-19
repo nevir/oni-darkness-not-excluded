@@ -42,6 +42,7 @@ namespace DarknessNotIncluded
       protected override void OnSpawn()
       {
         base.OnSpawn();
+        if (_minionIdentity.gameObject == null) return;
 
         UpdateLights();
       }
