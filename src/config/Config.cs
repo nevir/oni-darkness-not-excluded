@@ -27,6 +27,9 @@ namespace DarknessNotIncluded
     [Option("Lux threshold", "At what lux should a tile be fully visible?", "Darkness")]
     public int fullyVisibleLuxThreshold { get; set; }
 
+    [Option("Decor bonus threshold (lux)", "At what lux should decor get a bonus for being well lit?", "Darkness")]
+    public int decorBonusThresholdLux { get; set; }
+
     [Option("Tooltip blocked by darkness", "Whether the tooltip should not show information if pointing at a dark tile.", "Darkness")]
     public bool selectToolBlockedByDarkness { get; set; }
 
@@ -54,6 +57,7 @@ namespace DarknessNotIncluded
       minimumFogLevel = 10;
       gracePeriodCycles = 3.0f;
       fullyVisibleLuxThreshold = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
+      decorBonusThresholdLux = 1000;
       selectToolBlockedByDarkness = true;
 
       // Dupe Behavior
