@@ -30,13 +30,16 @@ namespace DarknessNotIncluded
     [Option("Tooltip blocked by darkness", "Whether the tooltip should not show information if pointing at a dark tile.", "Darkness")]
     public bool selectToolBlockedByDarkness { get; set; }
 
-    // Dupe Empathy
+    // Dupe Behavior
 
-    [Option("Disable hat lights in lit areas", "Whether dupes should turn their hat lights off when entering an area with at least the same level of brightness as their hat.", "Dupe Empathy")]
+    [Option("Disable lights in lit areas", "Whether dupes should turn their lights off when entering an area with at least the same level of brightness as their light.", "Dupe Behavior")]
     public bool disableDupeLightsInLitAreas { get; set; }
 
-    [Option("Disable hat lights in bedrooms", "Whether dupes should turn their hat lights off when entering a bedroom.", "Dupe Empathy")]
+    [Option("Disable lights around sleeping dupes", "Whether dupes should turn their lights off when entering a bedroom.", "Dupe Behavior")]
     public bool disableDupeLightsInBedrooms { get; set; }
+
+    [Option("Maximum lux while sleeping", "The maximum lux that a dupe can handle before being rudely woken up.", "Dupe Behavior")]
+    public int maxSleepingLux { get; set; }
 
     // Dupe (Hat) Lights
 
@@ -53,9 +56,10 @@ namespace DarknessNotIncluded
       fullyVisibleLuxThreshold = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
       selectToolBlockedByDarkness = true;
 
-      // Dupe Empathy
+      // Dupe Behavior
       disableDupeLightsInLitAreas = true;
       disableDupeLightsInBedrooms = true;
+      maxSleepingLux = 400;
 
       minionLightingConfig = new MinionLightingConfig {
         { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, Color.white) },
