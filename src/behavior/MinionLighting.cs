@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System;
 using UnityEngine;
 
 namespace DarknessNotIncluded
@@ -21,7 +22,7 @@ namespace DarknessNotIncluded
     public Light2D HeadLight { get; set; }
     public Light2D BodyLight { get; set; }
 
-    private MinionLightType currentLightType;
+    private MinionLightType currentLightType = MinionLightType.None;
 
     protected override void OnPrefabInit()
     {
@@ -103,17 +104,20 @@ namespace DarknessNotIncluded
 
     private MinionLightType GetActiveLightType()
     {
-      var lightingConfig = Config.Instance.minionLightingConfig;
       var lightType = GetLightTypeForCurrentState();
+      if (lightType == MinionLightType.None) return lightType;
 
-      if (!lightingConfig[lightType].enabled) lightType = MinionLightType.Intrinsic;
-      if (!lightingConfig[lightType].enabled) lightType = MinionLightType.None;
+      if (!lightType.Config().enabled) lightType = MinionLightType.Intrinsic;
+      if (!lightType.Config().enabled) lightType = MinionLightType.None;
 
       return lightType;
     }
 
     private MinionLightType GetLightTypeForCurrentState()
     {
+      var staminaMonitor = this._minionIdentity.GetSMI<StaminaMonitor.Instance>();
+      if (staminaMonitor.IsSleeping()) return MinionLightType.None;
+
       var resume = _minionIdentity.GetComponent<MinionResume>();
       var hat = resume.CurrentHat;
 
