@@ -17,7 +17,7 @@ namespace DarknessNotIncluded
 
       foreach (var minion in MinionsInRoom(cavity))
       {
-        if (MinionUtils.IsSleeping(minion)) return true;
+        if (minion.IsSleeping()) return true;
       }
       return false;
     }

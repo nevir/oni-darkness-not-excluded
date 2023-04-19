@@ -17,7 +17,7 @@ namespace DarknessNotIncluded
     public class MinionLights : KMonoBehaviour, ISim33ms
     {
       [MyCmpGet]
-      private MinionIdentity _minionIdentity;
+      private MinionIdentity minion;
 
       public Light2D HeadLight { get; set; }
       public Light2D BodyLight { get; set; }
@@ -28,11 +28,11 @@ namespace DarknessNotIncluded
       {
         base.OnPrefabInit();
 
-        HeadLight = _minionIdentity.gameObject.AddComponent<Light2D>();
+        HeadLight = minion.gameObject.AddComponent<Light2D>();
         HeadLight.shape = LightShape.Circle;
         HeadLight.Offset = new Vector2(0f, 1.0f);
 
-        BodyLight = _minionIdentity.gameObject.AddComponent<Light2D>();
+        BodyLight = minion.gameObject.AddComponent<Light2D>();
         BodyLight.shape = LightShape.Circle;
         BodyLight.Offset = new Vector2(0f, 0.0f);
 
@@ -42,7 +42,7 @@ namespace DarknessNotIncluded
       protected override void OnSpawn()
       {
         base.OnSpawn();
-        if (_minionIdentity.gameObject == null) return;
+        if (minion.gameObject == null) return;
 
         UpdateLights();
       }
@@ -59,7 +59,7 @@ namespace DarknessNotIncluded
 
         if (config.disableDupeLightsInBedrooms && lightType != MinionLightType.None)
         {
-          if (MinionRoomState.SleepersInSameRoom(_minionIdentity))
+          if (MinionRoomState.SleepersInSameRoom(minion))
           {
             lightType = MinionLightType.None;
           }
@@ -67,7 +67,7 @@ namespace DarknessNotIncluded
 
         if (config.disableDupeLightsInLitAreas && lightType != MinionLightType.None)
         {
-          var headCell = Grid.CellAbove(Grid.PosToCell(_minionIdentity.gameObject));
+          var headCell = Grid.CellAbove(Grid.PosToCell(minion.gameObject));
           var dupeLux = (HeadLight.enabled ? HeadLight.Lux : 0) + (BodyLight.enabled ? BodyLight.Lux : 0);
           var baseCellLux = Grid.LightIntensity[headCell] - dupeLux;
           var targetLux = lightType.Config().lux;
@@ -114,9 +114,9 @@ namespace DarknessNotIncluded
 
       private MinionLightType GetLightTypeForCurrentState()
       {
-        if (MinionUtils.IsSleeping(_minionIdentity)) return MinionLightType.None;
+        if (minion.IsSleeping()) return MinionLightType.None;
 
-        var resume = _minionIdentity.GetComponent<MinionResume>();
+        var resume = minion.GetComponent<MinionResume>();
         var hat = resume.CurrentHat;
 
         if (hat != null && hat.StartsWith("hat_role_mining"))
