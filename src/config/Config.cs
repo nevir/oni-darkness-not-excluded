@@ -27,6 +27,9 @@ namespace DarknessNotIncluded
     [Option("Lux threshold", "At what lux should a tile be fully visible?", "Darkness")]
     public int fullyVisibleLuxThreshold { get; set; }
 
+    [Option("Tooltip blocked by darkness", "Whether the tooltip should not show information if pointing at a dark tile.", "Darkness")]
+    public bool selectToolBlockedByDarkness { get; set; }
+
     // Dupe Empathy
 
     [Option("Disable hat lights in lit areas", "Whether dupes should turn their hat lights off when entering an area with at least the same level of brightness as their hat.", "Dupe Empathy")]
@@ -48,6 +51,7 @@ namespace DarknessNotIncluded
       minimumFogLevel = 10;
       gracePeriodCycles = 3.0f;
       fullyVisibleLuxThreshold = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
+      selectToolBlockedByDarkness = true;
 
       // Dupe Empathy
       disableDupeLightsInLitAreas = true;
