@@ -8,6 +8,8 @@ namespace DarknessNotIncluded
   {
     public static bool ShouldBlockSelect(int cell)
     {
+      if (DebugHandler.RevealFogOfWar) return false;
+
       var config = Config.Instance;
       if (!config.selectToolBlockedByDarkness) return false;
       if (GameClock.Instance.GetTimeInCycles() < config.gracePeriodCycles) return false;
