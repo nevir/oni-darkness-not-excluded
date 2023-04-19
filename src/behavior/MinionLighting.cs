@@ -58,9 +58,7 @@ namespace DarknessNotIncluded
 
       if (config.disableDupeLightsInBedrooms && lightType != MinionLightType.None)
       {
-        var currentRoom = Game.Instance.roomProber.GetRoomOfGameObject(this._minionIdentity.gameObject);
-        var isInBedroom = currentRoom != null && currentRoom.roomType.category == Db.Get().RoomTypeCategories.Sleep;
-        if (isInBedroom)
+        if (MinionRoomState.SleepersInSameRoom(_minionIdentity))
         {
           lightType = MinionLightType.None;
         }
@@ -115,8 +113,7 @@ namespace DarknessNotIncluded
 
     private MinionLightType GetLightTypeForCurrentState()
     {
-      var staminaMonitor = this._minionIdentity.GetSMI<StaminaMonitor.Instance>();
-      if (staminaMonitor != null && staminaMonitor.IsSleeping()) return MinionLightType.None;
+      if (MinionUtils.IsSleeping(_minionIdentity)) return MinionLightType.None;
 
       var resume = _minionIdentity.GetComponent<MinionResume>();
       var hat = resume.CurrentHat;

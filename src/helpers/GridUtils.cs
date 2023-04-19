@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace DarknessNotIncluded
 {
-  public static class DarknessGridUtils
+  public static class GridUtils
   {
     public static List<int> GetOrthogonallyAdjacentCells(int cell)
     {

@@ -17,7 +17,7 @@ namespace DarknessNotIncluded
       var lightIntensity = Grid.LightIntensity;
       if (lightIntensity[cell] > 0) return false;
 
-      foreach (var neighbor in DarknessGridUtils.GetOrthogonallyAdjacentCells(cell))
+      foreach (var neighbor in GridUtils.GetOrthogonallyAdjacentCells(cell))
       {
         if (lightIntensity[neighbor] > 0) return false;
       }

@@ -53,7 +53,7 @@ namespace DarknessNotIncluded
           var lux = lightIntensity[cell];
           if (lux == 0)
           {
-            var neighboringCells = DarknessGridUtils.GetOrthogonallyAdjacentCells(cell);
+            var neighboringCells = GridUtils.GetOrthogonallyAdjacentCells(cell);
             foreach (var neighbor in neighboringCells)
             {
               lux = Math.Max(lux, lightIntensity[neighbor]);
