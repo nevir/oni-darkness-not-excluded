@@ -35,7 +35,7 @@ namespace DarknessNotIncluded
     }
 
     [HarmonyPatch(typeof(MinionConfig)), HarmonyPatch("CreatePrefab")]
-    static class Handler
+    static class Patched_MinionConfig_CreatePrefab
     {
       static void Postfix(GameObject __result)
       {

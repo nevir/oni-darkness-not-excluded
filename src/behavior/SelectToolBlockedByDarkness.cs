@@ -26,7 +26,7 @@ namespace DarknessNotIncluded
     }
 
     [HarmonyPatch(typeof(SelectToolHoverTextCard)), HarmonyPatch("UpdateHoverElements")]
-    static class Hover
+    static class Patched_SelectToolHoverTextCard_UpdateHoverElements
     {
       static bool Prefix(SelectToolHoverTextCard __instance, List<KSelectable> hoverObjects)
       {
@@ -49,7 +49,7 @@ namespace DarknessNotIncluded
     }
 
     [HarmonyPatch(typeof(SelectTool)), HarmonyPatch("Select")]
-    static class Select
+    static class Patched_SelectTool_Select
     {
       static bool Prefix(KSelectable new_selected, bool skipSound)
       {

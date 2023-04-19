@@ -3,73 +3,76 @@ using HarmonyLib;
 
 namespace DarknessNotIncluded
 {
-  [HarmonyPatch(typeof(PropertyTextures)), HarmonyPatch("UpdateFogOfWar")]
   static class FogOfWarAsFullDarkness
   {
-    static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)
+    [HarmonyPatch(typeof(PropertyTextures)), HarmonyPatch("UpdateFogOfWar")]
+    static class Patched_PropertyTextures_UpdateFogOfWar
     {
-      var config = Config.Instance;
-      var visible = Grid.Visible;
-      var lightIntensity = Grid.LightIntensity;
-
-      var gridYOffset = Grid.HeightInCells;
-      if (ClusterManager.Instance != (UnityEngine.Object)null)
+      static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)
       {
-        var activeWorld = ClusterManager.Instance.activeWorld;
-        gridYOffset = activeWorld.WorldSize.Y + activeWorld.WorldOffset.Y - 1;
-      }
+        var config = Config.Instance;
+        var visible = Grid.Visible;
+        var lightIntensity = Grid.LightIntensity;
 
-      var minFogLevel = config.minimumFogLevel;
-      var gameCycle = GameClock.Instance.GetTimeInCycles();
-      if (gameCycle < config.gracePeriodCycles)
-      {
-        float scaledFogLevel = 1.0f - gameCycle / config.gracePeriodCycles;
-        minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)config.initialFogLevel));
-      }
-      var fogRange = 255 - minFogLevel;
-
-      for (int y = y0; y <= y1; ++y)
-      {
-        for (int x = x0; x <= x1; ++x)
+        var gridYOffset = Grid.HeightInCells;
+        if (ClusterManager.Instance != (UnityEngine.Object)null)
         {
-          var cell = Grid.XYToCell(x, y);
-          if (!Grid.IsActiveWorld(cell))
-          {
-            cell = Grid.XYToCell(x, gridYOffset);
-          }
+          var activeWorld = ClusterManager.Instance.activeWorld;
+          gridYOffset = activeWorld.WorldSize.Y + activeWorld.WorldOffset.Y - 1;
+        }
 
-          if (!Grid.IsValidCell(cell))
-          {
-            region.SetBytes(x, y, (byte)0);
-            continue;
-          }
+        var minFogLevel = config.minimumFogLevel;
+        var gameCycle = GameClock.Instance.GetTimeInCycles();
+        if (gameCycle < config.gracePeriodCycles)
+        {
+          float scaledFogLevel = 1.0f - gameCycle / config.gracePeriodCycles;
+          minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)config.initialFogLevel));
+        }
+        var fogRange = 255 - minFogLevel;
 
-          if (visible[cell] == 0)
+        for (int y = y0; y <= y1; ++y)
+        {
+          for (int x = x0; x <= x1; ++x)
           {
-            region.SetBytes(x, y, (byte)0);
-            continue;
-          }
-
-          var lux = lightIntensity[cell];
-          if (lux == 0)
-          {
-            var neighboringCells = GridUtils.GetOrthogonallyAdjacentCells(cell);
-            foreach (var neighbor in neighboringCells)
+            var cell = Grid.XYToCell(x, y);
+            if (!Grid.IsActiveWorld(cell))
             {
-              lux = Math.Max(lux, lightIntensity[neighbor]);
+              cell = Grid.XYToCell(x, gridYOffset);
             }
 
-            // And reduce for clean falloff.
-            lux /= 2;
+            if (!Grid.IsValidCell(cell))
+            {
+              region.SetBytes(x, y, (byte)0);
+              continue;
+            }
+
+            if (visible[cell] == 0)
+            {
+              region.SetBytes(x, y, (byte)0);
+              continue;
+            }
+
+            var lux = lightIntensity[cell];
+            if (lux == 0)
+            {
+              var neighboringCells = GridUtils.GetOrthogonallyAdjacentCells(cell);
+              foreach (var neighbor in neighboringCells)
+              {
+                lux = Math.Max(lux, lightIntensity[neighbor]);
+              }
+
+              // And reduce for clean falloff.
+              lux /= 2;
+            }
+
+            int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
+
+            region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
           }
-
-          int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
-
-          region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
         }
-      }
 
-      return false;
+        return false;
+      }
     }
   }
 }

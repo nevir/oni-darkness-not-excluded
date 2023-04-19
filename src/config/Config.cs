@@ -73,7 +73,7 @@ namespace DarknessNotIncluded
     }
 
     [HarmonyPatch(typeof(Game)), HarmonyPatch("OnPrefabInit")]
-    static class Loader
+    static class Patched_Game_OnPrefabInit
     {
       static void Prefix()
       {
