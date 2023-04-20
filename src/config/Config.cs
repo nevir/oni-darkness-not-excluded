@@ -50,6 +50,12 @@ namespace DarknessNotIncluded
     [Option("Configuration for dupe lights", "Configuration for dupe lights", "Dupe Lights")]
     public MinionLightingConfig minionLightingConfig { get; set; }
 
+    // Dupe Effects
+
+    [DynamicOption(typeof(MinionEffectsConfigEntry), "Dupe Effects")]
+    [Option("Configuration for dupe effects", "Configuration for dupe effects", "Dupe Effects")]
+    public MinionEffectsConfig minionEffectsConfig { get; set; }
+
     public Config()
     {
       // Darkness
@@ -73,6 +79,11 @@ namespace DarknessNotIncluded
         { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1600, 6, Color.white)},
         { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  400,  3, Color.white)},
         { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  600,  4, Color.white)},
+      };
+
+      minionEffectsConfig = new MinionEffectsConfig {
+        { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2) },
+        { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5) },
       };
     }
 

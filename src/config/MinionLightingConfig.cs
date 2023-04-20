@@ -29,6 +29,12 @@ namespace DarknessNotIncluded
   {
     public class LightConfig
     {
+      public bool enabled { get; set; }
+      public int lux { get; set; }
+      public int range { get; set; }
+      [JsonConverter(typeof(ColorJsonConverter))]
+      public Color color { get; set; }
+
       public LightConfig(bool enabled, int lux, int range, Color color)
       {
         this.enabled = enabled;
@@ -36,12 +42,6 @@ namespace DarknessNotIncluded
         this.range = range;
         this.color = color;
       }
-
-      public bool enabled { get; set; }
-      public int lux { get; set; }
-      public int range { get; set; }
-      [JsonConverter(typeof(ColorJsonConverter))]
-      public Color color { get; set; }
 
       public LightConfig DeepClone()
       {
