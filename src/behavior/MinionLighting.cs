@@ -20,8 +20,7 @@ namespace DarknessNotIncluded
       [MyCmpGet]
       private MinionIdentity minion;
 
-      public Light2D HeadLight { get; set; }
-      public Light2D BodyLight { get; set; }
+      public Light2D Light { get; set; }
 
       private MinionLightType currentLightType = MinionLightType.None;
 
@@ -29,13 +28,7 @@ namespace DarknessNotIncluded
       {
         base.OnPrefabInit();
 
-        HeadLight = minion.gameObject.AddComponent<Light2D>();
-        HeadLight.shape = LightShape.Circle;
-        HeadLight.Offset = new Vector2(0f, 1.0f);
-
-        BodyLight = minion.gameObject.AddComponent<Light2D>();
-        BodyLight.shape = LightShape.Circle;
-        BodyLight.Offset = new Vector2(0f, 0.0f);
+        Light = minion.gameObject.AddComponent<Light2D>();
       }
 
       protected override void OnSpawn()
@@ -67,7 +60,7 @@ namespace DarknessNotIncluded
         if (config.disableDupeLightsInLitAreas && lightType != MinionLightType.None)
         {
           var headCell = Grid.CellAbove(Grid.PosToCell(minion.gameObject));
-          var dupeLux = (HeadLight.enabled ? HeadLight.Lux : 0) + (BodyLight.enabled ? BodyLight.Lux : 0);
+          var dupeLux = Light.enabled ? Light.Lux : 0;
           var baseCellLux = Math.Max(0, Grid.LightIntensity[headCell] - dupeLux);
           var targetLux = lightType.Config().lux;
           // Keep intrinsic lights on even if next to another dupe
@@ -89,17 +82,12 @@ namespace DarknessNotIncluded
 
         var lightConfig = lightType.Config();
 
-        HeadLight.enabled = lightConfig.enabled;
-        HeadLight.Lux = lightConfig.lux / 2;
-        HeadLight.Range = lightConfig.range;
-        HeadLight.Color = lightConfig.color;
-        HeadLight.FullRefresh();
-
-        BodyLight.enabled = lightConfig.enabled;
-        BodyLight.Lux = lightConfig.lux / 2;
-        BodyLight.Range = lightConfig.range;
-        BodyLight.Color = lightConfig.color;
-        BodyLight.FullRefresh();
+        Light.enabled = lightConfig.enabled;
+        Light.shape = lightConfig.shape.LightShape();
+        Light.Lux = lightConfig.lux;
+        Light.Range = lightConfig.range;
+        Light.Color = lightConfig.color;
+        Light.FullRefresh();
       }
 
       private MinionLightType GetActiveLightType()
@@ -121,7 +109,6 @@ namespace DarknessNotIncluded
         var hat = resume.CurrentHat;
         var suit = minion.GetEquipment().GetSlot(Db.Get().AssignableSlots.Suit)?.assignable as Equippable;
         var suitPrefab = suit?.GetComponent<KPrefabID>();
-        Console.WriteLine($"suit: {suit} suitPrefab: {suitPrefab}");
 
         if (suitPrefab != null && suit?.isEquipped == true)
         {

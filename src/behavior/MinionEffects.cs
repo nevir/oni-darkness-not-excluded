@@ -1,7 +1,6 @@
 using HarmonyLib;
 using Klei.AI;
 using System.Collections.Generic;
-using System;
 
 namespace DarknessNotIncluded
 {

@@ -4,6 +4,12 @@ using Newtonsoft.Json;
 
 namespace DarknessNotIncluded
 {
+  public enum MinionLightShape
+  {
+    Pill,
+    DirectedCone,
+  }
+
   public enum MinionLightType
   {
     None,
@@ -19,7 +25,22 @@ namespace DarknessNotIncluded
     LeadSuit,
   }
 
-  public static class MinionLightTypeExtension
+  public static class MinionLightShapeExtensions
+  {
+    public static LightShape LightShape(this MinionLightShape shape)
+    {
+      if (shape == MinionLightShape.DirectedCone)
+      {
+        return CustomLightShapes.MinionDirectedCone.KleiLightShape;
+      }
+      else
+      {
+        return CustomLightShapes.MinionPill.KleiLightShape;
+      }
+    }
+  }
+
+  public static class MinionLightTypeExtensions
   {
     public static MinionLightingConfig.LightConfig Config(this MinionLightType value)
     {
@@ -35,23 +56,25 @@ namespace DarknessNotIncluded
       public bool enabled { get; set; }
       public int lux { get; set; }
       public int range { get; set; }
+      public MinionLightShape shape { get; set; }
       [JsonConverter(typeof(ColorJsonConverter))]
       public Color color { get; set; }
 
-      public LightConfig(bool enabled, int lux, int range, Color color)
+      public LightConfig(bool enabled, int lux, int range, MinionLightShape shape, Color color)
       {
         this.enabled = enabled;
         this.lux = lux;
         this.range = range;
+        this.shape = shape;
         this.color = color;
       }
 
       public LightConfig DeepClone()
       {
-        return new LightConfig(enabled, lux, range, color);
+        return new LightConfig(enabled, lux, range, shape, color);
       }
 
-      public static LightConfig None = new LightConfig(false, 0, 0, new Color(0, 0, 0, 0));
+      public static LightConfig None = new LightConfig(false, 0, 0, MinionLightShape.Pill, new Color(0, 0, 0, 0));
     }
 
     public MinionLightingConfig DeepClone()

@@ -1,4 +1,5 @@
 using HarmonyLib;
+using KMod;
 using Newtonsoft.Json;
 using PeterHan.PLib;
 using PeterHan.PLib.Options;
@@ -11,6 +12,11 @@ namespace DarknessNotIncluded
   [ConfigFile(SharedConfigLocation: true)]
   class Config : SingletonOptions<Config>
   {
+    public static void Initialize(UserMod2 mod)
+    {
+      new POptions().RegisterOptions(mod, typeof(Config));
+    }
+
     // Darkness
 
     [Option("Darkness grace period (cycles)", "How many cycles should it take to go from no darkness to maximum darkness?", "Darkness")]
@@ -76,16 +82,16 @@ namespace DarknessNotIncluded
       litWorkspaceLux = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
 
       minionLightingConfig = new MinionLightingConfig {
-        { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, Color.white) },
-        { MinionLightType.Mining1,   new MinionLightingConfig.LightConfig(true,  600,  3, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining2,   new MinionLightingConfig.LightConfig(true,  800,  4, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining3,   new MinionLightingConfig.LightConfig(true,  1200, 5, Color.white)},
-        { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1600, 6, Color.white)},
-        { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  400,  3, Color.white)},
-        { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  600,  4, Color.white)},
-        { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  600,  3, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.JetSuit,   new MinionLightingConfig.LightConfig(true,  1200, 5, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.LeadSuit,  new MinionLightingConfig.LightConfig(true,  800,  4, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, MinionLightShape.Pill,         Color.white) },
+        { MinionLightType.Mining1,   new MinionLightingConfig.LightConfig(true,  600,  3, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining2,   new MinionLightingConfig.LightConfig(true,  700,  4, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining3,   new MinionLightingConfig.LightConfig(true,  800,  5, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1000, 6, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  600,  3, MinionLightShape.Pill,         Color.white)},
+        { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  600,  4, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.JetSuit,   new MinionLightingConfig.LightConfig(true,  800,  5, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.LeadSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
       };
 
       minionEffectsConfig = new MinionEffectsConfig {

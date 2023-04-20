@@ -2,7 +2,7 @@ using HarmonyLib;
 
 namespace DarknessNotIncluded
 {
-  public static class decorBonusThreshold
+  public static class DecorBonusThreshold
   {
     [HarmonyPatch(typeof(DecorProvider)), HarmonyPatch(nameof(DecorProvider.GetLightDecorBonus))]
     static class Patched_DecorProvider_GetLightDecorBonus

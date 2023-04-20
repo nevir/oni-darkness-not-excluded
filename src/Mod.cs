@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using KMod;
-using PeterHan.PLib.Options;
-using System;
 
 namespace DarknessNotIncluded
 {
@@ -9,11 +7,10 @@ namespace DarknessNotIncluded
   {
     public override void OnLoad(Harmony harmony)
     {
-      Console.WriteLine($"Loading [DarknessNotIncluded]");
       base.OnLoad(harmony);
 
-      new POptions().RegisterOptions(this, typeof(Config));
-      Console.WriteLine($"Loaded [DarknessNotIncluded]");
+      Config.Initialize(this);
+      CustomLightShapes.Initialize();
     }
   }
 }
