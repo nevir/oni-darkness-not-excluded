@@ -15,8 +15,19 @@ namespace DarknessNotIncluded
       { MinionLightType.Mining2, STRINGS.DUPLICANTS.ROLES.MINER.NAME },
       { MinionLightType.Mining3, STRINGS.DUPLICANTS.ROLES.SENIOR_MINER.NAME },
       { MinionLightType.Mining4, STRINGS.DUPLICANTS.ROLES.MASTER_MINER.NAME },
-      { MinionLightType.Science, STRINGS.DUPLICANTS.CHOREGROUPS.RESEARCH.NAME },
-      { MinionLightType.Rocketry, STRINGS.DUPLICANTS.CHOREGROUPS.ROCKETRY.NAME },
+      { MinionLightType.Science, "Science" },
+      { MinionLightType.Rocketry, "Rocketry" },
+    };
+
+    static Dictionary<MinionLightType, string> TOOLTIPS = new Dictionary<MinionLightType, string>()
+    {
+      { MinionLightType.Intrinsic, "Light that is emitted around Duplicants, when no other light sources are present." },
+      { MinionLightType.Mining1, $"Light emitted by Duplicants wearing a {STRINGS.DUPLICANTS.ROLES.JUNIOR_MINER.NAME} mining hat." },
+      { MinionLightType.Mining2, $"Light emitted by Duplicants wearing a {STRINGS.DUPLICANTS.ROLES.MINER.NAME} mining hat." },
+      { MinionLightType.Mining3, $"Light emitted by Duplicants wearing a {STRINGS.DUPLICANTS.ROLES.SENIOR_MINER.NAME} mining hat." },
+      { MinionLightType.Mining4, $"Light emitted by Duplicants wearing a {STRINGS.DUPLICANTS.ROLES.MASTER_MINER.NAME} mining hat." },
+      { MinionLightType.Science, "Light emitted by Duplicatnts wearing a science hat." },
+      { MinionLightType.Rocketry, "Light emitted by Duplicatnts wearing a rocketry helmet." },
     };
 
     public MinionLightingConfigEntry(string field, IOptionSpec spec) : base(field, spec) { }
@@ -71,6 +82,7 @@ namespace DarknessNotIncluded
         var label = new PLabel($"{name}.label")
         {
           Text = LABELS[type],
+          ToolTip = TOOLTIPS[type],
           TextStyle = PUITuning.Fonts.TextLightStyle,
         };
         grid.AddChild(label, new GridComponentSpec(row, 1) { Margin = LABEL_MARGIN, Alignment = TextAnchor.MiddleLeft });

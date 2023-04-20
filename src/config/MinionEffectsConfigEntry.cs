@@ -14,6 +14,12 @@ namespace DarknessNotIncluded
       { MinionEffectType.Dark, "Dark" },
     };
 
+    static Dictionary<MinionEffectType, string> TOOLTIPS = new Dictionary<MinionEffectType, string>()
+    {
+      { MinionEffectType.Dim, "How should dupes be effected by dim light?" },
+      { MinionEffectType.Dark, "How should dupes be effected by darkness?" },
+    };
+
     public MinionEffectsConfigEntry(string field, IOptionSpec spec) : base(field, spec) { }
 
     private Dictionary<MinionEffectType, GameObject> enabledComponents;
@@ -63,6 +69,7 @@ namespace DarknessNotIncluded
         var label = new PLabel($"{name}.label")
         {
           Text = LABELS[type],
+          ToolTip = TOOLTIPS[type],
           TextStyle = PUITuning.Fonts.TextLightStyle,
         };
         grid.AddChild(label, new GridComponentSpec(row, 1) { Margin = LABEL_MARGIN, Alignment = TextAnchor.MiddleLeft });
