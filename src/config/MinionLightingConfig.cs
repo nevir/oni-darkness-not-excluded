@@ -14,6 +14,9 @@ namespace DarknessNotIncluded
     Mining4,
     Science,
     Rocketry,
+    AtmoSuit,
+    JetSuit,
+    LeadSuit,
   }
 
   public static class MinionLightTypeExtension

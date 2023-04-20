@@ -17,6 +17,9 @@ namespace DarknessNotIncluded
       { MinionLightType.Mining4, STRINGS.DUPLICANTS.ROLES.MASTER_MINER.NAME },
       { MinionLightType.Science, "Science" },
       { MinionLightType.Rocketry, "Rocketry" },
+      { MinionLightType.AtmoSuit, "Atmo Suit" },
+      { MinionLightType.JetSuit, "Jet Suit" },
+      { MinionLightType.LeadSuit, "Lead Suit" },
     };
 
     static Dictionary<MinionLightType, string> TOOLTIPS = new Dictionary<MinionLightType, string>()
@@ -26,8 +29,11 @@ namespace DarknessNotIncluded
       { MinionLightType.Mining2, $"Light emitted by Duplicants wearing a {STRINGS.DUPLICANTS.ROLES.MINER.NAME} mining hat." },
       { MinionLightType.Mining3, $"Light emitted by Duplicants wearing a {STRINGS.DUPLICANTS.ROLES.SENIOR_MINER.NAME} mining hat." },
       { MinionLightType.Mining4, $"Light emitted by Duplicants wearing a {STRINGS.DUPLICANTS.ROLES.MASTER_MINER.NAME} mining hat." },
-      { MinionLightType.Science, "Light emitted by Duplicatnts wearing a science hat." },
-      { MinionLightType.Rocketry, "Light emitted by Duplicatnts wearing a rocketry helmet." },
+      { MinionLightType.Science, "Light emitted by Duplicants wearing a science hat." },
+      { MinionLightType.Rocketry, "Light emitted by Duplicants wearing a rocketry helmet." },
+      { MinionLightType.AtmoSuit, "Light emitted by Duplicants wearing an Atmo Suit" },
+      { MinionLightType.JetSuit, "Light emitted by Duplicants wearing a Jet Suit" },
+      { MinionLightType.LeadSuit, "Light emitted by Duplicants wearing a Lead Suit" },
     };
 
     public MinionLightingConfigEntry(string field, IOptionSpec spec) : base(field, spec) { }

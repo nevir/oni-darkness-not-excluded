@@ -36,8 +36,6 @@ namespace DarknessNotIncluded
         BodyLight = minion.gameObject.AddComponent<Light2D>();
         BodyLight.shape = LightShape.Circle;
         BodyLight.Offset = new Vector2(0f, 0.0f);
-
-        UpdateLights();
       }
 
       protected override void OnSpawn()
@@ -121,8 +119,18 @@ namespace DarknessNotIncluded
 
         var resume = minion.GetComponent<MinionResume>();
         var hat = resume.CurrentHat;
+        var suit = minion.GetEquipment().GetSlot(Db.Get().AssignableSlots.Suit)?.assignable as Equippable;
+        var suitPrefab = suit?.GetComponent<KPrefabID>();
+        Console.WriteLine($"suit: {suit} suitPrefab: {suitPrefab}");
 
-        if (hat != null && hat.StartsWith("hat_role_mining"))
+        if (suitPrefab != null && suit?.isEquipped == true)
+        {
+          if (suitPrefab?.HasTag(GameTags.AtmoSuit) == true) return MinionLightType.AtmoSuit;
+          else if (suitPrefab?.HasTag(GameTags.JetSuit) == true) return MinionLightType.JetSuit;
+          else if (suitPrefab?.HasTag(GameTags.LeadSuit) == true) return MinionLightType.LeadSuit;
+          else return MinionLightType.Intrinsic;
+        }
+        else if (hat?.StartsWith("hat_role_mining") == true)
         {
           if (hat == "hat_role_mining1") return MinionLightType.Mining1;
           else if (hat == "hat_role_mining2") return MinionLightType.Mining2;
@@ -130,11 +138,11 @@ namespace DarknessNotIncluded
           else if (hat == "hat_role_mining4") return MinionLightType.Mining4;
           else return MinionLightType.Mining4;
         }
-        else if (hat != null && hat.StartsWith("hat_role_research"))
+        else if (hat?.StartsWith("hat_role_research") == true)
         {
           return MinionLightType.Science;
         }
-        else if (hat != null && hat.StartsWith("hat_role_astronaut"))
+        else if (hat?.StartsWith("hat_role_astronaut") == true)
         {
           return MinionLightType.Rocketry;
         }

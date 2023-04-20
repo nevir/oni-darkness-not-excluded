@@ -83,6 +83,9 @@ namespace DarknessNotIncluded
         { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1600, 6, Color.white)},
         { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  400,  3, Color.white)},
         { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  600,  4, Color.white)},
+        { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  600,  3, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.JetSuit,   new MinionLightingConfig.LightConfig(true,  1200, 5, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.LeadSuit,  new MinionLightingConfig.LightConfig(true,  800,  4, TUNING.LIGHT2D.LIGHT_YELLOW)},
       };
 
       minionEffectsConfig = new MinionEffectsConfig {
