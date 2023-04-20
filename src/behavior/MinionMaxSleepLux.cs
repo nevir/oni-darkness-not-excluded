@@ -7,7 +7,7 @@ namespace DarknessNotIncluded
     [HarmonyPatch(typeof(SleepChore)), HarmonyPatch(nameof(SleepChore.IsDarkAtCell))]
     static class Patched_SleepChore_IsDarkAtCell
     {
-      public static void Postfix(int cell, ref bool __result)
+      static void Postfix(int cell, ref bool __result)
       {
         __result = Grid.LightIntensity[cell] <= Config.Instance.maxSleepingLux;
       }

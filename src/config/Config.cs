@@ -33,27 +33,30 @@ namespace DarknessNotIncluded
     [Option("Tooltip blocked by darkness", "Whether the tooltip should not show information if pointing at a dark tile.", "Darkness")]
     public bool selectToolBlockedByDarkness { get; set; }
 
-    // Dupe Behavior
+    // Duplicant Behavior
 
-    [Option("Disable lights in lit areas", "Whether dupes should turn their lights off when entering an area with at least the same level of brightness as their light.", "Dupe Behavior")]
+    [Option("Disable lights in lit areas", "Whether dupes should turn their lights off when entering an area with at least the same level of brightness as their light.", "Duplicant Behavior")]
     public bool disableDupeLightsInLitAreas { get; set; }
 
-    [Option("Disable lights around sleeping dupes", "Whether dupes should turn their lights off when entering a bedroom.", "Dupe Behavior")]
+    [Option("Disable lights around sleeping dupes", "Whether dupes should turn their lights off when entering a bedroom.", "Duplicant Behavior")]
     public bool disableDupeLightsInBedrooms { get; set; }
 
-    [Option("Maximum lux while sleeping", "The maximum lux that a dupe can handle before being rudely woken up.", "Dupe Behavior")]
+    [Option("Maximum lux while sleeping", "The maximum lux that a dupe can handle before being rudely woken up.", "Duplicant Behavior")]
     public int maxSleepingLux { get; set; }
 
-    // Dupe (Hat) Lights
+    [Option("Lux required for Lit Workspace bonus", "The minimum amount of lux before a Duplicant will receive the Lit Workspace speed bonus", "Duplicant Behavior")]
+    public int litWorkspaceLux { get; set; }
 
-    [DynamicOption(typeof(MinionLightingConfigEntry), "Dupe Lights")]
-    [Option("Configuration for dupe lights", "Configuration for dupe lights", "Dupe Lights")]
+    // Duplicant (Hat) Lights
+
+    [DynamicOption(typeof(MinionLightingConfigEntry), "Duplicant Lights")]
+    [Option("Configuration for dupe lights", "Configuration for dupe lights", "Duplicant Lights")]
     public MinionLightingConfig minionLightingConfig { get; set; }
 
-    // Dupe Effects
+    // Duplicant Effects
 
-    [DynamicOption(typeof(MinionEffectsConfigEntry), "Dupe Effects")]
-    [Option("Configuration for dupe effects", "Configuration for dupe effects", "Dupe Effects")]
+    [DynamicOption(typeof(MinionEffectsConfigEntry), "Duplicant Effects")]
+    [Option("Configuration for dupe effects", "Configuration for dupe effects", "Duplicant Effects")]
     public MinionEffectsConfig minionEffectsConfig { get; set; }
 
     public Config()
@@ -63,13 +66,14 @@ namespace DarknessNotIncluded
       minimumFogLevel = 10;
       gracePeriodCycles = 3.0f;
       fullyVisibleLuxThreshold = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
-      decorBonusThresholdLux = 1000;
+      decorBonusThresholdLux = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
       selectToolBlockedByDarkness = true;
 
-      // Dupe Behavior
+      // Duplicant Behavior
       disableDupeLightsInLitAreas = true;
       disableDupeLightsInBedrooms = true;
       maxSleepingLux = 400;
+      litWorkspaceLux = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
 
       minionLightingConfig = new MinionLightingConfig {
         { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, Color.white) },

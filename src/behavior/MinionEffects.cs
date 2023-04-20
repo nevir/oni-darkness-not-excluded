@@ -14,7 +14,7 @@ namespace DarknessNotIncluded
     [HarmonyPatch(typeof(ModifierSet)), HarmonyPatch("Initialize")]
     static class Patched_ModifierSet_Initialize
     {
-      public static void Postfix(ModifierSet __instance)
+      static void Postfix(ModifierSet __instance)
       {
         var effectsConfig = Config.Instance.minionEffectsConfig;
 
