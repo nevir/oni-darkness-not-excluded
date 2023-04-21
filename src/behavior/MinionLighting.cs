@@ -20,6 +20,9 @@ namespace DarknessNotIncluded
       [MyCmpGet]
       private MinionIdentity minion;
 
+      [MyCmpGet]
+      private MinionResume resume;
+
       public Light2D Light { get; set; }
 
       private MinionLightType currentLightType = MinionLightType.None;
@@ -105,7 +108,6 @@ namespace DarknessNotIncluded
       {
         if (minion.IsSleeping()) return MinionLightType.None;
 
-        var resume = minion.GetComponent<MinionResume>();
         var hat = resume.CurrentHat;
         var suit = minion.GetEquipment().GetSlot(Db.Get().AssignableSlots.Suit)?.assignable as Equippable;
         var suitPrefab = suit?.GetComponent<KPrefabID>();
