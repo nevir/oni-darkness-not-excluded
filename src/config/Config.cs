@@ -69,7 +69,7 @@ namespace DarknessNotIncluded
     {
       // Darkness
       initialFogLevel = 150;
-      minimumFogLevel = 10;
+      minimumFogLevel = 15;
       gracePeriodCycles = 3.0f;
       fullyVisibleLuxThreshold = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
       decorBonusThresholdLux = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
