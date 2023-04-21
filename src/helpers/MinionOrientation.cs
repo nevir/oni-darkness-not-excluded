@@ -9,9 +9,13 @@ namespace DarknessNotIncluded
     {
       Unknown,
       Left,
-      Right,
+      UpLeft,
       Up,
+      UpRight,
+      Right,
+      DownRight,
       Down,
+      DownLeft,
     }
 
     [MyCmpGet]
@@ -32,18 +36,24 @@ namespace DarknessNotIncluded
 
     private Orientation GetCurrentOrientation()
     {
-      if (!navigator.IsMoving())
+      if (!navigator.IsMoving() || !navigator.path.IsValid())
       {
         return navigator.IsFacingLeft ? Orientation.Left : Orientation.Right;
       }
 
       var currCell = Grid.PosToCell(minion);
-      var nextCell = navigator?.path.nodes?.Count > 0 ? navigator.path.nodes[0].cell : 0;
+      var nextCell = navigator.path.nodes[1].cell;
+      var vert = Grid.CellRow(nextCell) - Grid.CellRow(currCell); // up > 0 > down
+      var horiz = Grid.CellColumn(nextCell) - Grid.CellColumn(currCell); // right > 0 > left
 
-      if (Grid.CellRow(nextCell) > Grid.CellRow(currCell)) return Orientation.Down;
-      if (Grid.CellRow(nextCell) < Grid.CellRow(currCell)) return Orientation.Up;
-      if (Grid.CellColumn(nextCell) > Grid.CellColumn(currCell)) return Orientation.Left;
-      if (Grid.CellColumn(nextCell) < Grid.CellColumn(currCell)) return Orientation.Right;
+      if (horiz < 0 && vert == 0) return Orientation.Left;
+      if (horiz < 0 && vert > 0) return Orientation.UpLeft;
+      if (horiz == 0 && vert > 0) return Orientation.Up;
+      if (horiz > 0 && vert > 0) return Orientation.UpRight;
+      if (horiz > 0 && vert == 0) return Orientation.Right;
+      if (horiz > 0 && vert < 0) return Orientation.DownRight;
+      if (horiz == 0 && vert < 0) return Orientation.Down;
+      if (horiz < 0 && vert < 0) return Orientation.DownLeft;
 
       return Orientation.Unknown;
     }

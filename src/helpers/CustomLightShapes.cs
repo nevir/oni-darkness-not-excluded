@@ -46,13 +46,13 @@ namespace DarknessNotIncluded
       switch (minionOrientation.orientation)
       {
         case MinionOrientation.Orientation.Left:
-          octants.AddOctant(range, DiscreteShadowCaster.Octant.W_NW);
           octants.AddOctant(range, DiscreteShadowCaster.Octant.W_SW);
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.W_NW);
           break;
 
-        case MinionOrientation.Orientation.Right:
-          octants.AddOctant(range, DiscreteShadowCaster.Octant.E_NE);
-          octants.AddOctant(range, DiscreteShadowCaster.Octant.E_SE);
+        case MinionOrientation.Orientation.UpLeft:
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.W_NW);
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.N_NW);
           break;
 
         case MinionOrientation.Orientation.Up:
@@ -60,10 +60,30 @@ namespace DarknessNotIncluded
           octants.AddOctant(range, DiscreteShadowCaster.Octant.N_NE);
           break;
 
+        case MinionOrientation.Orientation.UpRight:
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.N_NE);
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.E_NE);
+          break;
+
+        case MinionOrientation.Orientation.Right:
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.E_NE);
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.E_SE);
+          break;
+
+        case MinionOrientation.Orientation.DownRight:
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.E_SE);
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.S_SE);
+          break;
+
         case MinionOrientation.Orientation.Down:
         default:
-          octants.AddOctant(range, DiscreteShadowCaster.Octant.S_SW);
           octants.AddOctant(range, DiscreteShadowCaster.Octant.S_SE);
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.S_SW);
+          break;
+
+        case MinionOrientation.Orientation.DownLeft:
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.S_SW);
+          octants.AddOctant(range, DiscreteShadowCaster.Octant.W_SW);
           break;
       }
     }
