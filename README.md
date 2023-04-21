@@ -14,6 +14,8 @@ Get ready to embrace the shadows as this mod transforms your gameplay, making li
 
 **Dupe Glow**: Marvel at your dupes' innate dim glow as they fumble through the darkness.
 
+**Considerate Dupes**: Dupes will be considerate and turn off their lights any time they enter a room where another dupe is sleeping.
+
 **Stat Penalties**: Beware the reduced coordination of dupes that forgot to bring a source of light when exploring the asteroid.
 
 **Grace Period**: Enjoy a _generous_ 3-cycle grace period to establish your luminous domain before darkness descends.
