@@ -2,7 +2,7 @@
 
 [[Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=2964969010)] [[Forums](https://forums.kleientertainment.com/forums/topic/147292-new-mod-darkness-not-excluded-eg-lights-out-shiny-lights-w-tweaks/)]
 
-Introducing Darkness Not Excluded—a mod that dares you to illuminate the depths of your asteroid and conquer it with the power of light!
+Introducing **Darkness Not Excluded**—a mod that dares you to illuminate the depths of your asteroid and conquer it _with the power of light_!
 
 ---
 
