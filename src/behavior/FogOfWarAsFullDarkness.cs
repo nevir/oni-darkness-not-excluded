@@ -10,6 +10,8 @@ namespace DarknessNotIncluded
     {
       static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)
       {
+        if (Game.Instance.SandboxModeActive) return true;
+
         var config = Config.Instance;
         var visible = Grid.Visible;
         var lightIntensity = Grid.LightIntensity;
