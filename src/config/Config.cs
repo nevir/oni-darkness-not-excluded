@@ -69,17 +69,17 @@ namespace DarknessNotIncluded
     {
       // Darkness
       initialFogLevel = 150;
-      minimumFogLevel = 25;
+      minimumFogLevel = 40;
       gracePeriodCycles = 3.0f;
-      fullyVisibleLuxThreshold = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
-      decorBonusThresholdLux = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
+      fullyVisibleLuxThreshold = 1000;
+      decorBonusThresholdLux = 1000;
       selectToolBlockedByDarkness = true;
 
       // Duplicant Behavior
       disableDupeLightsInLitAreas = true;
       disableDupeLightsInBedrooms = true;
       maxSleepingLux = 400;
-      litWorkspaceLux = TUNING.DUPLICANTSTATS.LIGHT.MEDIUM_LIGHT;
+      litWorkspaceLux = 1000;
 
       minionLightingConfig = new MinionLightingConfig {
         { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, MinionLightShape.Pill,         Color.white) },

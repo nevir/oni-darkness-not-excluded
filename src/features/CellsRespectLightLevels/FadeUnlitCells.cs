@@ -54,7 +54,7 @@ namespace DarknessNotIncluded.CellsRespectLightLevels
               continue;
             }
 
-            var lux = LightLevelUtils.ActualOrImpliedLightLevel(cell);
+            var lux = Behavior.ActualOrImpliedLightLevel(cell);
             int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
 
             region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));

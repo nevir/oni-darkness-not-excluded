@@ -2,7 +2,14 @@ using System;
 
 namespace DarknessNotIncluded.CellsRespectLightLevels
 {
-  public static class LightLevelUtils
+  public enum InspectionLevel
+  {
+    None,
+    BasicDetails,
+    FullDetails,
+  }
+
+  public static class Behavior
   {
     /// <summary>
     /// Returns the lux of a cell, if it is lit—otherwise returns the light
@@ -65,6 +72,21 @@ namespace DarknessNotIncluded.CellsRespectLightLevels
     {
       if (!Grid.IsValidCell(cell)) return;
       maxLux = Math.Max(maxLux, Grid.LightIntensity[cell]);
+    }
+
+    static public InspectionLevel InspectionLevelForCell(int cell)
+    {
+      if (!Grid.IsValidCell(cell)) return InspectionLevel.None;
+
+      if (DebugHandler.RevealFogOfWar) return InspectionLevel.FullDetails;
+      if (Grid.Visible[cell] <= 0) return InspectionLevel.None;
+
+      var config = Config.Instance;
+      if (!config.selectToolBlockedByDarkness) return InspectionLevel.FullDetails;
+      if (GameClock.Instance.GetTimeInCycles() < config.gracePeriodCycles) return InspectionLevel.FullDetails;
+
+      var lux = ActualOrImpliedLightLevel(cell);
+      return lux > 0 ? InspectionLevel.FullDetails : InspectionLevel.BasicDetails;
     }
   }
 }
