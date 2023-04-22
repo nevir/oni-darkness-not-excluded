@@ -1,9 +1,9 @@
 using System;
 using HarmonyLib;
 
-namespace DarknessNotIncluded
+namespace DarknessNotIncluded.CellsRespectLightLevels
 {
-  static class FogOfWarAsFullDarkness
+  static class FadeUnlitCells
   {
     [HarmonyPatch(typeof(PropertyTextures)), HarmonyPatch("UpdateFogOfWar")]
     static class Patched_PropertyTextures_UpdateFogOfWar
@@ -54,19 +54,7 @@ namespace DarknessNotIncluded
               continue;
             }
 
-            var lux = lightIntensity[cell];
-            if (lux == 0)
-            {
-              var neighboringCells = GridUtils.GetOrthogonallyAdjacentCells(cell);
-              foreach (var neighbor in neighboringCells)
-              {
-                lux = Math.Max(lux, lightIntensity[neighbor]);
-              }
-
-              // And reduce for clean(ish) falloff.
-              lux = (lux * 3) / 4;
-            }
-
+            var lux = LightLevelUtils.ActualOrImpliedLightLevel(cell);
             int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
 
             region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
