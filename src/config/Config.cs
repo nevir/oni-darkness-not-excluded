@@ -25,7 +25,7 @@ namespace DarknessNotIncluded
     [Option("Unlit tiles hide details", "Whether unlit tiles should only show basic details when hovered", "Darkness")]
     public bool selectToolBlockedByDarkness { get; set; }
 
-    [Option("Darkness grace period (cycles)", "How many cycles should it take to go from no darkness to maximum darkness?", "Darkness")]
+    [Option("Darkness grace period (cycles)", "How many cycles should it take to go from initial darkness to maximum darkness?", "Darkness")]
     public float gracePeriodCycles { get; set; }
 
     [Option("Initial darkness level", "How dark should 0 lux tiles be at the start of the game?\n0 = pitch black, 255 = fully visible", "Darkness")]
