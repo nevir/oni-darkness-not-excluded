@@ -22,7 +22,7 @@ namespace DarknessNotIncluded
     [Option("Lux threshold", "At what lux should a tile be fully visible?", "Darkness")]
     public int fullyVisibleLuxThreshold { get; set; }
 
-    [Option("Tooltip blocked by darkness", "Whether the tooltip should not show information if pointing at a dark tile.", "Darkness")]
+    [Option("Unlit tiles hide details", "Whether unlit tiles should only show basic details when hovered", "Darkness")]
     public bool selectToolBlockedByDarkness { get; set; }
 
     [Option("Darkness grace period (cycles)", "How many cycles should it take to go from no darkness to maximum darkness?", "Darkness")]
