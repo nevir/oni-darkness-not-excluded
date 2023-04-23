@@ -1,7 +1,7 @@
 using System;
 using HarmonyLib;
 
-namespace DarknessNotIncluded.CellsRespectLightLevels
+namespace DarknessNotIncluded.Darkness
 {
   static class FadeUnlitCells
   {

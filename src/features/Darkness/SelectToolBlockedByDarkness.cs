@@ -1,9 +1,8 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-namespace DarknessNotIncluded.CellsRespectLightLevels
+namespace DarknessNotIncluded.Darkness
 {
   static class SelectToolBlockedByDarkness
   {

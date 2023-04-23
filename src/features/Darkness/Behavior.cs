@@ -1,6 +1,6 @@
 using System;
 
-namespace DarknessNotIncluded.CellsRespectLightLevels
+namespace DarknessNotIncluded.Darkness
 {
   public enum InspectionLevel
   {
