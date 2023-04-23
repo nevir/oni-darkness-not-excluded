@@ -87,7 +87,12 @@ namespace DarknessNotIncluded.CellsRespectLightLevels
         if (new_selected == null) return true;
 
         var cell = Grid.PosToCell(new_selected);
-        return Behavior.InspectionLevelForCell(cell) != InspectionLevel.None;
+        var inspectionLevel = Behavior.InspectionLevelForCell(cell);
+        if (inspectionLevel == InspectionLevel.None) return false;
+        if (inspectionLevel == InspectionLevel.FullDetails) return true;
+
+        // Can select non-elements.
+        return !CellSelectionObject.IsSelectionObject(new_selected.gameObject);
       }
     }
   }
