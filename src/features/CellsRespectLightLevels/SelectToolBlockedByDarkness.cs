@@ -21,7 +21,7 @@ namespace DarknessNotIncluded.CellsRespectLightLevels
             return false;
 
           case InspectionLevel.BasicDetails:
-            RenderBasicHoverCard(__instance, hoverObjects);
+            RenderBasicHoverCard(__instance, cell, hoverObjects);
             return false;
 
           case InspectionLevel.FullDetails:
@@ -41,14 +41,37 @@ namespace DarknessNotIncluded.CellsRespectLightLevels
         drawer.EndDrawing();
       }
 
-      static void RenderBasicHoverCard(SelectToolHoverTextCard hoverCard, List<KSelectable> hoverObjects)
+      static void RenderBasicHoverCard(SelectToolHoverTextCard hoverCard, int cell, List<KSelectable> hoverObjects)
       {
         HoverTextDrawer drawer = HoverTextScreen.Instance.BeginDrawing();
 
+        drawer.BeginShadowBar();
+        drawer.DrawIcon(hoverCard.iconWarning);
+        drawer.DrawText("UNLIT", hoverCard.Styles_Title.Standard);
+        drawer.EndShadowBar();
+
         foreach (var hoverObject in hoverObjects)
         {
+          if (CellSelectionObject.IsSelectionObject(hoverObject.gameObject)) continue;
+
+          var primaryElement = hoverObject.GetComponent<PrimaryElement>();
+          var name = GameUtil.GetUnitFormattedName(hoverObject.gameObject, true);
+          if (primaryElement != null && hoverObject.GetComponent<Building>())
+          {
+            name = StringFormatter.Replace(StringFormatter.Replace(STRINGS.UI.TOOLS.GENERIC.BUILDING_HOVER_NAME_FMT, "{Name}", name), "{Element}", primaryElement.Element.nameUpperCase);
+          }
+
           drawer.BeginShadowBar(SelectTool.Instance.selected == hoverObject);
-          drawer.DrawText($"wat {hoverObject}", hoverCard.Styles_Title.Standard);
+          drawer.DrawText(name, hoverCard.Styles_Title.Standard);
+          drawer.EndShadowBar();
+        }
+
+        var showElement = !Grid.DupePassable[cell] || !Grid.Solid[cell];
+        if (showElement)
+        {
+          var element = Grid.Element[cell];
+          drawer.BeginShadowBar();
+          drawer.DrawText(element.nameUpperCase, hoverCard.Styles_Title.Standard);
           drawer.EndShadowBar();
         }
 
