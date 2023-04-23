@@ -19,6 +19,12 @@ namespace DarknessNotIncluded
 
     // Darkness
 
+    [Option("Lux threshold", "At what lux should a tile be fully visible?", "Darkness")]
+    public int fullyVisibleLuxThreshold { get; set; }
+
+    [Option("Tooltip blocked by darkness", "Whether the tooltip should not show information if pointing at a dark tile.", "Darkness")]
+    public bool selectToolBlockedByDarkness { get; set; }
+
     [Option("Darkness grace period (cycles)", "How many cycles should it take to go from no darkness to maximum darkness?", "Darkness")]
     public float gracePeriodCycles { get; set; }
 
@@ -30,40 +36,34 @@ namespace DarknessNotIncluded
     [Limit(0, 255)]
     public int minimumFogLevel { get; set; }
 
-    [Option("Lux threshold", "At what lux should a tile be fully visible?", "Darkness")]
-    public int fullyVisibleLuxThreshold { get; set; }
+    // Light Bonuses
 
-    [Option("Decor bonus threshold (lux)", "At what lux should decor get a bonus for being well lit?", "Darkness")]
+    [Option("Decor bonus threshold (lux)", "At what lux should decor get a bonus for being well lit?", "Light Bonuses")]
     public int decorBonusThresholdLux { get; set; }
 
-    [Option("Tooltip blocked by darkness", "Whether the tooltip should not show information if pointing at a dark tile.", "Darkness")]
-    public bool selectToolBlockedByDarkness { get; set; }
-
-    // Duplicant Behavior
-
-    [Option("Disable lights in lit areas", "Whether dupes should turn their lights off when entering an area with at least the same level of brightness as their light.", "Duplicant Behavior")]
-    public bool disableDupeLightsInLitAreas { get; set; }
-
-    [Option("Disable lights around sleeping dupes", "Whether dupes should turn their lights off when entering a bedroom.", "Duplicant Behavior")]
-    public bool disableDupeLightsInBedrooms { get; set; }
-
-    [Option("Maximum lux while sleeping", "The maximum lux that a dupe can handle before being rudely woken up.", "Duplicant Behavior")]
-    public int maxSleepingLux { get; set; }
-
-    [Option("Lux required for Lit Workspace bonus", "The minimum amount of lux before a Duplicant will receive the Lit Workspace speed bonus", "Duplicant Behavior")]
+    [Option("Lux required for Lit Workspace bonus", "The minimum amount of lux before a Duplicant will receive the Lit Workspace speed bonus", "Light Bonuses")]
     public int litWorkspaceLux { get; set; }
 
-    // Duplicant (Hat) Lights
+    // Darkness Penalties
+
+    [Option("Maximum lux tolerated while sleeping", "The maximum lux that a dupe can handle before being rudely woken up.", "Darkness Penalties")]
+    public int maxSleepingLux { get; set; }
+
+    [DynamicOption(typeof(MinionEffectsConfigEntry), "Darkness Penalties")]
+    [Option("Configuration for dupe effects", "Configuration for dupe effects", "Darkness Penalties")]
+    public MinionEffectsConfig minionEffectsConfig { get; set; }
+
+    // Duplicant Lights
+
+    [Option("Disable lights around sleeping dupes", "Whether dupes should turn their lights off when entering a bedroom.", "Duplicant Lights")]
+    public bool disableDupeLightsInBedrooms { get; set; }
+
+    [Option("Disable lights in lit areas", "Whether dupes should turn their lights off when entering an area with at least the same level of brightness as their light.", "Duplicant Lights")]
+    public bool disableDupeLightsInLitAreas { get; set; }
 
     [DynamicOption(typeof(MinionLightingConfigEntry), "Duplicant Lights")]
     [Option("Configuration for dupe lights", "Configuration for dupe lights", "Duplicant Lights")]
     public MinionLightingConfig minionLightingConfig { get; set; }
-
-    // Duplicant Effects
-
-    [DynamicOption(typeof(MinionEffectsConfigEntry), "Duplicant Effects")]
-    [Option("Configuration for dupe effects", "Configuration for dupe effects", "Duplicant Effects")]
-    public MinionEffectsConfig minionEffectsConfig { get; set; }
 
     public Config()
     {

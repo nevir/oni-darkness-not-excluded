@@ -109,7 +109,7 @@ namespace DarknessNotIncluded
         row++;
       }
 
-      parent.AddChild(grid, new GridComponentSpec(parentRow, 0));
+      parent.AddChild(grid, new GridComponentSpec(parentRow, 0) { ColumnSpan = 2 });
 
       UpdateComponents();
     }

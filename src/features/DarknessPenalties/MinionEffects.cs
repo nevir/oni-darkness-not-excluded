@@ -2,7 +2,7 @@ using HarmonyLib;
 using Klei.AI;
 using System.Collections.Generic;
 
-namespace DarknessNotIncluded
+namespace DarknessNotIncluded.DarknessPenalties
 {
   public static class MinionEffects
   {

@@ -2,9 +2,9 @@ using HarmonyLib;
 using System;
 using UnityEngine;
 
-namespace DarknessNotIncluded
+namespace DarknessNotIncluded.DuplicantLights
 {
-  static class MinionLighting
+  public static class MinionLighting
   {
     [HarmonyPatch(typeof(MinionConfig)), HarmonyPatch("CreatePrefab")]
     static class Patched_MinionConfig_CreatePrefab

@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace DarknessNotIncluded
+namespace DarknessNotIncluded.DarknessPenalties
 {
   public static class MinionMaxSleepLux
   {

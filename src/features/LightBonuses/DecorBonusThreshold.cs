@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace DarknessNotIncluded
+namespace DarknessNotIncluded.LightBonuses
 {
   public static class DecorBonusThreshold
   {
