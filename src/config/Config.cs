@@ -36,6 +36,11 @@ namespace DarknessNotIncluded
     [Limit(0, 255)]
     public int minimumFogLevel { get; set; }
 
+    // Exploration
+
+    [Option("Telepad tile reveal (radius)", "How many tiles should be revealed around the starting point?", "Exploration")]
+    public int telepadRevealRadius { get; set; }
+
     // Light Bonuses
 
     [Option("Decor bonus threshold (lux)", "At what lux should decor get a bonus for being well lit?", "Light Bonuses")]
@@ -68,19 +73,30 @@ namespace DarknessNotIncluded
     public Config()
     {
       // Darkness
+      fullyVisibleLuxThreshold = 1000;
+      selectToolBlockedByDarkness = true;
+      gracePeriodCycles = 3.0f;
       initialFogLevel = 150;
       minimumFogLevel = 40;
-      gracePeriodCycles = 3.0f;
-      fullyVisibleLuxThreshold = 1000;
-      decorBonusThresholdLux = 1000;
-      selectToolBlockedByDarkness = true;
 
-      // Duplicant Behavior
-      disableDupeLightsInLitAreas = true;
-      disableDupeLightsInBedrooms = true;
-      maxSleepingLux = 400;
+      // Exploration
+      telepadRevealRadius = 0;
+
+      // Light Bonuses
+      decorBonusThresholdLux = 1000;
       litWorkspaceLux = 1000;
 
+      // Darkness Penalties
+      maxSleepingLux = 400;
+      minionEffectsConfig = new MinionEffectsConfig {
+        { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2) },
+        { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5) },
+      };
+
+      // Duplicant Lights
+
+      disableDupeLightsInLitAreas = true;
+      disableDupeLightsInBedrooms = true;
       minionLightingConfig = new MinionLightingConfig {
         { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, MinionLightShape.Pill,         Color.white) },
         { MinionLightType.Mining1,   new MinionLightingConfig.LightConfig(true,  600,  3, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
@@ -92,11 +108,6 @@ namespace DarknessNotIncluded
         { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
         { MinionLightType.JetSuit,   new MinionLightingConfig.LightConfig(true,  800,  5, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
         { MinionLightType.LeadSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
-      };
-
-      minionEffectsConfig = new MinionEffectsConfig {
-        { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2) },
-        { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5) },
       };
     }
 

@@ -37,7 +37,6 @@ namespace DarknessNotIncluded.Exploration
         }
         if (!shouldExpandFogOfWar) return;
 
-        // TODO: optimize perf
         var expandedCells = ExpandRegion(litCells);
         foreach (var cell in expandedCells)
         {

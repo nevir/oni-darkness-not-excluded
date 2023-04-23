@@ -14,15 +14,18 @@ namespace DarknessNotIncluded.Exploration
   {
     static bool isGeneratingWorld = false;
 
-    [HarmonyPatch(typeof(Telepad)), HarmonyPatch("OnSpawn")]
-    static class Patched_Telepad_OnSpawn
+    [HarmonyPatch(typeof(Telepad)), HarmonyPatch("OnPrefabInit")]
+    static class Patched_Telepad_OnPrefabInit
     {
       static void Postfix(Telepad __instance)
       {
+        var config = Config.Instance;
         var gridVisibility = __instance.gameObject.AddOrGet<GridVisibility>();
-        // TODO: Configurable
-        gridVisibility.radius = 1;
-        gridVisibility.innerRadius = 1;
+
+        // +1 because the telepad is not 1 cell wide.
+        var radius = Math.Max(config.telepadRevealRadius, 0) + 1;
+        gridVisibility.radius = radius;
+        gridVisibility.innerRadius = radius;
       }
     }
 
