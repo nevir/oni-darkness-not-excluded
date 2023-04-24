@@ -5,6 +5,8 @@ namespace DarknessNotIncluded.Darkness
 {
   static class FadeUnlitCells
   {
+    public static bool doNotFade = false;
+
     [HarmonyPatch(typeof(PropertyTextures)), HarmonyPatch("UpdateFogOfWar")]
     static class Patched_PropertyTextures_UpdateFogOfWar
     {
@@ -54,10 +56,19 @@ namespace DarknessNotIncluded.Darkness
               continue;
             }
 
-            var lux = Behavior.ActualOrImpliedLightLevel(cell);
-            int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
+            if (doNotFade)
+            {
+              region.SetBytes(x, y, 255);
+            }
+            else
+            {
+              var lux = Behavior.ActualOrImpliedLightLevel(cell);
+              int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
 
-            region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
+              // TODO: We shouldn't be even bothering to read visible[cell] any
+              // more. Why is it required?
+              region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
+            }
           }
         }
 

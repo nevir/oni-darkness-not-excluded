@@ -37,6 +37,7 @@
     <Reference Include="$(GameLibsDir)\UnityEngine.CoreModule.dll" />
     <Reference Include="$(GameLibsDir)\UnityEngine.TextRenderingModule.dll" />
     <Reference Include="$(GameLibsDir)\UnityEngine.UI.dll" />
+    <Reference Include="$(GameLibsDir)\UnityEngine.UIModule.dll" />
   </ItemGroup>
 
   <Target Name="Merge" AfterTargets="Build">
