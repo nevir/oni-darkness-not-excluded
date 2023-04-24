@@ -56,25 +56,27 @@ namespace DarknessNotIncluded
       public bool enabled { get; set; }
       public int lux { get; set; }
       public int range { get; set; }
+      public int reveal { get; set; }
       public MinionLightShape shape { get; set; }
       [JsonConverter(typeof(ColorJsonConverter))]
       public Color color { get; set; }
 
-      public LightConfig(bool enabled, int lux, int range, MinionLightShape shape, Color color)
+      public LightConfig(bool enabled, int lux, int range, int reveal, MinionLightShape shape, Color color)
       {
         this.enabled = enabled;
         this.lux = lux;
         this.range = range;
+        this.reveal = reveal;
         this.shape = shape;
         this.color = color;
       }
 
       public LightConfig DeepClone()
       {
-        return new LightConfig(enabled, lux, range, shape, color);
+        return new LightConfig(enabled, lux, range, reveal, shape, color);
       }
 
-      public static LightConfig None = new LightConfig(false, 0, 0, MinionLightShape.Pill, new Color(0, 0, 0, 0));
+      public static LightConfig None = new LightConfig(false, 0, 0, 0, MinionLightShape.Pill, new Color(0, 0, 0, 0));
     }
 
     public MinionLightingConfig DeepClone()

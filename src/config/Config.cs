@@ -98,16 +98,16 @@ namespace DarknessNotIncluded
       disableDupeLightsInLitAreas = true;
       disableDupeLightsInBedrooms = true;
       minionLightingConfig = new MinionLightingConfig {
-        { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, MinionLightShape.Pill,         Color.white) },
-        { MinionLightType.Mining1,   new MinionLightingConfig.LightConfig(true,  600,  3, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining2,   new MinionLightingConfig.LightConfig(true,  700,  4, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining3,   new MinionLightingConfig.LightConfig(true,  800,  5, MinionLightShape.DirectedCone, Color.white)},
-        { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1000, 6, MinionLightShape.DirectedCone, Color.white)},
-        { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  600,  3, MinionLightShape.Pill,         Color.white)},
-        { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  600,  4, MinionLightShape.DirectedCone, Color.white)},
-        { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.JetSuit,   new MinionLightingConfig.LightConfig(true,  800,  5, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.LeadSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, 0, MinionLightShape.Pill,         Color.white) },
+        { MinionLightType.Mining1,   new MinionLightingConfig.LightConfig(true,  600,  3, 3, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining2,   new MinionLightingConfig.LightConfig(true,  700,  4, 4, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining3,   new MinionLightingConfig.LightConfig(true,  800,  5, 5, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1000, 6, 6, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  600,  3, 0, MinionLightShape.Pill,         Color.white)},
+        { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  600,  4, 0, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, 0, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.JetSuit,   new MinionLightingConfig.LightConfig(true,  800,  5, 5, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.LeadSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, 0, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
       };
     }
 

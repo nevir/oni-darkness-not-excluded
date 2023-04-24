@@ -41,6 +41,7 @@ namespace DarknessNotIncluded
     private Dictionary<MinionLightType, GameObject> enabledComponents;
     private Dictionary<MinionLightType, GameObject> luxComponents;
     private Dictionary<MinionLightType, GameObject> rangeComponents;
+    private Dictionary<MinionLightType, GameObject> revealComponents;
 
     public override void CreateUIEntry(PGridPanel parent, ref int parentRow)
     {
@@ -49,9 +50,11 @@ namespace DarknessNotIncluded
       enabledComponents = new Dictionary<MinionLightType, GameObject>();
       luxComponents = new Dictionary<MinionLightType, GameObject>();
       rangeComponents = new Dictionary<MinionLightType, GameObject>();
+      revealComponents = new Dictionary<MinionLightType, GameObject>();
 
       grid.AddColumn(new GridColumnSpec());
       grid.AddColumn(new GridColumnSpec(flex: 1.0f));
+      grid.AddColumn(new GridColumnSpec());
       grid.AddColumn(new GridColumnSpec());
       grid.AddColumn(new GridColumnSpec());
       // TODO: Color selector.
@@ -62,6 +65,7 @@ namespace DarknessNotIncluded
       grid.AddRow(new GridRowSpec(flex: 1.0f));
       grid.AddChild(new PLabel() { Text = "lux", TextStyle = PUITuning.Fonts.TextLightStyle }, new GridComponentSpec(0, 2));
       grid.AddChild(new PLabel() { Text = "range", TextStyle = PUITuning.Fonts.TextLightStyle }, new GridComponentSpec(0, 3));
+      grid.AddChild(new PLabel() { Text = "reveal", TextStyle = PUITuning.Fonts.TextLightStyle }, new GridComponentSpec(0, 4));
 
       // Light Types
 
@@ -125,6 +129,22 @@ namespace DarknessNotIncluded
         rangeField.AddOnRealize(o => rangeComponents.Add(type, o));
         grid.AddChild(rangeField, new GridComponentSpec(row, 3) { Margin = LABEL_MARGIN });
 
+        var revealField = new PTextField($"{name}.reveal")
+        {
+          Type = PTextField.FieldType.Integer,
+          MinWidth = 48,
+          OnTextChanged = (o, text) =>
+          {
+            if (int.TryParse(text, out int newReveal))
+            {
+              this.value[type].reveal = newReveal;
+              UpdateComponents();
+            }
+          }
+        };
+        revealField.AddOnRealize(o => revealComponents.Add(type, o));
+        grid.AddChild(revealField, new GridComponentSpec(row, 4) { Margin = LABEL_MARGIN });
+
         // TODO: Color selector.
         // var colorButton = new PButton($"{name}.color")
         // {
@@ -152,6 +172,7 @@ namespace DarknessNotIncluded
         PCheckBox.SetCheckState(enabledComponents[pair.Key], pair.Value.enabled ? PCheckBox.STATE_CHECKED : PCheckBox.STATE_UNCHECKED);
         PlibUtils.SetFieldText(luxComponents[pair.Key], pair.Value.lux.ToString());
         PlibUtils.SetFieldText(rangeComponents[pair.Key], pair.Value.range.ToString());
+        PlibUtils.SetFieldText(revealComponents[pair.Key], pair.Value.reveal.ToString());
       }
     }
 

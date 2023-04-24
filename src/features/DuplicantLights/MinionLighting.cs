@@ -23,6 +23,9 @@ namespace DarknessNotIncluded.DuplicantLights
       [MyCmpGet]
       private MinionResume resume;
 
+      [MyCmpGet]
+      private GridVisibility gridVisibility;
+
       public Light2D Light { get; set; }
 
       private MinionLightType currentLightType = MinionLightType.None;
@@ -84,6 +87,9 @@ namespace DarknessNotIncluded.DuplicantLights
         currentLightType = lightType;
 
         var lightConfig = lightType.Config();
+
+        gridVisibility.radius = lightConfig.reveal;
+        gridVisibility.innerRadius = lightConfig.reveal;
 
         Light.enabled = lightConfig.enabled;
         Light.shape = lightConfig.shape.LightShape();
