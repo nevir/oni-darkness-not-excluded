@@ -10,24 +10,10 @@ namespace DarknessNotIncluded.Exploration
     [HarmonyPatch(typeof(LightGridManager.LightGridEmitter)), HarmonyPatch("AddToGrid")]
     static class Patched_LightGridManager_LightGridEmitter_AddToGrid
     {
-      static void Postfix(LightGridManager.LightGridEmitter __instance)
+      static void Postfix(List<int> ___litCells)
       {
-        LightGridManager.LightGridEmitter.State state;
-        if (!PPatchTools.TryGetFieldValue(__instance, "state", out state))
-        {
-          Console.WriteLine("Expected LightGridManager.LightGridEmitter to have a state field, but found none!");
-          return;
-        }
-
-        List<int> litCells;
-        if (!PPatchTools.TryGetFieldValue(__instance, "litCells", out litCells))
-        {
-          Console.WriteLine("Expected LightGridManager.LightGridEmitter to have a litCells field, but found none!");
-          return;
-        }
-
         var shouldExpandFogOfWar = false;
-        foreach (var cell in litCells)
+        foreach (var cell in ___litCells)
         {
           if (Grid.Visible[cell] > 0)
           {
@@ -37,7 +23,7 @@ namespace DarknessNotIncluded.Exploration
         }
         if (!shouldExpandFogOfWar) return;
 
-        var expandedCells = ExpandRegion(litCells);
+        var expandedCells = ExpandRegion(___litCells);
         foreach (var cell in expandedCells)
         {
           if (!Grid.IsValidCell(cell)) continue;

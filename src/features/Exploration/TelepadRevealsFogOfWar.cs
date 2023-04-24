@@ -34,15 +34,9 @@ namespace DarknessNotIncluded.Exploration
     [HarmonyPatch(typeof(WorldGenSpawner)), HarmonyPatch("OnSpawn")]
     static class Patched_WorldGenSpawner_OnSpawn
     {
-      static void Prefix(WorldGenSpawner __instance)
+      static void Prefix(bool ___hasPlacedTemplates)
       {
-        bool hasPlacedTemplates;
-        if (!PPatchTools.TryGetFieldValue(__instance, "hasPlacedTemplates", out hasPlacedTemplates))
-        {
-          Console.WriteLine("Expected WorldGenSpawner to have a hasPlacedTemplates field, but found none!");
-          return;
-        }
-        isGeneratingWorld = !hasPlacedTemplates;
+        isGeneratingWorld = !___hasPlacedTemplates;
       }
 
       static void Postfix()

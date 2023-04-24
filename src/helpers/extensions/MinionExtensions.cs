@@ -1,4 +1,3 @@
-
 namespace DarknessNotIncluded
 {
   public static class MinionExtensions
