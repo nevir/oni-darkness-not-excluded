@@ -23,13 +23,12 @@ namespace DarknessNotIncluded.InGameConfig
           Color = PUITuning.Colors.ButtonBlueStyle,
           OnClick = (source) =>
           {
-            Darkness.FadeUnlitCells.doNotFade = !Darkness.FadeUnlitCells.doNotFade;
-            var darknessActive = !Darkness.FadeUnlitCells.doNotFade;
+            Darkness.Behavior.enabled = !Darkness.Behavior.enabled;
 
             var kButton = source.GetComponent<KButton>();
-            kButton.GetComponent<ToolTip>().SetSimpleTooltip(darknessActive ? DARKNESS_ACTIVE_TOOLTIP : DARKNESS_DISABLED_TOOLTIP);
-            kButton.bgImage.colorStyleSetting = darknessActive ? PUITuning.Colors.ButtonBlueStyle : PUITuning.Colors.ButtonPinkStyle;
-            kButton.fgImage.sprite = Assets.GetSprite(darknessActive ? "icon_category_lights_disabled" : "icon_category_lights");
+            kButton.GetComponent<ToolTip>().SetSimpleTooltip(Darkness.Behavior.enabled ? DARKNESS_ACTIVE_TOOLTIP : DARKNESS_DISABLED_TOOLTIP);
+            kButton.bgImage.colorStyleSetting = Darkness.Behavior.enabled ? PUITuning.Colors.ButtonBlueStyle : PUITuning.Colors.ButtonPinkStyle;
+            kButton.fgImage.sprite = Assets.GetSprite(Darkness.Behavior.enabled ? "icon_category_lights_disabled" : "icon_category_lights");
           }
         };
         button.AddTo(___secondaryRow.gameObject);

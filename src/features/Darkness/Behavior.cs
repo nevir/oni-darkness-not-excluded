@@ -11,6 +11,8 @@ namespace DarknessNotIncluded.Darkness
 
   public static class Behavior
   {
+    public static bool enabled = true;
+
     /// <summary>
     /// Returns the lux of a cell, if it is lit—otherwise returns the light
     /// level that we should display the cell at in the UI.
@@ -78,6 +80,7 @@ namespace DarknessNotIncluded.Darkness
     {
       if (!Grid.IsValidCell(cell)) return InspectionLevel.None;
 
+      if (!Darkness.Behavior.enabled) return InspectionLevel.FullDetails;
       if (DebugHandler.RevealFogOfWar) return InspectionLevel.FullDetails;
       if (Grid.Visible[cell] <= 0) return InspectionLevel.None;
 

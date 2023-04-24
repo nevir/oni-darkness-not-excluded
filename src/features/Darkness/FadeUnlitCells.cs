@@ -5,8 +5,6 @@ namespace DarknessNotIncluded.Darkness
 {
   static class FadeUnlitCells
   {
-    public static bool doNotFade = false;
-
     [HarmonyPatch(typeof(PropertyTextures)), HarmonyPatch("UpdateFogOfWar")]
     static class Patched_PropertyTextures_UpdateFogOfWar
     {
@@ -56,7 +54,7 @@ namespace DarknessNotIncluded.Darkness
               continue;
             }
 
-            if (doNotFade)
+            if (!Behavior.enabled)
             {
               region.SetBytes(x, y, 255);
             }
