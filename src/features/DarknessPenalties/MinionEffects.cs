@@ -35,7 +35,7 @@ namespace DarknessNotIncluded.DarknessPenalties
         }
         DarkEffect = new Effect("Dark", "Dark", "This Duplicant can't see past its nose, and is struggling to perform even basic tasks.", 0, true, false, true)
         {
-          SelfModifiers = dimModifiers
+          SelfModifiers = darkModifiers
         };
         __instance.effects.Add(DarkEffect);
       }
