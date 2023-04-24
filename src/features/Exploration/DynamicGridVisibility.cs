@@ -7,8 +7,6 @@ namespace DarknessNotIncluded.Exploration
 {
   static class DynamicGridVisibility
   {
-    static Dictionary<int, int> gridRevealLevel = new Dictionary<int, int>();
-
     [HarmonyPatch(typeof(GridVisibility)), HarmonyPatch("OnCellChange")]
     static class Patched_GridVisibility_OnCellChange
     {
@@ -20,18 +18,10 @@ namespace DarknessNotIncluded.Exploration
         var cell = Grid.PosToCell(__instance);
         if (!Grid.IsValidCell(cell)) return false;
 
-        int existingRevealLevel;
-        if (!gridRevealLevel.TryGetValue(cell, out existingRevealLevel))
-        {
-          existingRevealLevel = 0;
-        }
-        if (__instance.radius <= existingRevealLevel) return false;
-
         int x;
         int y;
         Grid.PosToXY(__instance.transform.GetPosition(), out x, out y);
         GridVisibility.Reveal(x, y, __instance.radius, __instance.innerRadius);
-        gridRevealLevel[cell] = __instance.radius;
 
         return false;
       }
