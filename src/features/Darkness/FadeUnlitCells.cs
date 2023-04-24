@@ -56,16 +56,13 @@ namespace DarknessNotIncluded.Darkness
 
             if (!Behavior.enabled)
             {
-              region.SetBytes(x, y, 255);
+              region.SetBytes(x, y, (byte)255);
             }
             else
             {
               var lux = Behavior.ActualOrImpliedLightLevel(cell);
               int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
-
-              // TODO: We shouldn't be even bothering to read visible[cell] any
-              // more. Why is it required?
-              region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
+              region.SetBytes(x, y, (byte)fog);
             }
           }
         }
