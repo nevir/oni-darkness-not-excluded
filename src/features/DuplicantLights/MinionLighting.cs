@@ -55,6 +55,11 @@ namespace DarknessNotIncluded.DuplicantLights
         var config = Config.Instance;
         var lightType = GetActiveLightType();
 
+        // Update grid visibility based on the minion's internal state
+        var reveal = lightType.Config().reveal;
+        gridVisibility.radius = reveal;
+
+        // But actual lights may change based on behavior:
         if (config.disableDupeLightsInBedrooms && lightType != MinionLightType.None)
         {
           if (MinionRoomState.SleepersInSameRoom(minion))
@@ -87,9 +92,6 @@ namespace DarknessNotIncluded.DuplicantLights
         currentLightType = lightType;
 
         var lightConfig = lightType.Config();
-
-        gridVisibility.radius = lightConfig.reveal;
-        gridVisibility.innerRadius = lightConfig.reveal;
 
         Light.enabled = lightConfig.enabled;
         Light.shape = lightConfig.shape.LightShape();

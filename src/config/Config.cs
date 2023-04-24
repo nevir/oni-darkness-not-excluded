@@ -38,7 +38,7 @@ namespace DarknessNotIncluded
 
     // Exploration
 
-    [Option("Telepad tile reveal (radius)", "How many tiles should be revealed around the starting point?", "Exploration")]
+    [Option("Printing Pod reveal (radius)", "How many tiles should be revealed around the starting point?", "Exploration")]
     public int telepadRevealRadius { get; set; }
 
     // Light Bonuses
@@ -76,8 +76,8 @@ namespace DarknessNotIncluded
       fullyVisibleLuxThreshold = 1000;
       selectToolBlockedByDarkness = true;
       gracePeriodCycles = 3.0f;
-      initialFogLevel = 150;
-      minimumFogLevel = 40;
+      initialFogLevel = 200;
+      minimumFogLevel = 75;
 
       // Exploration
       telepadRevealRadius = 0;

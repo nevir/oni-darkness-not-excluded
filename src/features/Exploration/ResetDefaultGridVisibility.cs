@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DarknessNotIncluded.Exploration
 {
-  static class MinionFogOfWarReveal
+  static class ResetDefaultGridVisibility
   {
     [HarmonyPatch(typeof(MinionConfig)), HarmonyPatch("CreatePrefab")]
     static class Patched_MinionConfig_CreatePrefab
@@ -11,7 +11,6 @@ namespace DarknessNotIncluded.Exploration
       static void Postfix(GameObject __result)
       {
         var gridVisibility = __result.AddOrGet<GridVisibility>();
-        // TODO: mining hats.
         gridVisibility.radius = 0;
         gridVisibility.innerRadius = 0;
       }

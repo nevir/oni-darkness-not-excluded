@@ -1,7 +1,5 @@
 using HarmonyLib;
-using PeterHan.PLib.Core;
 using System.Collections.Generic;
-using System;
 
 namespace DarknessNotIncluded.Exploration
 {
