@@ -38,6 +38,9 @@ namespace DarknessNotIncluded
 
     // Exploration
 
+    [Option("Perform actions on unexplored cells", "Whether you are able to drag actions (like dig) on unexplored cells", "Exploration")]
+    public bool dragToolIgnoresVisibility { get; set; }
+
     [Option("Printing Pod reveal (radius)", "How many tiles should be revealed around the starting point?", "Exploration")]
     public int telepadRevealRadius { get; set; }
 

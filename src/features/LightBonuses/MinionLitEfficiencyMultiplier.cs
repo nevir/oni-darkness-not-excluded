@@ -20,7 +20,7 @@ namespace DarknessNotIncluded.LightBonuses
           // 
           //  if (Grid.LightIntensity[cell] > 0)
           //
-          // Also known as:
+          // IL:
           //
           //   call System.Int32 LightIntensityIndexer::get_Item(System.Int32 i)
           //   ldc.i4.0 NULL
@@ -37,7 +37,7 @@ namespace DarknessNotIncluded.LightBonuses
             //
             //  if (Grid.LightIntensity[cell] > Workable_GetEfficiencyMultiplier_Patch.GetLitWorkspaceLuxForPatch())
             //
-            // Also known as:
+            // IL:
             //
             //   call System.Int32 LightIntensityIndexer::get_Item(System.Int32 i)
             //   call static Workable_GetEfficiencyMultiplier_Patch Workable_GetEfficiencyMultiplier_Patch.GetLitWorkspaceLuxForPatch()
