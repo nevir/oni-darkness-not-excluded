@@ -10,8 +10,26 @@ namespace DarknessNotIncluded
   [JsonObject(MemberSerialization.OptOut)]
   [ModInfo("https://github.com/nevir/oni-darkness-not-excluded")]
   [ConfigFile(SharedConfigLocation: true)]
-  class Config : SingletonOptions<Config>
+  class Config
   {
+    protected static Config instance;
+
+    public static Config Instance
+    {
+      get
+      {
+        if (instance == null)
+        {
+          instance = POptions.ReadSettings<Config>() ?? new Config();
+        }
+        return instance;
+      }
+      set
+      {
+        instance = value;
+      }
+    }
+
     public static void Initialize(UserMod2 mod)
     {
       new POptions().RegisterOptions(mod, typeof(Config));
