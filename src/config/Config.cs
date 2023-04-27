@@ -101,6 +101,7 @@ namespace DarknessNotIncluded
       minimumFogLevel = 75;
 
       // Exploration
+      dragToolIgnoresVisibility = true;
       telepadRevealRadius = 0;
 
       // Light Bonuses

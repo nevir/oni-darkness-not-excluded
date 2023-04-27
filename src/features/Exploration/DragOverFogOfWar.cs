@@ -54,7 +54,14 @@ namespace DarknessNotIncluded.Exploration
 
     static bool ShouldConsiderCell(int cell)
     {
-      return Config.Instance.dragToolIgnoresVisibility;
+      if (Config.Instance.dragToolIgnoresVisibility)
+      {
+        return true;
+      }
+      else
+      {
+        return Grid.IsVisible(cell);
+      }
     }
   }
 }
