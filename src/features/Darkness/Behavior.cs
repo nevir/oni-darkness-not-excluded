@@ -28,6 +28,8 @@ namespace DarknessNotIncluded.Darkness
     /// </summary>
     static public int ActualOrImpliedLightLevel(int cell)
     {
+      if (!Grid.IsValidCell(cell)) return 0;
+
       var cellLux = Grid.LightIntensity[cell];
       if (cellLux > 0) return cellLux;
 

@@ -13,6 +13,7 @@ namespace DarknessNotIncluded.Exploration
         var shouldExpandFogOfWar = false;
         foreach (var cell in ___litCells)
         {
+          if (!Grid.IsValidCell(cell)) continue;
           if (Grid.Visible[cell] > 0)
           {
             shouldExpandFogOfWar = true;

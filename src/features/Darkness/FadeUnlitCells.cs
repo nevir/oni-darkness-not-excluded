@@ -14,7 +14,6 @@ namespace DarknessNotIncluded.Darkness
 
         var config = Config.Instance;
         var visible = Grid.Visible;
-        var lightIntensity = Grid.LightIntensity;
 
         var gridYOffset = Grid.HeightInCells;
         if (ClusterManager.Instance != (UnityEngine.Object)null)
