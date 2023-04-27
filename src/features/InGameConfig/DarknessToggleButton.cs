@@ -3,13 +3,14 @@ using UnityEngine;
 using PeterHan.PLib.UI;
 using System.Reflection;
 using System;
+using STRINGS;
 
 namespace DarknessNotIncluded.InGameConfig
 {
   static class DarknessToggleButton
   {
-    static LocString DARKNESS_ACTIVE_TOOLTIP = "<b>Disable Darkness</b>\n\nGetting to be a little too much? It's ok, we won't judge you …too much.";
-    static LocString DARKNESS_DISABLED_TOOLTIP = "<b>Re-Enable Darkness</b>\n\nAh! Welcome back to the challenge.";
+    static LocString DARKNESS_ACTIVE_TOOLTIP = $"<style=\"consumed\">Disable Darkness</style>\n\nGetting to be a little too much? It's ok, we won't judge you …too much.\n\n{UI.PRE_KEYWORD}Right-click to view <b>Darkness Not Excluded</b> options{UI.PST_KEYWORD}";
+    static LocString DARKNESS_DISABLED_TOOLTIP = $"<style=\"produced\">Re-Enable Darkness</style>\n\nAh! Welcome back to the challenge.\n\n{UI.PRE_KEYWORD}Right-click to view <b>Darkness Not Excluded</b> options{UI.PST_KEYWORD}";
 
     [HarmonyPatch(typeof(TopLeftControlScreen)), HarmonyPatch("OnActivate")]
     static class Patched_TopLeftControlScreen_OnActivate
