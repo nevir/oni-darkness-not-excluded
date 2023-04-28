@@ -12,6 +12,8 @@ namespace DarknessNotIncluded.Exploration
     {
       static bool Prefix(GridVisibility __instance)
       {
+        if (__instance == null) return false;
+        if (__instance.gameObject == null) return false;
         if (__instance.radius <= 0) return false;
         if (__instance.gameObject.HasTag(GameTags.Dead)) return false;
 
