@@ -57,6 +57,7 @@
     <RemoveDir Directories="$(BundleDir)" />
     <Copy SourceFiles="$(OutDir)$(BaseName).dll" DestinationFolder="$(BundleDir)" />
     <Copy SourceFiles="mod.yaml;mod_info.yaml" DestinationFolder="$(BundleDir)" />
+    <Copy SourceFiles="assets/square-192.png" DestinationFiles="$(BundleDir)\preview.png" />
   </Target>
 
   <Target Name="Install" AfterTargets="Bundle">

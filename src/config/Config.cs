@@ -10,7 +10,7 @@ using UnityEngine;
 namespace DarknessNotIncluded
 {
   [JsonObject(MemberSerialization.OptOut)]
-  [ModInfo("https://github.com/nevir/oni-darkness-not-excluded")]
+  [ModInfo("https://github.com/nevir/oni-darkness-not-excluded", "preview.png", true)]
   [ConfigFile(SharedConfigLocation: true)]
   public class Config
   {
