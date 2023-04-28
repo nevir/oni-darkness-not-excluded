@@ -6,6 +6,13 @@ namespace DarknessNotIncluded.LightBonuses
 {
   public static class MinionLitEfficiencyMultiplier
   {
+    private static int litWorkspaceLux;
+
+    private static Config.Observer configObserver = new Config.Observer((config) =>
+    {
+      litWorkspaceLux = config.litWorkspaceLux;
+    });
+
     [HarmonyPatch(typeof(Workable))]
     [HarmonyPatch("GetEfficiencyMultiplier")]
     static class Workable_GetEfficiencyMultiplier_Patch
@@ -52,7 +59,7 @@ namespace DarknessNotIncluded.LightBonuses
 
       static int GetLitWorkspaceLuxForPatch()
       {
-        return Config.Instance.litWorkspaceLux - 1;
+        return litWorkspaceLux - 1;
       }
     }
   }

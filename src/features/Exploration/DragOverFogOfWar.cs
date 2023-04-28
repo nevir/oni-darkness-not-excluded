@@ -5,6 +5,13 @@ namespace DarknessNotIncluded.Exploration
 {
   public static class DragOverFogOfWar
   {
+    private static bool dragToolIgnoresVisibility;
+
+    private static Config.Observer configObserver = new Config.Observer((config) =>
+    {
+      dragToolIgnoresVisibility = config.dragToolIgnoresVisibility;
+    });
+
     [HarmonyPatch(typeof(DragTool)), HarmonyPatch("OnLeftClickUp")]
     static class Patched_DragTool_OnLeftClickUp
     {
@@ -54,7 +61,7 @@ namespace DarknessNotIncluded.Exploration
 
     static bool ShouldConsiderCell(int cell)
     {
-      if (Config.Instance.dragToolIgnoresVisibility)
+      if (dragToolIgnoresVisibility)
       {
         return true;
       }

@@ -5,6 +5,19 @@ namespace DarknessNotIncluded.Darkness
 {
   static class FadeUnlitCells
   {
+    private static float gracePeriodCycles;
+    private static int initialFogLevel;
+    private static int minimumFogLevel;
+    private static int fullyVisibleLuxThreshold;
+
+    private static Config.Observer configObserver = new Config.Observer((config) =>
+    {
+      gracePeriodCycles = config.gracePeriodCycles;
+      initialFogLevel = config.initialFogLevel;
+      minimumFogLevel = config.minimumFogLevel;
+      fullyVisibleLuxThreshold = config.fullyVisibleLuxThreshold;
+    });
+
     [HarmonyPatch(typeof(PropertyTextures)), HarmonyPatch("UpdateFogOfWar")]
     static class Patched_PropertyTextures_UpdateFogOfWar
     {
@@ -12,7 +25,6 @@ namespace DarknessNotIncluded.Darkness
       {
         if (Game.Instance.SandboxModeActive) return true;
 
-        var config = Config.Instance;
         var visible = Grid.Visible;
 
         var gridYOffset = Grid.HeightInCells;
@@ -22,12 +34,12 @@ namespace DarknessNotIncluded.Darkness
           gridYOffset = activeWorld.WorldSize.Y + activeWorld.WorldOffset.Y - 1;
         }
 
-        var minFogLevel = config.minimumFogLevel;
+        var minFogLevel = minimumFogLevel;
         var gameCycle = GameClock.Instance.GetTimeInCycles();
-        if (gameCycle < config.gracePeriodCycles)
+        if (gameCycle < gracePeriodCycles)
         {
-          float scaledFogLevel = 1.0f - gameCycle / config.gracePeriodCycles;
-          minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)config.initialFogLevel));
+          float scaledFogLevel = 1.0f - gameCycle / gracePeriodCycles;
+          minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)initialFogLevel));
         }
         var fogRange = 255 - minFogLevel;
 
@@ -60,7 +72,7 @@ namespace DarknessNotIncluded.Darkness
             else
             {
               var lux = Behavior.ActualOrImpliedLightLevel(cell);
-              int fog = minFogLevel + (Math.Min(lux, config.fullyVisibleLuxThreshold) * fogRange) / config.fullyVisibleLuxThreshold;
+              int fog = minFogLevel + (Math.Min(lux, fullyVisibleLuxThreshold) * fogRange) / fullyVisibleLuxThreshold;
               region.SetBytes(x, y, (byte)fog);
             }
           }

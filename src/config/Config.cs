@@ -3,6 +3,8 @@ using KMod;
 using Newtonsoft.Json;
 using PeterHan.PLib;
 using PeterHan.PLib.Options;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DarknessNotIncluded
@@ -12,22 +14,32 @@ namespace DarknessNotIncluded
   [ConfigFile(SharedConfigLocation: true)]
   public class Config
   {
-    protected static Config instance;
+    private static List<Action<Config>> observers = new List<Action<Config>>();
 
-    public static Config Instance
+    public class Observer
     {
-      get
+      public Observer(Action<Config> observer)
       {
-        if (instance == null)
-        {
-          instance = POptions.ReadSettings<Config>() ?? new Config();
-        }
-        return instance;
+        observers.Add(observer);
+        observer(Get());
       }
-      set
+    }
+
+    private static Config instance;
+    private static Config Get()
+    {
+      if (instance == null)
       {
-        instance = value;
-        ConfigObserver.UpdateObservers(value);
+        instance = POptions.ReadSettings<Config>() ?? new Config();
+      }
+      return instance;
+    }
+    public static void Set(Config newConfig)
+    {
+      instance = newConfig;
+      foreach (var observer in observers)
+      {
+        observer(newConfig);
       }
     }
 

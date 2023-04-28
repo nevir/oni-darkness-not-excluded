@@ -13,6 +13,15 @@ namespace DarknessNotIncluded.Darkness
   {
     public static bool enabled = true;
 
+    private static bool selectToolBlockedByDarkness;
+    private static float gracePeriodCycles;
+
+    private static Config.Observer configObserver = new Config.Observer((config) =>
+    {
+      selectToolBlockedByDarkness = config.selectToolBlockedByDarkness;
+      gracePeriodCycles = config.gracePeriodCycles;
+    });
+
     /// <summary>
     /// Returns the lux of a cell, if it is lit—otherwise returns the light
     /// level that we should display the cell at in the UI.
@@ -86,9 +95,8 @@ namespace DarknessNotIncluded.Darkness
       if (DebugHandler.RevealFogOfWar) return InspectionLevel.FullDetails;
       if (Grid.Visible[cell] <= 0) return InspectionLevel.None;
 
-      var config = Config.Instance;
-      if (!config.selectToolBlockedByDarkness) return InspectionLevel.FullDetails;
-      if (GameClock.Instance.GetTimeInCycles() < config.gracePeriodCycles) return InspectionLevel.FullDetails;
+      if (!selectToolBlockedByDarkness) return InspectionLevel.FullDetails;
+      if (GameClock.Instance.GetTimeInCycles() < gracePeriodCycles) return InspectionLevel.FullDetails;
 
       var lux = ActualOrImpliedLightLevel(cell);
       return lux > 0 ? InspectionLevel.FullDetails : InspectionLevel.BasicDetails;

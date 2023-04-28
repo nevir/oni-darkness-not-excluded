@@ -59,7 +59,7 @@ namespace DarknessNotIncluded.InGameConfig
 
         Action<object> onClose = (object config) =>
         {
-          Config.Instance = config as Config;
+          Config.Set(config as Config);
         };
         OptionsDialog.GetProperty("OnClose").SetValue(dialog, onClose);
 

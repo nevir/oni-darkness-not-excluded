@@ -6,6 +6,17 @@ namespace DarknessNotIncluded.DuplicantLights
 {
   public static class MinionLighting
   {
+    private static bool disableDupeLightsInBedrooms;
+    private static bool disableDupeLightsInLitAreas;
+    private static MinionLightingConfig minionLightingConfig;
+
+    private static Config.Observer configObserver = new Config.Observer((config) =>
+    {
+      disableDupeLightsInBedrooms = config.disableDupeLightsInBedrooms;
+      disableDupeLightsInLitAreas = config.disableDupeLightsInLitAreas;
+      minionLightingConfig = config.minionLightingConfig;
+    });
+
     [HarmonyPatch(typeof(MinionConfig)), HarmonyPatch("CreatePrefab")]
     static class Patched_MinionConfig_CreatePrefab
     {
@@ -52,15 +63,14 @@ namespace DarknessNotIncluded.DuplicantLights
 
       private void UpdateLights()
       {
-        var config = Config.Instance;
         var lightType = GetActiveLightType();
+        var lightConfig = minionLightingConfig.Get(lightType);
 
         // Update grid visibility based on the minion's internal state
-        var reveal = lightType.Config().reveal;
-        gridVisibility.radius = reveal;
+        gridVisibility.radius = lightConfig.reveal;
 
         // But actual lights may change based on behavior:
-        if (config.disableDupeLightsInBedrooms && lightType != MinionLightType.None)
+        if (disableDupeLightsInBedrooms && lightType != MinionLightType.None)
         {
           if (MinionRoomState.SleepersInSameRoom(minion))
           {
@@ -68,14 +78,14 @@ namespace DarknessNotIncluded.DuplicantLights
           }
         }
 
-        if (config.disableDupeLightsInLitAreas && lightType != MinionLightType.None)
+        if (disableDupeLightsInLitAreas && lightType != MinionLightType.None)
         {
           var headCell = Grid.CellAbove(Grid.PosToCell(minion.gameObject));
           var headLux = Grid.IsValidCell(headCell) ? Grid.LightIntensity[headCell] : 0;
 
           var dupeLux = Light.enabled ? Light.Lux : 0;
           var baseCellLux = Math.Max(0, headLux - dupeLux);
-          var targetLux = lightType.Config().lux;
+          var targetLux = lightConfig.lux;
           // Keep intrinsic lights on even if next to another dupe
           if (lightType == MinionLightType.Intrinsic) targetLux *= 2;
 
@@ -93,7 +103,7 @@ namespace DarknessNotIncluded.DuplicantLights
         if (lightType == currentLightType) return;
         currentLightType = lightType;
 
-        var lightConfig = lightType.Config();
+        var lightConfig = minionLightingConfig.Get(lightType);
 
         Light.enabled = lightConfig.enabled;
         Light.shape = lightConfig.shape.LightShape();
@@ -108,8 +118,8 @@ namespace DarknessNotIncluded.DuplicantLights
         var lightType = GetLightTypeForCurrentState();
         if (lightType == MinionLightType.None) return lightType;
 
-        if (!lightType.Config().enabled) lightType = MinionLightType.Intrinsic;
-        if (!lightType.Config().enabled) lightType = MinionLightType.None;
+        if (!minionLightingConfig.Get(lightType).enabled) lightType = MinionLightType.Intrinsic;
+        if (!minionLightingConfig.Get(lightType).enabled) lightType = MinionLightType.None;
 
         return lightType;
       }

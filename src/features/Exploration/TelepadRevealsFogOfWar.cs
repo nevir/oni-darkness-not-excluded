@@ -1,5 +1,4 @@
 using HarmonyLib;
-using PeterHan.PLib.Core;
 using System;
 
 namespace DarknessNotIncluded.Exploration
@@ -14,16 +13,22 @@ namespace DarknessNotIncluded.Exploration
   {
     static bool isGeneratingWorld = false;
 
+    private static int telepadRevealRadius;
+
+    private static Config.Observer configObserver = new Config.Observer((config) =>
+    {
+      telepadRevealRadius = config.telepadRevealRadius;
+    });
+
     [HarmonyPatch(typeof(Telepad)), HarmonyPatch("OnPrefabInit")]
     static class Patched_Telepad_OnPrefabInit
     {
       static void Postfix(Telepad __instance)
       {
-        var config = Config.Instance;
         var gridVisibility = __instance.gameObject.AddOrGet<GridVisibility>();
 
         // +1 because the telepad is not 1 cell wide.
-        var radius = Math.Max(config.telepadRevealRadius, 0) + 1;
+        var radius = Math.Max(telepadRevealRadius, 0) + 1;
         gridVisibility.radius = radius;
         gridVisibility.innerRadius = radius;
       }

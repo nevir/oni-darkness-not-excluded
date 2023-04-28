@@ -40,15 +40,6 @@ namespace DarknessNotIncluded
     }
   }
 
-  public static class MinionLightTypeExtensions
-  {
-    public static MinionLightingConfig.LightConfig Config(this MinionLightType value)
-    {
-      var lightingConfig = DarknessNotIncluded.Config.Instance.minionLightingConfig;
-      return lightingConfig.ContainsKey(value) ? lightingConfig[value] : MinionLightingConfig.LightConfig.None;
-    }
-  }
-
   public class MinionLightingConfig : Dictionary<MinionLightType, MinionLightingConfig.LightConfig>
   {
     public class LightConfig
@@ -87,6 +78,11 @@ namespace DarknessNotIncluded
         newConfig.Add(pair.Key, pair.Value.DeepClone());
       }
       return newConfig;
+    }
+
+    public LightConfig Get(MinionLightType lightType)
+    {
+      return this.ContainsKey(lightType) ? this[lightType] : MinionLightingConfig.LightConfig.None;
     }
   }
 }

@@ -10,10 +10,8 @@ namespace DarknessNotIncluded.DarknessPenalties
     private static MinionEffectsConfig.EffectConfig darkConfig;
     private static float gracePeriodCycles;
 
-    private static ConfigObserver configObserver = new ConfigObserver((config) =>
+    private static Config.Observer configObserver = new Config.Observer((config) =>
     {
-      var effectsConfig = config.minionEffectsConfig;
-
       dimConfig = config.minionEffectsConfig[MinionEffectType.Dim];
       darkConfig = config.minionEffectsConfig[MinionEffectType.Dark];
       gracePeriodCycles = config.gracePeriodCycles;
@@ -61,7 +59,7 @@ namespace DarknessNotIncluded.DarknessPenalties
         };
         __instance.effects.Add(DarkEffect);
 
-        new ConfigObserver((config) =>
+        new Config.Observer((config) =>
         {
           DimEffect.SelfModifiers = BuildDimModifiers();
           DarkEffect.SelfModifiers = BuildDarkModifiers();
