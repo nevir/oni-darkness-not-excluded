@@ -75,6 +75,14 @@ namespace DarknessNotIncluded
     [Option("Printing Pod reveal (radius)", "How many tiles should be revealed around the starting point?", "Exploration")]
     public int telepadRevealRadius { get; set; }
 
+    // Plants
+
+    [Option("Max lux tolerated by Dusk Caps", "How much light Dusk Caps can handle before having stunted growth.", "Plants")]
+    public int duskCapPlantMaxLux { get; set; }
+
+    [Option("Max lux tolerated by Bog Buckets", "How much light Bog Buckets can handle before having stunted growth.", "Plants")]
+    public int bogBucketPlantMaxLux { get; set; }
+
     // Light Bonuses
 
     [Option("Decor bonus threshold (lux)", "At what lux should decor get a bonus for being well lit?", "Light Bonuses")]
@@ -117,12 +125,16 @@ namespace DarknessNotIncluded
       dragToolIgnoresVisibility = true;
       telepadRevealRadius = 0;
 
+      // Plants
+      duskCapPlantMaxLux = 500;
+      bogBucketPlantMaxLux = 500;
+
       // Light Bonuses
       decorBonusThresholdLux = 1000;
       litWorkspaceLux = 1000;
 
       // Darkness Penalties
-      maxSleepingLux = 400;
+      maxSleepingLux = 500;
       minionEffectsConfig = new MinionEffectsConfig {
         { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2, -1) },
         { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5, -2) },

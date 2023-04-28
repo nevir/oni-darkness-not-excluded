@@ -19,10 +19,16 @@ namespace DarknessNotIncluded.Exploration
     {
       static void Postfix(Telepad __instance)
       {
-        var gridVisibility = __instance.gameObject.AddOrGet<GridVisibility>();
+        var gridVisibilityInitial = __instance.gameObject.AddOrGet<GridVisibility>();
 
+        // Technically can leak; though we don't expect people to create a lot
+        // of printing pods…
+        var gridVisibilityRef = new WeakReference(gridVisibilityInitial);
         new Config.Observer((config) =>
         {
+          var gridVisibility = (GridVisibility)gridVisibilityRef.Target;
+          if (gridVisibility == null) return;
+
           // +1 because the telepad is not 1 cell wide.
           var radius = Math.Max(config.telepadRevealRadius, 0) + 1;
           gridVisibility.radius = radius;

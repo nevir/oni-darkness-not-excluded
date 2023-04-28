@@ -37,7 +37,6 @@ namespace DarknessNotIncluded.DarknessPenalties
 
       static void Postfix(ModifierSet __instance)
       {
-
         DimEffect = new Effect("Dim", "Dim", "The poor lighting conditions are causing this Duplicant to exhibit poorer coordination than usual.", 0, true, false, true)
         {
           SelfModifiers = BuildModifiers(dimConfig)

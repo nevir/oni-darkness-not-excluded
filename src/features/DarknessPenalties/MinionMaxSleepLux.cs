@@ -11,7 +11,7 @@ namespace DarknessNotIncluded.DarknessPenalties
       maxSleepingLux = config.maxSleepingLux;
     });
 
-    [HarmonyPatch(typeof(SleepChore)), HarmonyPatch(nameof(SleepChore.IsDarkAtCell))]
+    [HarmonyPatch(typeof(SleepChore)), HarmonyPatch("IsDarkAtCell")]
     static class Patched_SleepChore_IsDarkAtCell
     {
       static void Postfix(int cell, ref bool __result)
