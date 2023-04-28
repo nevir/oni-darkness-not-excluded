@@ -1,8 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
-using PeterHan.PLib.Core;
 using PeterHan.PLib.UI;
-using System.Reflection;
 using System;
 using STRINGS;
 
@@ -55,18 +53,18 @@ namespace DarknessNotIncluded.InGameConfig
 
       static void ShowOptions()
       {
-        var OptionsDialog = PPatchTools.GetTypeSafe("PeterHan.PLib.Options.OptionsDialog");
-        var dialog = OptionsDialog.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(Type) }, null).Invoke(new object[] { typeof(Config) });
+        var OptionsDialog = AccessTools.TypeByName("PeterHan.PLib.Options.OptionsDialog");
+        var dialog = AccessTools.Constructor(OptionsDialog, new Type[] { typeof(Type) }).Invoke(new object[] { typeof(Config) });
+        var dialogTraverse = Traverse.Create(dialog);
 
-        Action<object> onClose = (object config) =>
+        dialogTraverse.Property("OnClose").SetValue((Action<object>)((object config) =>
         {
           Config.Set(config as Config);
-        };
-        PPatchTools.GetPropertySafe<Action<object>>(OptionsDialog, "OnClose", false)?.SetValue(dialog, onClose);
+        }));
 
-        PPatchTools.GetMethodSafe(OptionsDialog, "ShowDialog", false)?.Invoke(dialog, new object[] { });
+        dialogTraverse.Method("ShowDialog").GetValue();
 
-        var screen = (KScreen)PPatchTools.GetFieldSafe(OptionsDialog, "dialog", false)?.GetValue(dialog);
+        var screen = dialogTraverse.Field("dialog").GetValue<KScreen>();
         screen.ConsumeMouseScroll = true;
       }
     }

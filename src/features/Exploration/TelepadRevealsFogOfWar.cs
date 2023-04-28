@@ -1,6 +1,5 @@
 using HarmonyLib;
 using System;
-using PeterHan.PLib.Core;
 
 namespace DarknessNotIncluded.Exploration
 {
@@ -36,7 +35,7 @@ namespace DarknessNotIncluded.Exploration
 
           if (gridVisibility.isSpawned)
           {
-            PPatchTools.GetMethodSafe(typeof(GridVisibility), "OnCellChange", false)?.Invoke(gridVisibility, new object[] { });
+            Traverse.Create(gridVisibility).Method("OnCellChange").GetValue();
           }
         });
       }
