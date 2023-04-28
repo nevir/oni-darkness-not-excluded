@@ -10,7 +10,7 @@ namespace DarknessNotIncluded
   [JsonObject(MemberSerialization.OptOut)]
   [ModInfo("https://github.com/nevir/oni-darkness-not-excluded")]
   [ConfigFile(SharedConfigLocation: true)]
-  class Config
+  public class Config
   {
     protected static Config instance;
 
@@ -27,6 +27,7 @@ namespace DarknessNotIncluded
       set
       {
         instance = value;
+        ConfigObserver.UpdateObservers(value);
       }
     }
 

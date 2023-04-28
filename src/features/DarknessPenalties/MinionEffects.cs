@@ -6,6 +6,19 @@ namespace DarknessNotIncluded.DarknessPenalties
 {
   public static class MinionEffects
   {
+    private static MinionEffectsConfig.EffectConfig dimConfig;
+    private static MinionEffectsConfig.EffectConfig darkConfig;
+    private static float gracePeriodCycles;
+
+    private static ConfigObserver configObserver = new ConfigObserver((config) =>
+    {
+      var effectsConfig = config.minionEffectsConfig;
+
+      dimConfig = config.minionEffectsConfig[MinionEffectType.Dim];
+      darkConfig = config.minionEffectsConfig[MinionEffectType.Dark];
+      gracePeriodCycles = config.gracePeriodCycles;
+    });
+
     public static Effect DarkEffect;
 
     public static Effect DimEffect;
@@ -13,31 +26,46 @@ namespace DarknessNotIncluded.DarknessPenalties
     [HarmonyPatch(typeof(ModifierSet)), HarmonyPatch("Initialize")]
     static class Patched_ModifierSet_Initialize
     {
-      static void Postfix(ModifierSet __instance)
+      static List<AttributeModifier> BuildDimModifiers()
       {
-        var effectsConfig = Config.Instance.minionEffectsConfig;
-
-        List<AttributeModifier> dimModifiers = new List<AttributeModifier>();
+        List<AttributeModifier> modifiers = new List<AttributeModifier>();
         foreach (var modifier in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
         {
-          dimModifiers.Add(new AttributeModifier(modifier, effectsConfig[MinionEffectType.Dim].statsModifier));
+          modifiers.Add(new AttributeModifier(modifier, dimConfig.statsModifier));
         }
+        return modifiers;
+      }
+
+      static List<AttributeModifier> BuildDarkModifiers()
+      {
+        List<AttributeModifier> modifiers = new List<AttributeModifier>();
+        foreach (var modifier in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
+        {
+          modifiers.Add(new AttributeModifier(modifier, darkConfig.statsModifier));
+        }
+        return modifiers;
+      }
+
+      static void Postfix(ModifierSet __instance)
+      {
+
         DimEffect = new Effect("Dim", "Dim", "The poor lighting conditions are causing this Duplicant to exhibit poorer coordination than usual.", 0, true, false, true)
         {
-          SelfModifiers = dimModifiers
+          SelfModifiers = BuildDimModifiers()
         };
         __instance.effects.Add(DimEffect);
 
-        List<AttributeModifier> darkModifiers = new List<AttributeModifier>();
-        foreach (var modifier in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
-        {
-          darkModifiers.Add(new AttributeModifier(modifier, effectsConfig[MinionEffectType.Dark].statsModifier));
-        }
         DarkEffect = new Effect("Dark", "Dark", "This Duplicant can't see past its nose, and is struggling to perform even basic tasks.", 0, true, false, true)
         {
-          SelfModifiers = darkModifiers
+          SelfModifiers = BuildDarkModifiers()
         };
         __instance.effects.Add(DarkEffect);
+
+        new ConfigObserver((config) =>
+        {
+          DimEffect.SelfModifiers = BuildDimModifiers();
+          DarkEffect.SelfModifiers = BuildDarkModifiers();
+        });
       }
     }
 
@@ -65,13 +93,9 @@ namespace DarknessNotIncluded.DarknessPenalties
       public BoolParameter isActive;
       public FloatParameter lightLevel;
 
+
       public override void InitializeStates(out StateMachine.BaseState default_state)
       {
-        var config = Config.Instance;
-        var effectsConfig = config.minionEffectsConfig;
-        var dimThreshold = effectsConfig[MinionEffectType.Dim].luxThreshold;
-        var darkThreshold = effectsConfig[MinionEffectType.Dark].luxThreshold;
-
         default_state = inactive;
 
         root
@@ -86,32 +110,41 @@ namespace DarknessNotIncluded.DarknessPenalties
           .ParamTransition(isActive, inactive, (smi, p) => !p);
 
         active.lit
-          .ParamTransition(lightLevel, active.dim, (smi, p) => p > darkThreshold && p <= dimThreshold)
-          .ParamTransition(lightLevel, active.dark, (smi, p) => p <= darkThreshold);
+          .ParamTransition(lightLevel, active.dim, (smi, p) => p > darkConfig.luxThreshold && p <= dimConfig.luxThreshold)
+          .ParamTransition(lightLevel, active.dark, (smi, p) => p <= darkConfig.luxThreshold);
 
         active.dim
-          .ParamTransition(lightLevel, active.lit, (smi, p) => p > dimThreshold)
-          .ParamTransition(lightLevel, active.dark, (smi, p) => p <= darkThreshold);
-        if (effectsConfig[MinionEffectType.Dim].enabled)
-        {
-          active.dim.ToggleEffect(DimEffect.Id);
-        }
+          .ParamTransition(lightLevel, active.lit, (smi, p) => p > dimConfig.luxThreshold)
+          .ParamTransition(lightLevel, active.dark, (smi, p) => p <= darkConfig.luxThreshold)
+          .Enter(smi =>
+          {
+            if (!dimConfig.enabled) return;
+            smi.effects.Add(DimEffect.Id, false);
+          })
+          .Exit(smi =>
+          {
+            smi.effects.Remove(DimEffect.Id);
+          });
 
         active.dark
-          .ParamTransition(lightLevel, active.dim, (smi, p) => p > darkThreshold && p <= dimThreshold)
-          .ParamTransition(lightLevel, active.lit, (smi, p) => p > dimThreshold);
-        if (effectsConfig[MinionEffectType.Dim].enabled)
-        {
-          active.dark.ToggleEffect(DarkEffect.Id);
-        }
+          .ParamTransition(lightLevel, active.dim, (smi, p) => p > darkConfig.luxThreshold && p <= dimConfig.luxThreshold)
+          .ParamTransition(lightLevel, active.lit, (smi, p) => p > dimConfig.luxThreshold)
+          .Enter(smi =>
+          {
+            if (!darkConfig.enabled) return;
+            smi.effects.Add(DarkEffect.Id, false);
+          })
+          .Exit(smi =>
+          {
+            smi.effects.Remove(DarkEffect.Id);
+          });
       }
 
       private static void CheckActive(LightMonitor.Instance smi, float dt)
       {
-        var config = Config.Instance;
         var minion = smi.GetComponent<MinionIdentity>();
 
-        var isInactive = minion.IsSleeping() || GameClock.Instance.GetTimeInCycles() < config.gracePeriodCycles;
+        var isInactive = minion.IsSleeping() || GameClock.Instance.GetTimeInCycles() < gracePeriodCycles;
 
         smi.sm.isActive.Set(!isInactive, smi);
       }
