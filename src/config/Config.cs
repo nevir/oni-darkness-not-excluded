@@ -124,8 +124,8 @@ namespace DarknessNotIncluded
       // Darkness Penalties
       maxSleepingLux = 400;
       minionEffectsConfig = new MinionEffectsConfig {
-        { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2) },
-        { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5) },
+        { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2, -1) },
+        { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5, -2) },
       };
 
       // Duplicant Lights

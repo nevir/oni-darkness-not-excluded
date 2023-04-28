@@ -14,18 +14,20 @@ namespace DarknessNotIncluded
     {
       public bool enabled { get; set; }
       public int luxThreshold { get; set; }
+      public int agilityModifier { get; set; }
       public int statsModifier { get; set; }
 
-      public EffectConfig(bool enabled, int luxThreshold, int athleticsModifier)
+      public EffectConfig(bool enabled, int luxThreshold, int agilityModifier, int athleticsModifier)
       {
         this.enabled = enabled;
         this.luxThreshold = luxThreshold;
+        this.agilityModifier = agilityModifier;
         this.statsModifier = athleticsModifier;
       }
 
       public EffectConfig DeepClone()
       {
-        return new EffectConfig(enabled, luxThreshold, statsModifier);
+        return new EffectConfig(enabled, luxThreshold, agilityModifier, statsModifier);
       }
     }
 

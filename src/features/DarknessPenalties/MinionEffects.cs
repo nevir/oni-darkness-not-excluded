@@ -24,22 +24,13 @@ namespace DarknessNotIncluded.DarknessPenalties
     [HarmonyPatch(typeof(ModifierSet)), HarmonyPatch("Initialize")]
     static class Patched_ModifierSet_Initialize
     {
-      static List<AttributeModifier> BuildDimModifiers()
+      static List<AttributeModifier> BuildModifiers(MinionEffectsConfig.EffectConfig effectConfig)
       {
         List<AttributeModifier> modifiers = new List<AttributeModifier>();
-        foreach (var modifier in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
+        foreach (var attribute in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
         {
-          modifiers.Add(new AttributeModifier(modifier, dimConfig.statsModifier));
-        }
-        return modifiers;
-      }
-
-      static List<AttributeModifier> BuildDarkModifiers()
-      {
-        List<AttributeModifier> modifiers = new List<AttributeModifier>();
-        foreach (var modifier in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
-        {
-          modifiers.Add(new AttributeModifier(modifier, darkConfig.statsModifier));
+          var modifier = attribute == "Athletics" ? effectConfig.agilityModifier : effectConfig.statsModifier;
+          modifiers.Add(new AttributeModifier(attribute, modifier));
         }
         return modifiers;
       }
@@ -49,20 +40,20 @@ namespace DarknessNotIncluded.DarknessPenalties
 
         DimEffect = new Effect("Dim", "Dim", "The poor lighting conditions are causing this Duplicant to exhibit poorer coordination than usual.", 0, true, false, true)
         {
-          SelfModifiers = BuildDimModifiers()
+          SelfModifiers = BuildModifiers(dimConfig)
         };
         __instance.effects.Add(DimEffect);
 
         DarkEffect = new Effect("Dark", "Dark", "This Duplicant can't see past its nose, and is struggling to perform even basic tasks.", 0, true, false, true)
         {
-          SelfModifiers = BuildDarkModifiers()
+          SelfModifiers = BuildModifiers(darkConfig)
         };
         __instance.effects.Add(DarkEffect);
 
         new Config.Observer((config) =>
         {
-          DimEffect.SelfModifiers = BuildDimModifiers();
-          DarkEffect.SelfModifiers = BuildDarkModifiers();
+          DimEffect.SelfModifiers = BuildModifiers(dimConfig);
+          DarkEffect.SelfModifiers = BuildModifiers(darkConfig);
         });
       }
     }

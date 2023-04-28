@@ -24,6 +24,7 @@ namespace DarknessNotIncluded
 
     private Dictionary<MinionEffectType, GameObject> enabledComponents;
     private Dictionary<MinionEffectType, GameObject> luxThresholdComponents;
+    private Dictionary<MinionEffectType, GameObject> agilityModifierComponents;
     private Dictionary<MinionEffectType, GameObject> statsModifierComponents;
 
     public override void CreateUIEntry(PGridPanel parent, ref int parentRow)
@@ -32,10 +33,12 @@ namespace DarknessNotIncluded
 
       enabledComponents = new Dictionary<MinionEffectType, GameObject>();
       luxThresholdComponents = new Dictionary<MinionEffectType, GameObject>();
+      agilityModifierComponents = new Dictionary<MinionEffectType, GameObject>();
       statsModifierComponents = new Dictionary<MinionEffectType, GameObject>();
 
       grid.AddColumn(new GridColumnSpec());
       grid.AddColumn(new GridColumnSpec(flex: 1.0f));
+      grid.AddColumn(new GridColumnSpec());
       grid.AddColumn(new GridColumnSpec());
       grid.AddColumn(new GridColumnSpec());
 
@@ -43,7 +46,8 @@ namespace DarknessNotIncluded
 
       grid.AddRow(new GridRowSpec(flex: 1.0f));
       grid.AddChild(new PLabel() { Text = "lux", TextStyle = PUITuning.Fonts.TextLightStyle }, new GridComponentSpec(0, 2));
-      grid.AddChild(new PLabel() { Text = "stats", TextStyle = PUITuning.Fonts.TextLightStyle }, new GridComponentSpec(0, 3));
+      grid.AddChild(new PLabel() { Text = "agility", TextStyle = PUITuning.Fonts.TextLightStyle }, new GridComponentSpec(0, 3));
+      grid.AddChild(new PLabel() { Text = "stats", TextStyle = PUITuning.Fonts.TextLightStyle }, new GridComponentSpec(0, 4));
 
       // Light Types
 
@@ -90,7 +94,23 @@ namespace DarknessNotIncluded
         luxField.AddOnRealize(o => luxThresholdComponents.Add(type, o));
         grid.AddChild(luxField, new GridComponentSpec(row, 2) { Margin = LABEL_MARGIN });
 
-        var rangeField = new PTextField($"{name}.statsModifier")
+        var agilityField = new PTextField($"{name}.agilityModifier")
+        {
+          Type = PTextField.FieldType.Integer,
+          MinWidth = 48,
+          OnTextChanged = (o, text) =>
+          {
+            if (int.TryParse(text, out int newRange))
+            {
+              this.value[type].agilityModifier = newRange;
+              UpdateComponents();
+            }
+          }
+        };
+        agilityField.AddOnRealize(o => agilityModifierComponents.Add(type, o));
+        grid.AddChild(agilityField, new GridComponentSpec(row, 3) { Margin = LABEL_MARGIN });
+
+        var statsField = new PTextField($"{name}.statsModifier")
         {
           Type = PTextField.FieldType.Integer,
           MinWidth = 48,
@@ -103,8 +123,8 @@ namespace DarknessNotIncluded
             }
           }
         };
-        rangeField.AddOnRealize(o => statsModifierComponents.Add(type, o));
-        grid.AddChild(rangeField, new GridComponentSpec(row, 3) { Margin = LABEL_MARGIN });
+        statsField.AddOnRealize(o => statsModifierComponents.Add(type, o));
+        grid.AddChild(statsField, new GridComponentSpec(row, 4) { Margin = LABEL_MARGIN });
 
         row++;
       }
@@ -124,6 +144,7 @@ namespace DarknessNotIncluded
 
         PCheckBox.SetCheckState(enabledComponents[pair.Key], pair.Value.enabled ? PCheckBox.STATE_CHECKED : PCheckBox.STATE_UNCHECKED);
         PlibUtils.SetFieldText(luxThresholdComponents[pair.Key], pair.Value.luxThreshold.ToString());
+        PlibUtils.SetFieldText(agilityModifierComponents[pair.Key], pair.Value.agilityModifier.ToString());
         PlibUtils.SetFieldText(statsModifierComponents[pair.Key], pair.Value.statsModifier.ToString());
       }
     }
