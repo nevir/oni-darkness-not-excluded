@@ -35,7 +35,7 @@ namespace DarknessNotIncluded.InGameConfig
             }
             else if (btn == KKeyCode.Mouse1)
             {
-              ShowOptions();
+              OptionsEnhancements.OptionsDialog.Show<Config>(typeof(Config), (config) => Config.Set(config));
             }
           };
         });
@@ -49,23 +49,6 @@ namespace DarknessNotIncluded.InGameConfig
         button.GetComponent<ToolTip>().SetSimpleTooltip(Darkness.Behavior.enabled ? DARKNESS_ACTIVE_TOOLTIP : DARKNESS_DISABLED_TOOLTIP);
         button.bgImage.colorStyleSetting = Darkness.Behavior.enabled ? PUITuning.Colors.ButtonBlueStyle : PUITuning.Colors.ButtonPinkStyle;
         button.fgImage.sprite = Assets.GetSprite(Darkness.Behavior.enabled ? "icon_category_lights_disabled" : "icon_category_lights");
-      }
-
-      static void ShowOptions()
-      {
-        var OptionsDialog = AccessTools.TypeByName("PeterHan.PLib.Options.OptionsDialog");
-        var dialog = AccessTools.Constructor(OptionsDialog, new Type[] { typeof(Type) }).Invoke(new object[] { typeof(Config) });
-        var dialogTraverse = Traverse.Create(dialog);
-
-        dialogTraverse.Property("OnClose").SetValue((Action<object>)((object config) =>
-        {
-          Config.Set(config as Config);
-        }));
-
-        dialogTraverse.Method("ShowDialog").GetValue();
-
-        var screen = dialogTraverse.Field("dialog").GetValue<KScreen>();
-        screen.ConsumeMouseScroll = true;
       }
     }
   }
