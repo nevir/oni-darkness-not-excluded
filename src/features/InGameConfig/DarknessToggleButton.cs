@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using PeterHan.PLib.Core;
 using PeterHan.PLib.UI;
 using System.Reflection;
 using System;
@@ -54,18 +55,18 @@ namespace DarknessNotIncluded.InGameConfig
 
       static void ShowOptions()
       {
-        var OptionsDialog = Type.GetType("PeterHan.PLib.Options.OptionsDialog");
+        var OptionsDialog = PPatchTools.GetTypeSafe("PeterHan.PLib.Options.OptionsDialog");
         var dialog = OptionsDialog.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(Type) }, null).Invoke(new object[] { typeof(Config) });
 
         Action<object> onClose = (object config) =>
         {
           Config.Set(config as Config);
         };
-        OptionsDialog.GetProperty("OnClose").SetValue(dialog, onClose);
+        PPatchTools.GetPropertySafe<Action<object>>(OptionsDialog, "OnClose", false)?.SetValue(dialog, onClose);
 
-        OptionsDialog.GetMethod("ShowDialog").Invoke(dialog, BindingFlags.NonPublic, null, new object[] { }, null);
+        PPatchTools.GetMethodSafe(OptionsDialog, "ShowDialog", false)?.Invoke(dialog, new object[] { });
 
-        var screen = (KScreen)OptionsDialog.GetField("dialog", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(dialog);
+        var screen = (KScreen)PPatchTools.GetFieldSafe(OptionsDialog, "dialog", false)?.GetValue(dialog);
         screen.ConsumeMouseScroll = true;
       }
     }
