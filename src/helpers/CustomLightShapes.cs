@@ -3,16 +3,41 @@ using System.Collections.Generic;
 
 namespace DarknessNotIncluded
 {
+  public static class LightShapeExtensions
+  {
+    public static global::LightShape LightShape(this CustomLightShape shape)
+    {
+      switch (shape)
+      {
+        case DarknessNotIncluded.CustomLightShape.SmoothCircle: return CustomLightShapes.SmoothCircle.KleiLightShape;
+        case DarknessNotIncluded.CustomLightShape.MinionPill: return CustomLightShapes.MinionPill.KleiLightShape;
+        case DarknessNotIncluded.CustomLightShape.MinionDirectedCone: return CustomLightShapes.MinionDirectedCone.KleiLightShape;
+        default: return global::LightShape.Circle;
+      }
+    }
+  }
+
   public static class CustomLightShapes
   {
+    public static ILightShape SmoothCircle;
     public static ILightShape MinionPill;
     public static ILightShape MinionDirectedCone;
 
     public static void Initialize()
     {
       PLightManager lightManager = new PLightManager();
+      SmoothCircle = lightManager.Register("nevir.DarknessNotExcluded.SmoothCircle", CustomLightShapes.SmoothCircleCaster);
       MinionPill = lightManager.Register("nevir.DarknessNotExcluded.MinionPill", CustomLightShapes.MinionPillCaster);
       MinionDirectedCone = lightManager.Register("nevir.DarknessNotExcluded.MinionDirectedCone", CustomLightShapes.MinionDirectedConeCaster);
+    }
+
+    public static void SmoothCircleCaster(LightingArgs args)
+    {
+      int sourceCell = args.SourceCell;
+      int range = args.Range;
+      var brightness = args.Brightness;
+
+      CastSmoothCircle(brightness, range, sourceCell);
     }
 
     public static void MinionPillCaster(LightingArgs args)

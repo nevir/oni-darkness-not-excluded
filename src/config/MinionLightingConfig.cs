@@ -4,11 +4,7 @@ using Newtonsoft.Json;
 
 namespace DarknessNotIncluded
 {
-  public enum MinionLightShape
-  {
-    Pill,
-    DirectedCone,
-  }
+
 
   public enum MinionLightType
   {
@@ -25,51 +21,8 @@ namespace DarknessNotIncluded
     LeadSuit,
   }
 
-  public static class MinionLightShapeExtensions
+  public class MinionLightingConfig : Dictionary<MinionLightType, LightConfig>
   {
-    public static LightShape LightShape(this MinionLightShape shape)
-    {
-      if (shape == MinionLightShape.DirectedCone)
-      {
-        return CustomLightShapes.MinionDirectedCone.KleiLightShape;
-      }
-      else
-      {
-        return CustomLightShapes.MinionPill.KleiLightShape;
-      }
-    }
-  }
-
-  public class MinionLightingConfig : Dictionary<MinionLightType, MinionLightingConfig.LightConfig>
-  {
-    public class LightConfig
-    {
-      public bool enabled { get; set; }
-      public int lux { get; set; }
-      public int range { get; set; }
-      public int reveal { get; set; }
-      public MinionLightShape shape { get; set; }
-      [JsonConverter(typeof(ColorJsonConverter))]
-      public Color color { get; set; }
-
-      public LightConfig(bool enabled, int lux, int range, int reveal, MinionLightShape shape, Color color)
-      {
-        this.enabled = enabled;
-        this.lux = lux;
-        this.range = range;
-        this.reveal = reveal;
-        this.shape = shape;
-        this.color = color;
-      }
-
-      public LightConfig DeepClone()
-      {
-        return new LightConfig(enabled, lux, range, reveal, shape, color);
-      }
-
-      public static LightConfig None = new LightConfig(false, 0, 0, 0, MinionLightShape.Pill, new Color(0, 0, 0, 0));
-    }
-
     public MinionLightingConfig DeepClone()
     {
       var newConfig = new MinionLightingConfig();
@@ -82,7 +35,7 @@ namespace DarknessNotIncluded
 
     public LightConfig Get(MinionLightType lightType)
     {
-      return this.ContainsKey(lightType) ? this[lightType] : MinionLightingConfig.LightConfig.None;
+      return this.ContainsKey(lightType) ? this[lightType] : LightConfig.None;
     }
   }
 }
