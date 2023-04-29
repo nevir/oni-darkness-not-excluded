@@ -1,7 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
 using PeterHan.PLib.UI;
-using System;
 using STRINGS;
 
 namespace DarknessNotIncluded.InGameConfig

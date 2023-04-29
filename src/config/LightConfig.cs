@@ -1,5 +1,5 @@
-using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace DarknessNotIncluded
 {

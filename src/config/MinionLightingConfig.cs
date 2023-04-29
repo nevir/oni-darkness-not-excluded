@@ -1,11 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
-using Newtonsoft.Json;
 
 namespace DarknessNotIncluded
 {
-
-
   public enum MinionLightType
   {
     None,

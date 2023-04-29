@@ -1,7 +1,7 @@
+using DarknessNotIncluded.Exploration;
 using HarmonyLib;
 using System;
 using UnityEngine;
-using DarknessNotIncluded.Exploration;
 
 namespace DarknessNotIncluded.DuplicantLights
 {

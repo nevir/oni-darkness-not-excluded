@@ -1,7 +1,7 @@
 using HarmonyLib;
-using UnityEngine;
-using System.Collections.Generic;
 using STRINGS;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace DarknessNotIncluded.Plants
 {

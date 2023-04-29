@@ -1,7 +1,7 @@
 using HarmonyLib;
-using System.Reflection;
 using PeterHan.PLib.UI;
 using System;
+using System.Reflection;
 using UnityEngine;
 
 namespace DarknessNotIncluded.OptionsEnhancements

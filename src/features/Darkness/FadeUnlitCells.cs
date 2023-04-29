@@ -1,5 +1,5 @@
-using System;
 using HarmonyLib;
+using System;
 
 namespace DarknessNotIncluded.Darkness
 {
