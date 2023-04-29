@@ -1,6 +1,4 @@
 using HarmonyLib;
-using UnityEngine;
-using System;
 
 namespace DarknessNotIncluded.Exploration
 {
@@ -10,24 +8,24 @@ namespace DarknessNotIncluded.Exploration
     {
       public BuildingType buildingType;
 
+      private bool forceOff = false;
+
       private Light2D light;
       private GridVisibility gridVisibility;
+      private LightConfig buildingConfig;
 
       protected override void OnPrefabInit()
       {
         base.OnPrefabInit();
-
-        Console.WriteLine($"BuildingLightingManager [{gameObject}] OnPrefabInit");
 
         light = gameObject.AddOrGet<Light2D>();
         gridVisibility = gameObject.AddOrGet<GridVisibility>();
 
         Config.ObserveFor(this, (config) =>
         {
-          Console.WriteLine($"BuildingLightingManager [{gameObject}] Config update");
-          var buildingConfig = config.buildingLightingConfig[buildingType];
+          buildingConfig = config.buildingLightingConfig[buildingType];
 
-          buildingConfig.ConfigureLight(light);
+          buildingConfig.ConfigureLight(light, forceOff);
 
           // TODO: offset to center of building and increase radius by building 
           // size.
@@ -37,6 +35,17 @@ namespace DarknessNotIncluded.Exploration
             Traverse.Create(gridVisibility).Method("OnCellChange").GetValue();
           }
         });
+      }
+
+      public void SetForceOff(bool forceOff)
+      {
+        this.forceOff = forceOff;
+        var enabled = forceOff ? false : buildingConfig.enabled;
+        if (light.enabled != enabled)
+        {
+          light.enabled = enabled;
+          light.FullRefresh();
+        }
       }
     }
   }

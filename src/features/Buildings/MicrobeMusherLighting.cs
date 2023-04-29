@@ -1,6 +1,5 @@
 using HarmonyLib;
 using UnityEngine;
-using System;
 
 namespace DarknessNotIncluded.Exploration
 {
@@ -19,7 +18,21 @@ namespace DarknessNotIncluded.Exploration
         var lightingManager = go.AddOrGet<Behavior.BuildingLightingManager>();
         lightingManager.buildingType = BuildingType.MicrobeMusher;
 
-        // Look at Workable's WorkTimeRemaining to determine status.
+        go.AddOrGet<LightWhileWorking>();
+      }
+    }
+
+    public class LightWhileWorking : KMonoBehaviour, ISim33ms
+    {
+      [MyCmpGet]
+      MicrobeMusher musher;
+
+      [MyCmpGet]
+      Behavior.BuildingLightingManager lightingManager;
+
+      public void Sim33ms(float dt)
+      {
+        lightingManager.SetForceOff(!musher.HasWorker);
       }
     }
   }
