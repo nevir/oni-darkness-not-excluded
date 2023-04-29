@@ -128,7 +128,7 @@ namespace DarknessNotIncluded
       // Buildings
       buildingLightingConfig = new BuildingLightingConfig {
         { BuildingType.PrintingPod, new LightConfig(true, 2000, 5, 0, LightShape.Circle, LIGHT2D.LIGHT_YELLOW) },
-        { BuildingType.MicrobeMusher, new LightConfig(true, 500, 2, 0, LightShape.Circle, LIGHT2D.LIGHT_YELLOW) },
+        { BuildingType.MicrobeMusher, new LightConfig(true, 1000, 1, 0, LightShape.Circle, LIGHT2D.LIGHT_YELLOW) },
       };
 
       // Plants
