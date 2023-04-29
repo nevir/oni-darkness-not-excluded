@@ -74,28 +74,30 @@ namespace DarknessNotIncluded.Plants
     [HarmonyPatch(typeof(MinionVitalsPanel)), HarmonyPatch("GetIlluminationLabel")]
     static class Patched_MinionVitalsPanel_GetIlluminationLabel
     {
-      static void Postfix(GameObject go, ref string __result)
+      static bool Prefix(GameObject go, ref string __result)
       {
         var illuminationVulnerable = go.GetComponent<IlluminationVulnerable>();
-        if (illuminationVulnerable == null) return;
+        if (illuminationVulnerable == null) return true;
         var maxLux = illuminationVulnerable.GetMaxLux();
-        if (maxLux <= 0) return;
+        if (maxLux <= 0) return true;
 
         __result = Db.Get().Amounts.Illumination.Name + "\n    • " + DESCRIPTOR_LABEL.Replace("{Lux}", GameUtil.GetFormattedLux(maxLux));
+        return false;
       }
     }
 
     [HarmonyPatch(typeof(MinionVitalsPanel)), HarmonyPatch("GetIlluminationTooltip")]
     static class Patched_MinionVitalsPanel_GetIlluminationTooltip
     {
-      static void Postfix(GameObject go, ref string __result)
+      static bool Prefix(GameObject go, ref string __result)
       {
         var illuminationVulnerable = go.GetComponent<IlluminationVulnerable>();
-        if (illuminationVulnerable == null) return;
+        if (illuminationVulnerable == null) return true;
         var maxLux = illuminationVulnerable.GetMaxLux();
-        if (maxLux <= 0) return;
+        if (maxLux <= 0) return true;
 
         __result = DESCRIPTOR_TOOLTIP.Replace("{Lux}", GameUtil.GetFormattedLux(maxLux));
+        return false;
       }
     }
   }

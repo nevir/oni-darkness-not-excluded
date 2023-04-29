@@ -6,6 +6,7 @@ using PeterHan.PLib;
 using PeterHan.PLib.Options;
 using System;
 using System.Collections.Generic;
+using TUNING;
 using UnityEngine;
 
 namespace DarknessNotIncluded
@@ -41,6 +42,12 @@ namespace DarknessNotIncluded
 
     [Option("Printing Pod reveal (radius)", "How many tiles should be revealed around the starting point?", "Exploration")]
     public int telepadRevealRadius { get; set; }
+
+    // Buildings
+
+    [DynamicOption(typeof(BuildingLightingConfigEntry), "Building Lights")]
+    [Option("Configuration for building lights", "Configuration for building lights", "Building Lights")]
+    public BuildingLightingConfig buildingLightingConfig { get; set; }
 
     // Plants
 
@@ -79,6 +86,8 @@ namespace DarknessNotIncluded
     [Option("Configuration for dupe lights", "Configuration for dupe lights", "Duplicant Lights")]
     public MinionLightingConfig minionLightingConfig { get; set; }
 
+    // Presets
+
     [OptionPreset("The Deep Dark")]
     public static Config TheDeepDark()
     {
@@ -116,6 +125,11 @@ namespace DarknessNotIncluded
       dragToolIgnoresVisibility = true;
       telepadRevealRadius = 0;
 
+      // Buildings
+      buildingLightingConfig = new BuildingLightingConfig {
+        { BuildingType.PrintingPod, new LightConfig(true, 1000, 5, 0, LightShape.Circle, LIGHT2D.LIGHT_YELLOW) },
+      };
+
       // Plants
       duskCapPlantMaxLux = 500;
       bogBucketPlantMaxLux = 500;
@@ -146,16 +160,16 @@ namespace DarknessNotIncluded
       disableDupeLightsInLitAreas = true;
       disableDupeLightsInBedrooms = true;
       minionLightingConfig = new MinionLightingConfig {
-        { MinionLightType.Intrinsic, new LightConfig(true,  200,  2, 0, CustomLightShape.MinionPill,         Color.white) },
-        { MinionLightType.Mining1,   new LightConfig(true,  800,  3, 6, CustomLightShape.MinionDirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining2,   new LightConfig(true,  1000, 4, 7, CustomLightShape.MinionDirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining3,   new LightConfig(true,  1200, 5, 8, CustomLightShape.MinionDirectedCone, Color.white)},
-        { MinionLightType.Mining4,   new LightConfig(true,  1400, 6, 9, CustomLightShape.MinionDirectedCone, Color.white)},
-        { MinionLightType.Science,   new LightConfig(true,  800,  3, 0, CustomLightShape.MinionPill,         Color.white)},
-        { MinionLightType.Rocketry,  new LightConfig(true,  800,  4, 0, CustomLightShape.MinionDirectedCone, Color.white)},
-        { MinionLightType.AtmoSuit,  new LightConfig(true,  600,  3, 0, CustomLightShape.MinionPill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.JetSuit,   new LightConfig(true,  800,  5, 7, CustomLightShape.MinionDirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.LeadSuit,  new LightConfig(true,  400,  3, 0, CustomLightShape.MinionPill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Intrinsic, new LightConfig(true,  200,  2, 0, LightShape.MinionPill,         Color.white) },
+        { MinionLightType.Mining1,   new LightConfig(true,  800,  3, 6, LightShape.MinionDirectedCone, LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining2,   new LightConfig(true,  1000, 4, 7, LightShape.MinionDirectedCone, LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining3,   new LightConfig(true,  1200, 5, 8, LightShape.MinionDirectedCone, Color.white)},
+        { MinionLightType.Mining4,   new LightConfig(true,  1400, 6, 9, LightShape.MinionDirectedCone, Color.white)},
+        { MinionLightType.Science,   new LightConfig(true,  800,  3, 0, LightShape.MinionPill,         Color.white)},
+        { MinionLightType.Rocketry,  new LightConfig(true,  800,  4, 0, LightShape.MinionDirectedCone, Color.white)},
+        { MinionLightType.AtmoSuit,  new LightConfig(true,  600,  3, 0, LightShape.MinionPill,         LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.JetSuit,   new LightConfig(true,  800,  5, 7, LightShape.MinionDirectedCone, LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.LeadSuit,  new LightConfig(true,  400,  3, 0, LightShape.MinionPill,         LIGHT2D.LIGHT_YELLOW)},
       };
 
       if (defaultMinionReveal)
@@ -168,6 +182,24 @@ namespace DarknessNotIncluded
     }
 
     private static List<Action<Config>> observers = new List<Action<Config>>();
+
+    public static void ObserveFor(object target, Action<Config> observer)
+    {
+      var targetRef = new WeakReference(target);
+      Action<Config> wrappedObserver = null;
+      wrappedObserver = (config) =>
+      {
+        if (targetRef.Target == null)
+        {
+          observers.Remove(wrappedObserver);
+          return;
+        }
+        observer(config);
+      };
+
+      observers.Add(wrappedObserver);
+      observer(Get());
+    }
 
     public class Observer
     {

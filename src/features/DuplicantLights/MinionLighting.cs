@@ -103,15 +103,7 @@ namespace DarknessNotIncluded.DuplicantLights
       {
         if (lightType == currentLightType) return;
         currentLightType = lightType;
-
-        var lightConfig = minionLightingConfig.Get(lightType);
-
-        Light.enabled = lightConfig.enabled;
-        Light.shape = lightConfig.shape.LightShape();
-        Light.Lux = lightConfig.lux;
-        Light.Range = lightConfig.range;
-        Light.Color = lightConfig.color;
-        Light.FullRefresh();
+        minionLightingConfig.Get(lightType).ConfigureLight(Light);
       }
 
       private MinionLightType GetActiveLightType()

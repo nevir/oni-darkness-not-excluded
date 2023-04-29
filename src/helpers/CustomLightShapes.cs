@@ -5,13 +5,14 @@ namespace DarknessNotIncluded
 {
   public static class LightShapeExtensions
   {
-    public static global::LightShape LightShape(this CustomLightShape shape)
+    public static global::LightShape LightShape(this LightShape shape)
     {
       switch (shape)
       {
-        case DarknessNotIncluded.CustomLightShape.SmoothCircle: return CustomLightShapes.SmoothCircle.KleiLightShape;
-        case DarknessNotIncluded.CustomLightShape.MinionPill: return CustomLightShapes.MinionPill.KleiLightShape;
-        case DarknessNotIncluded.CustomLightShape.MinionDirectedCone: return CustomLightShapes.MinionDirectedCone.KleiLightShape;
+        case DarknessNotIncluded.LightShape.Circle: return global::LightShape.Circle;
+        case DarknessNotIncluded.LightShape.SmoothCircle: return CustomLightShapes.SmoothCircle.KleiLightShape;
+        case DarknessNotIncluded.LightShape.MinionPill: return CustomLightShapes.MinionPill.KleiLightShape;
+        case DarknessNotIncluded.LightShape.MinionDirectedCone: return CustomLightShapes.MinionDirectedCone.KleiLightShape;
         default: return global::LightShape.Circle;
       }
     }

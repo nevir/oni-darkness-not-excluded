@@ -1,5 +1,4 @@
 using HarmonyLib;
-using System;
 using UnityEngine;
 
 namespace DarknessNotIncluded.Plants
@@ -11,14 +10,10 @@ namespace DarknessNotIncluded.Plants
     {
       static void Postfix(ref GameObject __result)
       {
-        var illuminationVulnerableInitial = __result.AddOrGet<IlluminationVulnerable>();
+        var illuminationVulnerable = __result.AddOrGet<IlluminationVulnerable>();
 
-        var illuminationVulnerableRef = new WeakReference(illuminationVulnerableInitial);
-        new Config.Observer((config) =>
+        Config.ObserveFor(illuminationVulnerable, (config) =>
         {
-          var illuminationVulnerable = (IlluminationVulnerable)illuminationVulnerableRef.Target;
-          if (illuminationVulnerable == null) return;
-
           illuminationVulnerable.SetMaxLux(config.duskCapPlantMaxLux);
         });
       }
