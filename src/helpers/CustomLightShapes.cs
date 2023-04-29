@@ -36,6 +36,9 @@ namespace DarknessNotIncluded
 
       MinionPillCaster(args);
       MultiplyBrightness(brightness, 0.35f);
+      // Make sure the cell the minion stands in (their feet) is also max 
+      // brightness.
+      brightness[sourceCell] = 1.0f;
 
       var octants = new OctantBuilder(brightness, Grid.CellAbove(sourceCell))
       {
