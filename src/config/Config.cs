@@ -74,6 +74,9 @@ namespace DarknessNotIncluded
     [Option("Configuration for dupe effects", "Configuration for dupe effects", "Darkness Penalties")]
     public MinionEffectsConfig minionEffectsConfig { get; set; }
 
+    [Option("Penalize Strength", "Whether to penalize the Duplicant's Strength attribute due to darkness.", "Darkness Penalties")]
+    public bool penalizeStrength { get; set; }
+
     // Duplicant Lights
 
     [Option("Disable lights around sleeping dupes", "Whether dupes should turn their lights off when entering a bedroom.", "Duplicant Lights")]

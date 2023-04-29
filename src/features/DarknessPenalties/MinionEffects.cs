@@ -9,12 +9,14 @@ namespace DarknessNotIncluded.DarknessPenalties
     private static MinionEffectsConfig.EffectConfig dimConfig;
     private static MinionEffectsConfig.EffectConfig darkConfig;
     private static float gracePeriodCycles;
+    private static bool penalizeStrength;
 
     private static Config.Observer configObserver = new Config.Observer((config) =>
     {
       dimConfig = config.minionEffectsConfig[MinionEffectType.Dim];
       darkConfig = config.minionEffectsConfig[MinionEffectType.Dark];
       gracePeriodCycles = config.gracePeriodCycles;
+      penalizeStrength = config.penalizeStrength;
     });
 
     public static Effect DarkEffect;
@@ -29,6 +31,10 @@ namespace DarknessNotIncluded.DarknessPenalties
         List<AttributeModifier> modifiers = new List<AttributeModifier>();
         foreach (var attribute in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
         {
+          if (!penalizeStrength && attribute == "Strength")
+          {
+            continue;
+          }
           var modifier = attribute == "Athletics" ? effectConfig.agilityModifier : effectConfig.statsModifier;
           modifiers.Add(new AttributeModifier(attribute, modifier));
         }
