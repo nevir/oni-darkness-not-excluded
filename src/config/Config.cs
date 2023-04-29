@@ -1,3 +1,4 @@
+using DarknessNotIncluded.OptionsEnhancements;
 using HarmonyLib;
 using KMod;
 using Newtonsoft.Json;
@@ -14,39 +15,6 @@ namespace DarknessNotIncluded
   [ConfigFile(SharedConfigLocation: true)]
   public class Config
   {
-    private static List<Action<Config>> observers = new List<Action<Config>>();
-
-    public class Observer
-    {
-      public Observer(Action<Config> observer)
-      {
-        observers.Add(observer);
-        observer(Get());
-      }
-    }
-
-    private static Config instance;
-    private static Config Get()
-    {
-      if (instance == null)
-      {
-        instance = POptions.ReadSettings<Config>() ?? new Config();
-      }
-      return instance;
-    }
-    public static void Set(Config newConfig)
-    {
-      instance = newConfig;
-      foreach (var observer in observers)
-      {
-        observer(newConfig);
-      }
-    }
-
-    public static void Initialize(UserMod2 mod)
-    {
-      new POptions().RegisterOptions(mod, typeof(Config));
-    }
 
     // Darkness
 
@@ -112,7 +80,31 @@ namespace DarknessNotIncluded
     [Option("Configuration for dupe lights", "Configuration for dupe lights", "Duplicant Lights")]
     public MinionLightingConfig minionLightingConfig { get; set; }
 
-    public Config()
+    [OptionPreset("The Deep Dark")]
+    public static Config TheDeepDark()
+    {
+      return new Config()
+      {
+        gracePeriodCycles = 0.0f,
+        initialFogLevel = 0,
+        minimumFogLevel = 0,
+      };
+    }
+
+    [OptionPreset("Visuals Only")]
+    public static Config VisualsOnly()
+    {
+      return new Config(true, true)
+      {
+        selectToolBlockedByDarkness = false,
+        dragToolIgnoresVisibility = false,
+        telepadRevealRadius = 18,
+      };
+    }
+
+    public Config() : this(false, false) { }
+
+    public Config(bool disableMinionEffects, bool defaultMinionReveal)
     {
       // Darkness
       fullyVisibleLuxThreshold = 1000;
@@ -135,10 +127,20 @@ namespace DarknessNotIncluded
 
       // Darkness Penalties
       maxSleepingLux = 500;
+
       minionEffectsConfig = new MinionEffectsConfig {
         { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2, -1) },
         { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5, -2) },
       };
+      if (disableMinionEffects)
+      {
+        foreach (var effect in minionEffectsConfig)
+        {
+          effect.Value.enabled = false;
+          effect.Value.agilityModifier = 0;
+          effect.Value.statsModifier = 0;
+        }
+      }
 
       // Duplicant Lights
 
@@ -146,16 +148,58 @@ namespace DarknessNotIncluded
       disableDupeLightsInBedrooms = true;
       minionLightingConfig = new MinionLightingConfig {
         { MinionLightType.Intrinsic, new MinionLightingConfig.LightConfig(true,  200,  2, 0, MinionLightShape.Pill,         Color.white) },
-        { MinionLightType.Mining1,   new MinionLightingConfig.LightConfig(true,  600,  3, 6, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining2,   new MinionLightingConfig.LightConfig(true,  700,  4, 7, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining3,   new MinionLightingConfig.LightConfig(true,  800,  5, 8, MinionLightShape.DirectedCone, Color.white)},
-        { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1000, 6, 9, MinionLightShape.DirectedCone, Color.white)},
-        { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  600,  3, 0, MinionLightShape.Pill,         Color.white)},
-        { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  600,  4, 0, MinionLightShape.DirectedCone, Color.white)},
-        { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, 0, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining1,   new MinionLightingConfig.LightConfig(true,  800,  3, 6, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining2,   new MinionLightingConfig.LightConfig(true,  1000,  4, 7, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
+        { MinionLightType.Mining3,   new MinionLightingConfig.LightConfig(true,  1200, 5, 8, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.Mining4,   new MinionLightingConfig.LightConfig(true,  1400, 6, 9, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.Science,   new MinionLightingConfig.LightConfig(true,  800,  3, 0, MinionLightShape.Pill,         Color.white)},
+        { MinionLightType.Rocketry,  new MinionLightingConfig.LightConfig(true,  800,  4, 0, MinionLightShape.DirectedCone, Color.white)},
+        { MinionLightType.AtmoSuit,  new MinionLightingConfig.LightConfig(true,  600,  3, 0, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
         { MinionLightType.JetSuit,   new MinionLightingConfig.LightConfig(true,  800,  5, 7, MinionLightShape.DirectedCone, TUNING.LIGHT2D.LIGHT_YELLOW)},
         { MinionLightType.LeadSuit,  new MinionLightingConfig.LightConfig(true,  400,  3, 0, MinionLightShape.Pill,         TUNING.LIGHT2D.LIGHT_YELLOW)},
       };
+
+      if (defaultMinionReveal)
+      {
+        foreach (var lightConfig in minionLightingConfig)
+        {
+          lightConfig.Value.reveal = 30;
+        }
+      }
+    }
+
+    private static List<Action<Config>> observers = new List<Action<Config>>();
+
+    public class Observer
+    {
+      public Observer(Action<Config> observer)
+      {
+        observers.Add(observer);
+        observer(Get());
+      }
+    }
+
+    private static Config instance;
+    private static Config Get()
+    {
+      if (instance == null)
+      {
+        instance = POptions.ReadSettings<Config>() ?? new Config();
+      }
+      return instance;
+    }
+    public static void Set(Config newConfig)
+    {
+      instance = newConfig;
+      foreach (var observer in observers)
+      {
+        observer(newConfig);
+      }
+    }
+
+    public static void Initialize(UserMod2 mod)
+    {
+      new POptions().RegisterOptions(mod, typeof(Config));
     }
 
     [HarmonyPatch(typeof(Game)), HarmonyPatch("OnPrefabInit")]
