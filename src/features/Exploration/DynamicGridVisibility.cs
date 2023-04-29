@@ -5,8 +5,14 @@ using System.Collections.Generic;
 
 namespace DarknessNotIncluded.Exploration
 {
-  static class DynamicGridVisibility
+  public static class DynamicGridVisibility
   {
+    public static void SetRadius(this GridVisibility gridVisibility, int radius)
+    {
+      gridVisibility.radius = radius;
+      gridVisibility.innerRadius = (float)gridVisibility.radius * 0.7f;
+    }
+
     [HarmonyPatch(typeof(GridVisibility)), HarmonyPatch("OnCellChange")]
     static class Patched_GridVisibility_OnCellChange
     {

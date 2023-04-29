@@ -12,8 +12,7 @@ namespace DarknessNotIncluded.Exploration
       {
         var gridVisibility = __result.AddOrGet<GridVisibility>();
         // TODO: reveal some?
-        gridVisibility.radius = 0;
-        gridVisibility.innerRadius = 0;
+        gridVisibility.SetRadius(0);
       }
     }
   }

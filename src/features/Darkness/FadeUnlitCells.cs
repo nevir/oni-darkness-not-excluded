@@ -67,13 +67,13 @@ namespace DarknessNotIncluded.Darkness
 
             if (!Behavior.enabled)
             {
-              region.SetBytes(x, y, (byte)255);
+              region.SetBytes(x, y, visible[cell]);
             }
             else
             {
               var lux = Behavior.ActualOrImpliedLightLevel(cell);
               int fog = minFogLevel + (Math.Min(lux, fullyVisibleLuxThreshold) * fogRange) / fullyVisibleLuxThreshold;
-              region.SetBytes(x, y, (byte)fog);
+              region.SetBytes(x, y, Math.Min((byte)fog, visible[cell]));
             }
           }
         }

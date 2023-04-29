@@ -11,8 +11,7 @@ namespace DarknessNotIncluded.Exploration
       static void Postfix(GameObject __result)
       {
         var gridVisibility = __result.AddOrGet<GridVisibility>();
-        gridVisibility.radius = 0;
-        gridVisibility.innerRadius = 0;
+        gridVisibility.SetRadius(0);
       }
     }
   }

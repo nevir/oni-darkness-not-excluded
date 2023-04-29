@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System;
 using UnityEngine;
+using DarknessNotIncluded.Exploration;
 
 namespace DarknessNotIncluded.DuplicantLights
 {
@@ -67,7 +68,7 @@ namespace DarknessNotIncluded.DuplicantLights
         var lightConfig = minionLightingConfig.Get(lightType);
 
         // Update grid visibility based on the minion's internal state
-        gridVisibility.radius = lightConfig.reveal;
+        gridVisibility.SetRadius(lightConfig.reveal);
 
         // But actual lights may change based on behavior:
         if (disableDupeLightsInBedrooms && lightType != MinionLightType.None)

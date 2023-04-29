@@ -30,8 +30,7 @@ namespace DarknessNotIncluded.Exploration
 
           // +1 because the telepad is not 1 cell wide.
           var radius = Math.Max(config.telepadRevealRadius, 0) + 1;
-          gridVisibility.radius = radius;
-          gridVisibility.innerRadius = radius;
+          gridVisibility.SetRadius(radius);
 
           if (gridVisibility.isSpawned)
           {
