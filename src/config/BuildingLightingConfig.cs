@@ -6,6 +6,7 @@ namespace DarknessNotIncluded
   {
     None,
     PrintingPod,
+    MicrobeMusher,
   }
 
   public class BuildingLightingConfig : Dictionary<BuildingType, LightConfig>
