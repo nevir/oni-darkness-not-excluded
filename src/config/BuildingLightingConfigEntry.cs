@@ -77,8 +77,8 @@ namespace DarknessNotIncluded
 
         var label = new PLabel($"{name}.label")
         {
-          Text = LABELS[type],
-          ToolTip = TOOLTIPS[type],
+          Text = LABELS.ContainsKey(type) ? LABELS[type] : $"{type}",
+          ToolTip = TOOLTIPS.ContainsKey(type) ? TOOLTIPS[type] : "",
           TextStyle = PUITuning.Fonts.TextLightStyle,
         };
         grid.AddChild(label, new GridComponentSpec(row, 1) { Margin = LABEL_MARGIN, Alignment = TextAnchor.MiddleLeft });

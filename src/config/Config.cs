@@ -126,11 +126,7 @@ namespace DarknessNotIncluded
       telepadRevealRadius = 0;
 
       // Buildings
-      buildingLightingConfig = new BuildingLightingConfig {
-        { BuildingType.PrintingPod, new LightConfig(true, 2000, 5, 0, LightShape.Circle, LIGHT2D.LIGHT_YELLOW) },
-        { BuildingType.MicrobeMusher, new LightConfig(true, 1000, 1, 0, LightShape.Circle, LIGHT2D.LIGHT_YELLOW) },
-        { BuildingType.HydrogenGenerator, new LightConfig(true, 1000, 1, 0, LightShape.Circle, LIGHT2D.LIGHT_YELLOW) },
-      };
+      buildingLightingConfig = new BuildingLightingConfig();
 
       // Plants
       duskCapPlantMaxLux = 500;
@@ -143,10 +139,7 @@ namespace DarknessNotIncluded
       // Darkness Penalties
       maxSleepingLux = 500;
 
-      minionEffectsConfig = new MinionEffectsConfig {
-        { MinionEffectType.Dim, new MinionEffectsConfig.EffectConfig(true, 700, -2, -1) },
-        { MinionEffectType.Dark, new MinionEffectsConfig.EffectConfig(true, 300, -5, -2) },
-      };
+      minionEffectsConfig = new MinionEffectsConfig();
       if (disableMinionEffects)
       {
         foreach (var effect in minionEffectsConfig)
@@ -161,19 +154,7 @@ namespace DarknessNotIncluded
 
       disableDupeLightsInLitAreas = true;
       disableDupeLightsInBedrooms = true;
-      minionLightingConfig = new MinionLightingConfig {
-        { MinionLightType.Intrinsic, new LightConfig(true,  200,  2, 0, LightShape.Pill,         Color.white) },
-        { MinionLightType.Mining1,   new LightConfig(true,  800,  3, 6, LightShape.DirectedCone, LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining2,   new LightConfig(true,  1000, 4, 7, LightShape.DirectedCone, LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Mining3,   new LightConfig(true,  1200, 5, 8, LightShape.DirectedCone, Color.white)},
-        { MinionLightType.Mining4,   new LightConfig(true,  1400, 6, 9, LightShape.DirectedCone, Color.white)},
-        { MinionLightType.Science,   new LightConfig(true,  800,  3, 0, LightShape.Pill,         Color.white)},
-        { MinionLightType.Rocketry,  new LightConfig(true,  800,  4, 0, LightShape.DirectedCone, Color.white)},
-        { MinionLightType.AtmoSuit,  new LightConfig(true,  600,  3, 0, LightShape.Pill,         LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.JetSuit,   new LightConfig(true,  800,  5, 7, LightShape.DirectedCone, LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.LeadSuit,  new LightConfig(true,  400,  3, 0, LightShape.Pill,         LIGHT2D.LIGHT_YELLOW)},
-        { MinionLightType.Rover,     new LightConfig(true,  1400, 6, 0, LightShape.DirectedCone, Color.white) },
-      };
+      minionLightingConfig = new MinionLightingConfig();
 
       if (defaultMinionReveal)
       {

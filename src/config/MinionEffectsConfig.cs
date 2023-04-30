@@ -10,6 +10,12 @@ namespace DarknessNotIncluded
 
   public class MinionEffectsConfig : Dictionary<MinionEffectType, MinionEffectsConfig.EffectConfig>
   {
+    public MinionEffectsConfig()
+    {
+      Add(MinionEffectType.Dim, new EffectConfig(true, 700, -2, -1));
+      Add(MinionEffectType.Dark, new EffectConfig(true, 300, -5, -2));
+    }
+
     public class EffectConfig
     {
       public bool enabled { get; set; }
@@ -36,7 +42,7 @@ namespace DarknessNotIncluded
       var newConfig = new MinionEffectsConfig();
       foreach (var pair in this)
       {
-        newConfig.Add(pair.Key, pair.Value.DeepClone());
+        newConfig[pair.Key] = pair.Value.DeepClone();
       }
       return newConfig;
     }

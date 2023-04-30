@@ -20,6 +20,7 @@ namespace DarknessNotIncluded
       { MinionLightType.AtmoSuit, "Atmo Suit" },
       { MinionLightType.JetSuit, "Jet Suit" },
       { MinionLightType.LeadSuit, "Lead Suit" },
+      { MinionLightType.Rover, "Rover" },
     };
 
     static Dictionary<MinionLightType, string> TOOLTIPS = new Dictionary<MinionLightType, string>()
@@ -33,7 +34,7 @@ namespace DarknessNotIncluded
       { MinionLightType.Rocketry, "Light emitted by Duplicants wearing a rocketry helmet." },
       { MinionLightType.AtmoSuit, "Light emitted by Duplicants wearing an Atmo Suit" },
       { MinionLightType.JetSuit, "Light emitted by Duplicants wearing a Jet Suit" },
-      { MinionLightType.LeadSuit, "Light emitted by Duplicants wearing a Lead Suit" },
+      { MinionLightType.Rover, "Light emitted by Rovers" },
     };
 
     public MinionLightingConfigEntry(string field, IOptionSpec spec) : base(field, spec) { }
@@ -91,8 +92,8 @@ namespace DarknessNotIncluded
 
         var label = new PLabel($"{name}.label")
         {
-          Text = LABELS[type],
-          ToolTip = TOOLTIPS[type],
+          Text = LABELS.ContainsKey(type) ? LABELS[type] : $"{type}",
+          ToolTip = TOOLTIPS.ContainsKey(type) ? TOOLTIPS[type] : "",
           TextStyle = PUITuning.Fonts.TextLightStyle,
         };
         grid.AddChild(label, new GridComponentSpec(row, 1) { Margin = LABEL_MARGIN, Alignment = TextAnchor.MiddleLeft });
