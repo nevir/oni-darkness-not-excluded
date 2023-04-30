@@ -71,6 +71,9 @@ namespace DarknessNotIncluded.Exploration
         {
           light.enabled = false;
         }
+
+        // Note that this is already optimized in Light2D + GameScenePartitioner.
+        light.FullRefresh();
       }
     }
   }

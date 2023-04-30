@@ -7,6 +7,7 @@ namespace DarknessNotIncluded
     None,
     PrintingPod,
     MicrobeMusher,
+    HydrogenGenerator,
   }
 
   public class BuildingLightingConfig : Dictionary<BuildingType, LightConfig>

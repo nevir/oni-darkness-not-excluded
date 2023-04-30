@@ -12,12 +12,14 @@ namespace DarknessNotIncluded
     {
       { BuildingType.PrintingPod, "Printing Pod" },
       { BuildingType.MicrobeMusher, "Microbe Musher" },
+      { BuildingType.HydrogenGenerator, "Hydrogen Generator" },
     };
 
     static Dictionary<BuildingType, string> TOOLTIPS = new Dictionary<BuildingType, string>()
     {
       { BuildingType.PrintingPod, "Light that is emitted by the Printing Pod." },
       { BuildingType.MicrobeMusher, "Light that is emitted by the Microbe Musher while it is operating." },
+      { BuildingType.HydrogenGenerator, "Light that is emitted by the Hydrogen Generator while it is operating." },
     };
 
     public BuildingLightingConfigEntry(string field, IOptionSpec spec) : base(field, spec) { }

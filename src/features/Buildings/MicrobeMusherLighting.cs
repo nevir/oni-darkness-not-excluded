@@ -12,10 +12,7 @@ namespace DarknessNotIncluded.Exploration
     {
       static void Postfix(GameObject go)
       {
-        Console.WriteLine($"Patched_MicrobeMusherConfig_ConfigureBuildingTemplate: {go}");
-
         var light = go.AddOrGet<Light2D>();
-        light.Offset = new Vector2(1.4f, 2.65f);
         light.drawOverlay = true;
         light.overlayColour = TUNING.LIGHT2D.LIGHT_OVERLAY;
 
