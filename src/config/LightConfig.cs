@@ -31,9 +31,9 @@ namespace DarknessNotIncluded
       this.color = color;
     }
 
-    public void ConfigureLight(Light2D light, bool off = false)
+    public void ConfigureLight(Light2D light)
     {
-      light.enabled = off ? false : this.enabled;
+      light.enabled = this.enabled;
       light.shape = this.shape.LightShape();
       light.Lux = this.lux;
       light.Range = this.range;
