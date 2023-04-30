@@ -10,9 +10,9 @@ namespace DarknessNotIncluded
 
     public static Dictionary<int, HashSet<MinionIdentity>> byCavityIndex = new Dictionary<int, HashSet<MinionIdentity>>();
 
-    public static bool SleepersInSameRoom(MinionIdentity minionIdentity)
+    public static bool SleepersInSameRoom(GameObject gameObject)
     {
-      var cell = Grid.PosToCell(minionIdentity.gameObject);
+      var cell = Grid.PosToCell(gameObject);
       var cavity = Game.Instance.roomProber.GetCavityForCell(cell);
 
       foreach (var minion in MinionsInRoom(cavity))

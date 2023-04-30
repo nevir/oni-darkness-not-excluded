@@ -1,9 +1,6 @@
-using HarmonyLib;
-using UnityEngine;
-
 namespace DarknessNotIncluded
 {
-  public class MinionOrientation : KMonoBehaviour, ISim33ms
+  public class UnitOrientation : KMonoBehaviour, ISim33ms
   {
     public enum Orientation
     {
@@ -18,8 +15,6 @@ namespace DarknessNotIncluded
       DownLeft,
     }
 
-    [MyCmpGet]
-    private MinionIdentity minion;
     [MyCmpGet]
     private Navigator navigator;
 
@@ -41,7 +36,7 @@ namespace DarknessNotIncluded
         return navigator.IsFacingLeft ? Orientation.Left : Orientation.Right;
       }
 
-      var currCell = Grid.PosToCell(minion);
+      var currCell = Grid.PosToCell(gameObject);
       var nextCell = navigator.path.nodes[1].cell;
       var vert = Grid.CellRow(nextCell) - Grid.CellRow(currCell); // up > 0 > down
       var horiz = Grid.CellColumn(nextCell) - Grid.CellColumn(currCell); // right > 0 > left
@@ -56,15 +51,6 @@ namespace DarknessNotIncluded
       if (horiz < 0 && vert < 0) return Orientation.DownLeft;
 
       return Orientation.Unknown;
-    }
-
-    [HarmonyPatch(typeof(MinionConfig)), HarmonyPatch("CreatePrefab")]
-    static class Patched_MinionConfig_CreatePrefab
-    {
-      static void Postfix(GameObject __result)
-      {
-        __result.AddOrGet<MinionOrientation>();
-      }
     }
   }
 }

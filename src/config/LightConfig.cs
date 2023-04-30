@@ -7,8 +7,8 @@ namespace DarknessNotIncluded
   {
     Circle,
     SmoothCircle,
-    MinionPill,
-    MinionDirectedCone,
+    Pill,
+    DirectedCone,
   }
 
   public class LightConfig

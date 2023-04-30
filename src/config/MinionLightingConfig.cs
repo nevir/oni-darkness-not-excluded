@@ -15,6 +15,7 @@ namespace DarknessNotIncluded
     AtmoSuit,
     JetSuit,
     LeadSuit,
+    Rover,
   }
 
   public class MinionLightingConfig : Dictionary<MinionLightType, LightConfig>
