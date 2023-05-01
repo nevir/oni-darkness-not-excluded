@@ -28,9 +28,9 @@ namespace DarknessNotIncluded.OptionsEnhancements
         return AccessTools.Method(OptionsDialog, "AddModInfoScreen");
       }
 
-      static void Postfix(object __instance, PDialog optionsDialog)
+      static void Postfix(object __instance, PDialog __0)
       {
-        var body = optionsDialog.Body;
+        var body = __0.Body;
         var infoPanel = (PPanel)body.GetChildNamed("ModInfo");
         // TODO: Support horizontal mode
         if (infoPanel == null) return;
