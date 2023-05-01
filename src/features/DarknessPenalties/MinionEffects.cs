@@ -31,10 +31,7 @@ namespace DarknessNotIncluded.DarknessPenalties
         List<AttributeModifier> modifiers = new List<AttributeModifier>();
         foreach (var attribute in TUNING.DUPLICANTSTATS.ALL_ATTRIBUTES)
         {
-          if (!penalizeStrength && attribute == "Strength")
-          {
-            continue;
-          }
+          if (!penalizeStrength && attribute == "Strength") continue;
           var modifier = attribute == "Athletics" ? effectConfig.agilityModifier : effectConfig.statsModifier;
           modifiers.Add(new AttributeModifier(attribute, modifier));
         }
