@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System;
 
 namespace DarknessNotIncluded.Exploration
 {
@@ -6,6 +7,9 @@ namespace DarknessNotIncluded.Exploration
   {
     public static void SetRadius(this GridVisibility gridVisibility, int radius)
     {
+      radius = Math.Max(1, radius);
+
+      if (radius == gridVisibility.radius) return;
       gridVisibility.radius = radius;
       gridVisibility.innerRadius = (float)gridVisibility.radius * 0.7f;
     }
@@ -17,7 +21,6 @@ namespace DarknessNotIncluded.Exploration
       {
         if (__instance == null) return false;
         if (__instance.gameObject == null) return false;
-        if (__instance.radius <= 0) return false;
         if (__instance.gameObject.HasTag(GameTags.Dead)) return false;
 
         var cell = Grid.PosToCell(__instance);

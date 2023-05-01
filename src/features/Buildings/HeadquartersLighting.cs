@@ -1,6 +1,5 @@
 using HarmonyLib;
 using UnityEngine;
-using System;
 
 namespace DarknessNotIncluded.Exploration
 {
@@ -11,7 +10,7 @@ namespace DarknessNotIncluded.Exploration
     {
       static void Postfix(GameObject go)
       {
-        var lightingManager = go.AddOrGet<Behavior.BuildingLightingManager>();
+        var lightingManager = go.AddComponent<Behavior.BuildingLightingManager>();
         lightingManager.buildingType = BuildingType.PrintingPod;
       }
     }
