@@ -51,11 +51,11 @@ namespace DarknessNotIncluded.DuplicantLights
         if (suitPrefab != null && suit?.isEquipped == true)
         {
           if (suitPrefab?.HasTag(GameTags.AtmoSuit) == true) return MinionLightType.AtmoSuit;
-          else if (suitPrefab?.HasTag(GameTags.JetSuit) == true) return MinionLightType.JetSuit;
-          else if (suitPrefab?.HasTag(GameTags.LeadSuit) == true) return MinionLightType.LeadSuit;
-          else return MinionLightType.Intrinsic;
+          if (suitPrefab?.HasTag(GameTags.JetSuit) == true) return MinionLightType.JetSuit;
+          if (suitPrefab?.HasTag(GameTags.LeadSuit) == true) return MinionLightType.LeadSuit;
         }
-        else if (hat?.StartsWith("hat_role_mining") == true)
+        
+        if (hat?.StartsWith("hat_role_mining") == true)
         {
           if (hat == "hat_role_mining1") return MinionLightType.Mining1;
           else if (hat == "hat_role_mining2") return MinionLightType.Mining2;
