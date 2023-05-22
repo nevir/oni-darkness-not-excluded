@@ -4,7 +4,7 @@ namespace DarknessNotIncluded
 {
   static class Log
   {
-    static string LINE_FORMAT = $"[Darkness Not Excluded v{Mod.Version.Major}.{Mod.Version.Minor}.{Mod.Version.Revision}] {{0}}";
+    static string LINE_FORMAT = $"[Darkness Not Excluded v{Mod.Version.Major}.{Mod.Version.Minor}.{Mod.Version.Build}] {{0}}";
 
     public static void Info(string message, params object[] details)
     {
