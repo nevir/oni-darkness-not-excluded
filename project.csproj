@@ -63,7 +63,7 @@
     <Copy SourceFiles="assets/square-192.png" DestinationFiles="$(BundleDir)\preview.png" />
 
     <PropertyGroup>
-      <ModInfo>supportedContent: ALL&#xA;minimumSupportedBuild: 552078&#xA;version: 1.2.1&#xA;APIVersion: 2</ModInfo>
+      <ModInfo>supportedContent: ALL&#xA;minimumSupportedBuild: 552078&#xA;version: $(Version)&#xA;APIVersion: 2</ModInfo>
     </PropertyGroup>
     <WriteLinesToFile File="$(BundleDir)/mod_info.yaml" Lines="$(ModInfo)" Overwrite="true"/>
   </Target>
