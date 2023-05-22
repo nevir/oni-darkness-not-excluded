@@ -17,7 +17,9 @@ namespace DarknessNotIncluded
       base.OnLoad(harmony);
 
       PUtil.InitLibrary();
-      Log.Info($"Active PLib version: {PVersion.VERSION}");
+
+      Log.Info($"Bundled PLib version: {PVersion.VERSION}");
+      Log.Info($" Active PLib version: {PLibUtils.ActiveVersion()} (via assembly: {PLibUtils.ActiveAssembly().FullName})");
 
       Config.Initialize(this);
       CustomLightShapes.Initialize();
