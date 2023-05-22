@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <BaseName>DarknessNotExcluded</BaseName>
+    <Version>1.2.2</Version>
+    <MinSupportedGameBuild>552078</MinSupportedGameBuild>
+    <AssemblyVersion>$(Version).0</AssemblyVersion>
     <TargetFramework>net471</TargetFramework>
     <RootNamespace>$(BaseName)</RootNamespace>
     <AssemblyName>$(BaseName).mod</AssemblyName>
@@ -56,8 +59,13 @@
   <Target Name="Bundle" AfterTargets="Merge">
     <RemoveDir Directories="$(BundleDir)" />
     <Copy SourceFiles="$(OutDir)$(BaseName).dll" DestinationFolder="$(BundleDir)" />
-    <Copy SourceFiles="mod.yaml;mod_info.yaml" DestinationFolder="$(BundleDir)" />
+    <Copy SourceFiles="mod.yaml" DestinationFolder="$(BundleDir)" />
     <Copy SourceFiles="assets/square-192.png" DestinationFiles="$(BundleDir)\preview.png" />
+
+    <PropertyGroup>
+      <ModInfo>supportedContent: ALL&#xA;minimumSupportedBuild: 552078&#xA;version: 1.2.1&#xA;APIVersion: 2</ModInfo>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(BundleDir)/mod_info.yaml" Lines="$(ModInfo)" Overwrite="true"/>
   </Target>
 
   <Target Name="Install" AfterTargets="Bundle">
