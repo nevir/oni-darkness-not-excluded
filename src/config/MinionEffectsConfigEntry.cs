@@ -143,9 +143,9 @@ namespace DarknessNotIncluded
         if (!enabledComponents.ContainsKey(pair.Key)) continue;
 
         PCheckBox.SetCheckState(enabledComponents[pair.Key], pair.Value.enabled ? PCheckBox.STATE_CHECKED : PCheckBox.STATE_UNCHECKED);
-        PlibUtils.SetFieldText(luxThresholdComponents[pair.Key], pair.Value.luxThreshold.ToString());
-        PlibUtils.SetFieldText(agilityModifierComponents[pair.Key], pair.Value.agilityModifier.ToString());
-        PlibUtils.SetFieldText(statsModifierComponents[pair.Key], pair.Value.statsModifier.ToString());
+        PLibUtils.SetFieldText(luxThresholdComponents[pair.Key], pair.Value.luxThreshold.ToString());
+        PLibUtils.SetFieldText(agilityModifierComponents[pair.Key], pair.Value.agilityModifier.ToString());
+        PLibUtils.SetFieldText(statsModifierComponents[pair.Key], pair.Value.statsModifier.ToString());
       }
     }
 

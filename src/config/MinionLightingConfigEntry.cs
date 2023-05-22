@@ -171,9 +171,9 @@ namespace DarknessNotIncluded
         if (!enabledComponents.ContainsKey(pair.Key)) continue;
 
         PCheckBox.SetCheckState(enabledComponents[pair.Key], pair.Value.enabled ? PCheckBox.STATE_CHECKED : PCheckBox.STATE_UNCHECKED);
-        PlibUtils.SetFieldText(luxComponents[pair.Key], pair.Value.lux.ToString());
-        PlibUtils.SetFieldText(rangeComponents[pair.Key], pair.Value.range.ToString());
-        PlibUtils.SetFieldText(revealComponents[pair.Key], pair.Value.reveal.ToString());
+        PLibUtils.SetFieldText(luxComponents[pair.Key], pair.Value.lux.ToString());
+        PLibUtils.SetFieldText(rangeComponents[pair.Key], pair.Value.range.ToString());
+        PLibUtils.SetFieldText(revealComponents[pair.Key], pair.Value.reveal.ToString());
       }
     }
 

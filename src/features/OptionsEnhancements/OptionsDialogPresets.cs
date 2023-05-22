@@ -24,7 +24,9 @@ namespace DarknessNotIncluded.OptionsEnhancements
     {
       static MethodBase TargetMethod()
       {
-        var OptionsDialog = AccessTools.TypeByName("PeterHan.PLib.Options.OptionsDialog");
+        // Note that it is important that we reference the PLib instance that we
+        // have bundled—options are managed by that (vs the shared instance).
+        var OptionsDialog = Assembly.GetExecutingAssembly().GetType("PeterHan.PLib.Options.OptionsDialog");
         return AccessTools.Method(OptionsDialog, "AddModInfoScreen");
       }
 

@@ -1,5 +1,3 @@
-using HarmonyLib;
-using System;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
@@ -18,20 +16,12 @@ namespace DarknessNotIncluded
 
     public static Assembly ActiveAssembly()
     {
-      return Global.Instance?.gameObject?.GetComponent("PRegistryComponent")?.GetType()?.Assembly;
-    }
-
-    public static Type ActiveType(string name)
-    {
-      return ActiveAssembly().GetType($"PeterHan.PLib.{name}");
+      return Global.Instance?.gameObject?.GetComponent("PRegistryComponent")?.GetType()?.Assembly ?? Assembly.GetExecutingAssembly();
     }
 
     public static string ActiveVersion()
     {
-      var PVersion = ActiveType("PVersion");
-
-      Log.Info($"PVersion: {PVersion}");
-      // return PVersion "???";
+      var PVersion = ActiveAssembly().GetType($"PeterHan.PLib.PVersion");
       return PVersion.GetField("VERSION").GetValue(null) as string;
     }
   }

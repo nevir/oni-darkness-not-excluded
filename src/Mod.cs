@@ -3,6 +3,8 @@ using KMod;
 using PeterHan.PLib;
 using PeterHan.PLib.Core;
 using System;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace DarknessNotIncluded
 {
@@ -12,8 +14,6 @@ namespace DarknessNotIncluded
 
     public override void OnLoad(Harmony harmony)
     {
-      Log.Info("Loading Mod");
-
       base.OnLoad(harmony);
 
       PUtil.InitLibrary();
@@ -23,8 +23,6 @@ namespace DarknessNotIncluded
 
       Config.Initialize(this);
       CustomLightShapes.Initialize();
-
-      Log.Info("Loaded");
     }
   }
 }

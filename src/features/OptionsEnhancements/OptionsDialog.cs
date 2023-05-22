@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System;
+using System.Reflection;
 
 namespace DarknessNotIncluded.OptionsEnhancements
 {
@@ -7,7 +8,9 @@ namespace DarknessNotIncluded.OptionsEnhancements
   {
     public static void Show<TConfigType>(Type ConfigType, Action<TConfigType> onClose)
     {
-      var OptionsDialog = AccessTools.TypeByName("PeterHan.PLib.Options.OptionsDialog");
+      // Note that it is important that we reference the PLib instance that we
+      // have bundled—options are managed by that (vs the shared instance).
+      var OptionsDialog = Assembly.GetExecutingAssembly().GetType("PeterHan.PLib.Options.OptionsDialog");
       var dialog = AccessTools.Constructor(OptionsDialog, new Type[] { typeof(Type) }).Invoke(new object[] { ConfigType });
       var dialogTraverse = Traverse.Create(dialog);
 
