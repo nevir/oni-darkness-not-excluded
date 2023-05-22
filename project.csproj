@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <BaseName>DarknessNotExcluded</BaseName>
-    <Version>1.2.2</Version>
+    <Version>1.3.0</Version>
     <MinSupportedGameBuild>552078</MinSupportedGameBuild>
     <AssemblyVersion>$(Version).0</AssemblyVersion>
     <TargetFramework>net471</TargetFramework>
