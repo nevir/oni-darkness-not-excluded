@@ -21,6 +21,14 @@ namespace DarknessNotIncluded
       Debug.LogError(Format(message, details));
     }
 
+    public static void Assert(string message, bool condition)
+    {
+      if (condition) return;
+
+      Debug.LogError(Format("Assertion failed: {{0}}", message));
+      throw new Exception($"Assertion failed: {message}");
+    }
+
     static string Format(string message, params object[] details)
     {
       var fullMessage = message;
