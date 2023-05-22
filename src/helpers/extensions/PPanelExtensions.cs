@@ -9,11 +9,12 @@ namespace DarknessNotIncluded
     public static IUIComponent GetChildNamed(this PPanel panel, string name)
     {
       if (panel == null) return null;
-      var children = Traverse.Create(panel).Field("children").GetValue<ICollection<IUIComponent>>();
+      var children = Traverse.Create(panel).Field("children").GetValue<IEnumerable<object>>();
 
       foreach (var child in children)
       {
-        if (child.Name == name) return child;
+        var childName = Traverse.Create(child).Property("Name").GetValue<string>();
+        if (childName == name) return child as IUIComponent;
       }
 
       return null;
