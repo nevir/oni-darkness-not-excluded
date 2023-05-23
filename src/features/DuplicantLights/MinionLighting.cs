@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace DarknessNotIncluded.DuplicantLights
 {
@@ -48,33 +49,36 @@ namespace DarknessNotIncluded.DuplicantLights
         var suit = minion.GetEquipment().GetSlot(Db.Get().AssignableSlots.Suit)?.assignable as Equippable;
         var suitPrefab = suit?.GetComponent<KPrefabID>();
 
+        var possibleLightTypes = new List<MinionLightType>();
+
         if (suitPrefab != null && suit?.isEquipped == true)
         {
-          if (suitPrefab?.HasTag(GameTags.AtmoSuit) == true) return MinionLightType.AtmoSuit;
-          if (suitPrefab?.HasTag(GameTags.JetSuit) == true) return MinionLightType.JetSuit;
-          if (suitPrefab?.HasTag(GameTags.LeadSuit) == true) return MinionLightType.LeadSuit;
+          if (suitPrefab?.HasTag(GameTags.AtmoSuit) == true) possibleLightTypes.Add(MinionLightType.AtmoSuit);
+          if (suitPrefab?.HasTag(GameTags.JetSuit) == true) possibleLightTypes.Add(MinionLightType.JetSuit);
+          if (suitPrefab?.HasTag(GameTags.LeadSuit) == true) possibleLightTypes.Add(MinionLightType.LeadSuit);
         }
-        
+
         if (hat?.StartsWith("hat_role_mining") == true)
         {
-          if (hat == "hat_role_mining1") return MinionLightType.Mining1;
-          else if (hat == "hat_role_mining2") return MinionLightType.Mining2;
-          else if (hat == "hat_role_mining3") return MinionLightType.Mining3;
-          else if (hat == "hat_role_mining4") return MinionLightType.Mining4;
-          else return MinionLightType.Mining4;
+          if (hat == "hat_role_mining1") possibleLightTypes.Add(MinionLightType.Mining1);
+          else if (hat == "hat_role_mining2") possibleLightTypes.Add(MinionLightType.Mining2);
+          else if (hat == "hat_role_mining3") possibleLightTypes.Add(MinionLightType.Mining3);
+          else if (hat == "hat_role_mining4") possibleLightTypes.Add(MinionLightType.Mining4);
+          else possibleLightTypes.Add(MinionLightType.Mining4);
         }
         else if (hat?.StartsWith("hat_role_research") == true)
         {
-          return MinionLightType.Science;
+          possibleLightTypes.Add(MinionLightType.Science);
         }
         else if (hat?.StartsWith("hat_role_astronaut") == true)
         {
-          return MinionLightType.Rocketry;
+          possibleLightTypes.Add(MinionLightType.Rocketry);
         }
-        else
-        {
-          return MinionLightType.Intrinsic;
-        }
+
+        possibleLightTypes = possibleLightTypes.FindAll(type => minionLightingConfig.Get(type).enabled);
+        possibleLightTypes.Sort((a, b) => minionLightingConfig.Get(b).lux - minionLightingConfig.Get(a).lux);
+
+        return possibleLightTypes.Count > 0 ? possibleLightTypes[0] : MinionLightType.Intrinsic;
       }
     }
   }
