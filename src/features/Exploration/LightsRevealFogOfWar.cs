@@ -26,7 +26,7 @@ namespace DarknessNotIncluded.Exploration
         foreach (var cell in expandedCells)
         {
           if (!Grid.IsValidCell(cell)) continue;
-          Grid.Visible[cell] = 255;
+          Grid.Reveal(cell);
         }
       }
     }
