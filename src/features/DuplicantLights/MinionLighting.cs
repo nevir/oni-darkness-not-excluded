@@ -6,13 +6,6 @@ namespace DarknessNotIncluded.DuplicantLights
 {
   public static class MinionLighting
   {
-    private static MinionLightingConfig minionLightingConfig;
-
-    private static Config.Observer configObserver = new Config.Observer((config) =>
-    {
-      minionLightingConfig = config.minionLightingConfig;
-    });
-
     [HarmonyPatch(typeof(MinionConfig)), HarmonyPatch("CreatePrefab")]
     static class Patched_MinionConfig_CreatePrefab
     {
@@ -30,9 +23,9 @@ namespace DarknessNotIncluded.DuplicantLights
       [MyCmpGet]
       private MinionResume resume;
 
-      protected override MinionLightType GetActiveLightType()
+      protected override MinionLightType GetActiveLightType(MinionLightingConfig minionLightingConfig)
       {
-        var lightType = GetLightTypeForCurrentState();
+        var lightType = GetLightTypeForCurrentState(minionLightingConfig);
         if (lightType == MinionLightType.None) return lightType;
 
         if (!minionLightingConfig.Get(lightType).enabled) lightType = MinionLightType.Intrinsic;
@@ -41,8 +34,10 @@ namespace DarknessNotIncluded.DuplicantLights
         return lightType;
       }
 
-      private MinionLightType GetLightTypeForCurrentState()
+      private MinionLightType GetLightTypeForCurrentState(MinionLightingConfig minionLightingConfig)
       {
+        if (minion == null) return MinionLightType.None;
+        if (!minion.isSpawned) return MinionLightType.None;
         if (minion.IsSleeping()) return MinionLightType.None;
 
         var hat = resume.CurrentHat;

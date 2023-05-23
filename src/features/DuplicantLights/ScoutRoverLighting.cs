@@ -16,7 +16,7 @@ namespace DarknessNotIncluded.DuplicantLights
 
     public class ScoutRoverLights : Behavior.UnitLights
     {
-      protected override MinionLightType GetActiveLightType()
+      protected override MinionLightType GetActiveLightType(MinionLightingConfig minionLightingConfig)
       {
         return MinionLightType.Rover;
       }

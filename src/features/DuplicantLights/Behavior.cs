@@ -1,25 +1,16 @@
 using DarknessNotIncluded.Exploration;
-using HarmonyLib;
 using System;
-using UnityEngine;
 
 namespace DarknessNotIncluded.DuplicantLights
 {
   public static class Behavior
   {
-    private static bool disableLightsInBedrooms;
-    private static bool disableLightsInLitAreas;
-    private static MinionLightingConfig minionLightingConfig;
-
-    private static Config.Observer configObserver = new Config.Observer((config) =>
-    {
-      disableLightsInBedrooms = config.disableDupeLightsInBedrooms;
-      disableLightsInLitAreas = config.disableDupeLightsInLitAreas;
-      minionLightingConfig = config.minionLightingConfig;
-    });
-
     public abstract class UnitLights : KMonoBehaviour, ISim33ms
     {
+      private bool disableLightsInBedrooms;
+      private bool disableLightsInLitAreas;
+      private MinionLightingConfig minionLightingConfig;
+
       [MyCmpGet]
       private GridVisibility gridVisibility;
 
@@ -32,13 +23,19 @@ namespace DarknessNotIncluded.DuplicantLights
         base.OnPrefabInit();
 
         Light = gameObject.AddComponent<Light2D>();
+
+        Config.ObserveFor(this, (config) =>
+        {
+          disableLightsInBedrooms = config.disableDupeLightsInBedrooms;
+          disableLightsInLitAreas = config.disableDupeLightsInLitAreas;
+          minionLightingConfig = config.minionLightingConfig;
+          UpdateLights(true);
+        });
       }
 
       protected override void OnSpawn()
       {
         base.OnSpawn();
-        if (gameObject == null) return;
-
         UpdateLights();
       }
 
@@ -47,9 +44,11 @@ namespace DarknessNotIncluded.DuplicantLights
         UpdateLights();
       }
 
-      private void UpdateLights()
+      private void UpdateLights(bool force = false)
       {
-        var lightType = GetActiveLightType();
+        if (gameObject == null) return;
+
+        var lightType = GetActiveLightType(minionLightingConfig);
         var lightConfig = minionLightingConfig.Get(lightType);
 
         // Update grid visibility based on the minion's internal state
@@ -81,17 +80,17 @@ namespace DarknessNotIncluded.DuplicantLights
           }
         }
 
-        SetLightType(lightType);
+        SetLightType(lightType, force);
       }
 
-      private void SetLightType(MinionLightType lightType)
+      private void SetLightType(MinionLightType lightType, bool force)
       {
-        if (lightType == currentLightType) return;
+        if (lightType == currentLightType && !force) return;
         currentLightType = lightType;
         minionLightingConfig.Get(lightType).ConfigureLight(Light);
       }
 
-      protected abstract MinionLightType GetActiveLightType();
+      protected abstract MinionLightType GetActiveLightType(MinionLightingConfig minionLightingConfig);
     }
   }
 }
