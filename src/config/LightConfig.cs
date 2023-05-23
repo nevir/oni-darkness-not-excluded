@@ -33,6 +33,12 @@ namespace DarknessNotIncluded
 
     public void ConfigureLight(Light2D light)
     {
+      if (light == null)
+      {
+        Log.Warn($"LightConfig.ConfigureLight() called with a null light");
+        return;
+      }
+
       light.enabled = this.enabled;
       light.shape = this.shape.LightShape();
       light.Lux = this.lux;
