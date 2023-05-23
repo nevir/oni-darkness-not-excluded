@@ -32,9 +32,9 @@ namespace DarknessNotIncluded
       Add(MinionLightType.Science, new LightConfig(true, 800, 3, 0, LightShape.Pill, Color.white));
       Add(MinionLightType.Rocketry, new LightConfig(true, 800, 4, 0, LightShape.DirectedCone, Color.white));
       Add(MinionLightType.AtmoSuit, new LightConfig(true, 600, 3, 0, LightShape.Pill, LIGHT2D.LIGHT_YELLOW));
-      Add(MinionLightType.JetSuit, new LightConfig(true, 800, 5, 7, LightShape.DirectedCone, LIGHT2D.LIGHT_YELLOW));
+      Add(MinionLightType.JetSuit, new LightConfig(true, 800, 5, 0, LightShape.Pill, LIGHT2D.LIGHT_YELLOW));
       Add(MinionLightType.LeadSuit, new LightConfig(true, 400, 3, 0, LightShape.Pill, LIGHT2D.LIGHT_YELLOW));
-      Add(MinionLightType.Rover, new LightConfig(true, 1400, 6, 0, LightShape.DirectedCone, Color.white));
+      Add(MinionLightType.Rover, new LightConfig(true, 1400, 6, 9, LightShape.DirectedCone, Color.white));
     }
 
     public MinionLightingConfig DeepClone()
