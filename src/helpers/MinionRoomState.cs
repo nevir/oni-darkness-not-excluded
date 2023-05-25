@@ -14,6 +14,7 @@ namespace DarknessNotIncluded
     {
       var cell = Grid.PosToCell(gameObject);
       var cavity = Game.Instance.roomProber.GetCavityForCell(cell);
+      if (cavity == null || cavity.numCells > 120) return false;
 
       foreach (var minion in MinionsInRoom(cavity))
       {
