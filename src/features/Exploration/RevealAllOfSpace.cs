@@ -1,10 +1,13 @@
 using HarmonyLib;
-using System;
+using System.Collections.Generic;
+using ProcGen;
 
 namespace DarknessNotIncluded.Exploration
 {
   public static class RevealAllOfSpace
   {
+    static HashSet<int> REVEALED_CELLS = new HashSet<int>();
+
     [HarmonyPatch(typeof(World)), HarmonyPatch("OnSpawn")]
     static class Patched_World_OnSpawn
     {
@@ -12,23 +15,28 @@ namespace DarknessNotIncluded.Exploration
       {
         Grid.OnReveal += (targetCell) =>
         {
-          if (Grid.Revealed[targetCell]) return;
-          if (Grid.ExposedToSunlight[targetCell] <= 0) return;
+          if (REVEALED_CELLS.Contains(targetCell)) return;
+          if (!IsSpaceBiomeAndLitBySunlight(targetCell)) return;
 
           var world = ClusterManager.Instance.GetWorld(Grid.WorldIdx[targetCell]);
+          var maxSize = world.WorldSize.x * world.WorldSize.y;
+          var cells = GameUtil.FloodCollectCells(targetCell, IsSpaceBiomeAndLitBySunlight, maxSize);
 
-          for (float x = world.minimumBounds.x; x <= world.maximumBounds.x; x++)
+          foreach (var cell in cells)
           {
-            for (float y = world.minimumBounds.y; y < world.maximumBounds.y; y++)
-            {
-              var cell = Grid.PosToCell(new Vector2f(x, y));
-              if (Grid.ExposedToSunlight[targetCell] <= 0) continue;
-              Grid.Spawnable[cell] = 255;
-              Grid.Visible[cell] = 255;
-              Grid.Revealed[cell] = true;
-            }
+            REVEALED_CELLS.Add(cell);
+            Grid.Reveal(cell);
           }
         };
+      }
+
+      static bool IsSpaceBiomeAndLitBySunlight(int cell)
+      {
+        var isSpaceBiome = Game.Instance.world.zoneRenderData.GetSubWorldZoneType(cell) == SubWorld.ZoneType.Space;
+        var isSpaceCell = Grid.Objects[cell, 2] == null;
+        var isLitBySunlight = Grid.ExposedToSunlight[cell] > 0;
+
+        return isSpaceBiome && isSpaceCell && isLitBySunlight;
       }
     }
   }
