@@ -142,17 +142,9 @@ namespace DarknessNotIncluded.DarknessPenalties
 
       private static void CheckLightLevel(LightMonitor.Instance smi, float dt)
       {
-        KPrefabID component = smi.GetComponent<KPrefabID>();
-        if (component != null && component.HasTag(GameTags.Shaded))
-        {
-          smi.sm.lightLevel.Set(0.0f, smi);
-        }
-        else
-        {
-          int cell = Grid.PosToCell(smi.gameObject);
-          if (!Grid.IsValidCell(cell)) return;
-          smi.sm.lightLevel.Set(Grid.LightIntensity[cell], smi);
-        }
+        int cell = Grid.PosToCell(smi.gameObject);
+        if (!Grid.IsValidCell(cell)) return;
+        smi.sm.lightLevel.Set(Grid.LightIntensity[cell], smi);
       }
 
       public new class Instance : GameInstance
