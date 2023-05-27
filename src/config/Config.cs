@@ -70,6 +70,9 @@ namespace DarknessNotIncluded
     [Option("Maximum lux tolerated while sleeping", "The maximum lux that a dupe can handle before being rudely woken up.", "Darkness Penalties")]
     public int maxSleepingLux { get; set; }
 
+    [Option("Game ticks before sleep is disturbed", "The number of game ticks required before a Duplicant will be rudely woken up.", "Darkness Penalties")]
+    public int sleepingDisturbedTicks { get; set; }
+
     [Option("Penalize Strength", "Whether to penalize the Duplicant's Strength attribute due to darkness.", "Darkness Penalties")]
     public bool penalizeStrength { get; set; }
 
@@ -99,6 +102,7 @@ namespace DarknessNotIncluded
         gracePeriodCycles = 0.0f,
         initialFogLevel = 0,
         minimumFogLevel = 0,
+        sleepingDisturbedTicks = 0,
         penalizeStrength = true,
       };
     }
@@ -142,6 +146,7 @@ namespace DarknessNotIncluded
 
       // Darkness Penalties
       maxSleepingLux = 500;
+      sleepingDisturbedTicks = 25;
       penalizeStrength = false;
       minionEffectsConfig = new MinionEffectsConfig();
       if (disableMinionEffects)

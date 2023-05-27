@@ -7,9 +7,16 @@ namespace DarknessNotIncluded.DuplicantLights
   {
     public abstract class UnitLights : KMonoBehaviour, ISim33ms
     {
-      private bool disableLightsInBedrooms;
-      private bool disableLightsInLitAreas;
-      private MinionLightingConfig minionLightingConfig;
+      private static bool disableLightsInBedrooms;
+      private static bool disableLightsInLitAreas;
+      private static MinionLightingConfig minionLightingConfig;
+
+      private static Config.Observer configObserver = new Config.Observer((config) =>
+      {
+        disableLightsInBedrooms = config.disableDupeLightsInBedrooms;
+        disableLightsInLitAreas = config.disableDupeLightsInLitAreas;
+        minionLightingConfig = config.minionLightingConfig;
+      });
 
       [MyCmpGet]
       private GridVisibility gridVisibility;
@@ -26,9 +33,6 @@ namespace DarknessNotIncluded.DuplicantLights
 
         Config.ObserveFor(this, (config) =>
         {
-          disableLightsInBedrooms = config.disableDupeLightsInBedrooms;
-          disableLightsInLitAreas = config.disableDupeLightsInLitAreas;
-          minionLightingConfig = config.minionLightingConfig;
           UpdateLights(true);
         });
       }
