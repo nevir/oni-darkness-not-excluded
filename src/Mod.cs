@@ -3,8 +3,6 @@ using KMod;
 using PeterHan.PLib;
 using PeterHan.PLib.Core;
 using System;
-using System.Reflection;
-using System.Collections.Generic;
 
 namespace DarknessNotIncluded
 {
