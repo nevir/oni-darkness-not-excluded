@@ -41,6 +41,10 @@ namespace DarknessNotIncluded.Darkness
           float scaledFogLevel = 1.0f - gameCycle / gracePeriodCycles;
           minFogLevel = Math.Max(minFogLevel, (int)(scaledFogLevel * (float)initialFogLevel));
         }
+        if (OverlayScreen.Instance.GetMode() != OverlayModes.None.ID)
+        {
+          minFogLevel = Math.Min(255, minFogLevel * 2);
+        }
         var fogRange = 255 - minFogLevel;
 
         for (int y = y0; y <= y1; ++y)
