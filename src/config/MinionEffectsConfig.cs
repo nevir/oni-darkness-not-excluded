@@ -13,7 +13,7 @@ namespace DarknessNotIncluded
     public MinionEffectsConfig()
     {
       Add(MinionEffectType.Dim, new EffectConfig(true, 700, -2, -1));
-      Add(MinionEffectType.Dark, new EffectConfig(true, 300, -5, -2));
+      Add(MinionEffectType.Dark, new EffectConfig(true, 300, -4, -2));
     }
 
     public class EffectConfig
