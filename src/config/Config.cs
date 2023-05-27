@@ -125,7 +125,7 @@ namespace DarknessNotIncluded
       selectToolBlockedByDarkness = true;
       gracePeriodCycles = 3.0f;
       initialFogLevel = 200;
-      minimumFogLevel = 50;
+      minimumFogLevel = 35;
 
       // Exploration
       dragToolIgnoresVisibility = true;
