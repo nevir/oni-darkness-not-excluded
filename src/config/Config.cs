@@ -22,6 +22,9 @@ namespace DarknessNotIncluded
     [Option("Unlit tiles hide details", "Whether unlit tiles should only show basic details when hovered", "Darkness")]
     public bool selectToolBlockedByDarkness { get; set; }
 
+    [Option("Darkness in sandbox mode", "Whether darkness is enabled while in sandbox mode", "Darkness")]
+    public bool darknessInSandboxMode { get; set; }
+
     [Option("Darkness grace period (cycles)", "How many cycles should it take to go from initial darkness to maximum darkness?", "Darkness")]
     public float gracePeriodCycles { get; set; }
 
@@ -111,6 +114,7 @@ namespace DarknessNotIncluded
       return new Config(true, true)
       {
         selectToolBlockedByDarkness = false,
+        darknessInSandboxMode = true,
         dragToolIgnoresVisibility = false,
         telepadRevealRadius = 18,
       };
@@ -123,6 +127,7 @@ namespace DarknessNotIncluded
       // Darkness
       fullyVisibleLuxThreshold = 1000;
       selectToolBlockedByDarkness = true;
+      darknessInSandboxMode = false;
       gracePeriodCycles = 3.0f;
       initialFogLevel = 200;
       minimumFogLevel = 35;

@@ -6,6 +6,7 @@ namespace DarknessNotIncluded.Darkness
   static class FadeUnlitCells
   {
     private static float gracePeriodCycles;
+    private static bool darknessInSandboxMode;
     private static int initialFogLevel;
     private static int minimumFogLevel;
     private static int fullyVisibleLuxThreshold;
@@ -13,6 +14,7 @@ namespace DarknessNotIncluded.Darkness
     private static Config.Observer configObserver = new Config.Observer((config) =>
     {
       gracePeriodCycles = config.gracePeriodCycles;
+      darknessInSandboxMode = config.darknessInSandboxMode;
       initialFogLevel = config.initialFogLevel;
       minimumFogLevel = config.minimumFogLevel;
       fullyVisibleLuxThreshold = config.fullyVisibleLuxThreshold;
@@ -23,7 +25,7 @@ namespace DarknessNotIncluded.Darkness
     {
       static bool Prefix(TextureRegion region, int x0, int y0, int x1, int y1)
       {
-        if (Game.Instance.SandboxModeActive) return true;
+        if (Game.Instance.SandboxModeActive && !darknessInSandboxMode) return true;
 
         var visible = Grid.Visible;
 
